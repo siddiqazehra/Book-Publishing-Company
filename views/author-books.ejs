@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= authorName %> — Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div id="header-socialmediaicons">
+            <div class="icon-divs"><a href="https://facebook.com" target="_blank"><img src="/images/facebook.png" alt="Facebook link"></a></div>
+            <div class="icon-divs"><a href="https://tiktok.com" target="_blank"><img src="/images/tik-tok.png" alt="Tik Tok link"></a></div>
+            <div class="icon-divs"><a href="https://x.com" target="_blank"><img src="/images/twitter.png" alt="Twitter link"></a></div>
+            <div class="icon-divs"><a href="https://instagram.com" target="blank"><img src="/images/instagram.png" alt="facebook link"></a></div>
+        </div>
+        <div id="website-title">
+            <h1><span id="black-title">PUBLISHING </span><span class="orange-text"> COMPANY</span></h1>
+            <h2 id="website-title-h2"> BOOK PUBLISHING COMPANY</h2>
+        </div>
+    </header>
+    <section id="navbar">
+        <nav id="tabs">
+            <a href="/index.html" class="active-tab-hover">HOME</a>
+            <a href="/about.html" class="active-tab-hover">ABOUT</a>
+            <a href="/contact-us.html" class="active-tab-hover">CONTACT</a>
+        </nav>
+    </section>
+    <section id="contact-img">
+        <div id="contact-content">
+            <p>HOME > ABOUT > <%= authorName %></p>
+            <h1><%= authorName %></h1>
+        </div>
+    </section>
+
+    <section id="top-sellers">
+        <div id="seller-parent">
+            <div id="seller-heading">
+                <p class="orange-text">BOOKS BY THIS AUTHOR</p>
+                <h2 class="welcome-heading"><%= authorName %></h2>
+            </div>
+
+            <% if (books.length === 0) { %>
+                <p style="text-align:center; font-family: var(--roboto); color: gray; padding: 40px 0;">
+                    No books found for <%= authorName %> yet.
+                </p>
+            <% } else { %>
+                <div id="seller-book-card">
+                    <div class="seller-rows">
+                        <% books.forEach(function(book) { %>
+                            <div class="seller-book">
+                                <div class="seller-book-img">
+                                    <img src="<%= book.img %>" alt="<%= book.title %>">
+                                </div>
+                                <div class="seller-book-info">
+                                    <p class="orange-text">$ <%= book.price.toFixed(2) %></p>
+                                    <h2><%= book.title %></h2>
+                                    <p>By <%= book.author %></p>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-parent">
+            <div class="footer-div">
+                <h2>Connect</h2>
+                <p>Far far away, behind the word mountains, far from the countries.</p>
+            </div>
+            <div class="footer-div">
+                <h2>Have a Question?</h2>
+                <div class="question-div">
+                    <ul>
+                        <li>203 Fake St. Mountain View, San Francisco, California, USA</li>
+                        <li>+92 000 0000000</li>
+                        <li>janedoe@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
