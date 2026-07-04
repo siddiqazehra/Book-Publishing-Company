@@ -1,9 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const nodemailer = require("nodemailer");
+import express from "express";
+import cors from "cors";
+import nodemailer from "nodemailer";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.CONTACT_PORT || 3001;
 
 // Middleware
 app.use(cors());
@@ -33,8 +33,8 @@ app.post("/contact", async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "yourgmail@gmail.com",
-                pass: "YOUR_APP_PASSWORD"
+                user: process.env.CONTACT_GMAIL_USER,
+                pass: process.env.CONTACT_GMAIL_APP_PASSWORD
             }
         });
 
@@ -75,5 +75,5 @@ app.post("/contact", async (req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Contact server running on http://localhost:${PORT}`);
 });

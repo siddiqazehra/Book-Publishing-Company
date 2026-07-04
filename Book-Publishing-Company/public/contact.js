@@ -57,7 +57,7 @@ $(document).ready(function () {
             submitBtn.text("Sending...");
 
             $.ajax({
-                url: "http://localhost:3000/contact",
+                url: "http://localhost:3001/contact",
                 type: "POST",
                 contentType: "application/json",
 
