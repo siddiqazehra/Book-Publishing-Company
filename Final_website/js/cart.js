@@ -92,7 +92,7 @@ function buildCartDrawer() {
 
     document.getElementById("cart-drawer-close").addEventListener("click", closeCartDrawer);
     document.getElementById("cart-drawer-checkout").addEventListener("click", () => {
-        if (getCartCount() > 0) window.location.href = "checkout.html";
+        if (getCartCount() > 0) window.location.href = "/checkout";
     });
 }
 
@@ -129,7 +129,7 @@ function renderCartDrawer() {
         if (!book) return "";
         return (
             '<div class="cart-item">' +
-            '<img src="' + book.image + '" alt="' + book.title + '">' +
+            '<img src="/' + book.image + '" alt="' + book.title + '">' +
             '<div class="cart-item-info">' +
             "<h4>" + book.title + "</h4>" +
             "<p>$ " + book.price.toFixed(2) + "</p>" +

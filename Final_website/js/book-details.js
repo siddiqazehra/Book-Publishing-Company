@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             '<div id="book-not-found">' +
             "<h2>Book not found</h2>" +
             "<p>We couldn't find the book you were looking for.</p>" +
-            '<a class="button" id="blue-button" href="index.html">Back to Home</a>' +
+            '<a class="button" id="blue-button" href="/">Back to Home</a>' +
             "</div>";
         return;
     }
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.title = book.title + " - Publishing Company";
 
     container.innerHTML =
-        '<div id="book-details-image"><img src="' + book.image + '" alt="' + book.title + '"></div>' +
+        '<div id="book-details-image"><img src="/' + book.image + '" alt="' + book.title + '"></div>' +
         '<div id="book-details-info">' +
         '<p class="orange-text">$ ' + book.price.toFixed(2) + "</p>" +
         "<h1>" + book.title + "</h1>" +

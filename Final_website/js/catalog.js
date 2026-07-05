@@ -33,8 +33,8 @@ function renderCatalogGrid(searchTerm, sortBy) {
     }
 
     grid.innerHTML = results.map(book =>
-        '<a class="catalog-card" href="book-details.html?id=' + book.id + '">' +
-        '<div class="catalog-card-img"><img src="' + book.image + '" alt="' + book.title + '"></div>' +
+        '<a class="catalog-card" href="/book-details?id=' + book.id + '">' +
+        '<div class="catalog-card-img"><img src="/' + book.image + '" alt="' + book.title + '"></div>' +
         '<div class="catalog-card-info">' +
         "<h3>" + book.title + "</h3>" +
         "<p>" + book.author + "</p>" +

@@ -9,7 +9,7 @@ function renderCheckoutSummary() {
 
     if (cart.length === 0) {
         itemsContainer.innerHTML = '<p id="checkout-empty-message">Your cart is empty. ' +
-            '<a href="index.html">Browse books</a> to add something first.</p>';
+            '<a href="/">Browse books</a> to add something first.</p>';
         totalContainer.textContent = "";
         if (placeOrderBtn) placeOrderBtn.disabled = true;
         return;

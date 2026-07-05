@@ -1,6 +1,7 @@
 /* BEGIN: Book Search & Cart Feature - shared book catalog data
-   NOTE: entries 4-8 are placeholder data (price/popularity/description
-   invented) — swap in real details whenever ready. */
+   NOTE: entries 4-13 are placeholder data (price/popularity/description/image
+   invented, images reused from existing covers) — swap in real details and
+   real cover images whenever ready. */
 const BOOKS = [
     {
         id: 1,
@@ -73,6 +74,55 @@ const BOOKS = [
         popularity: 2050,
         image: "images/book6.jpg",
         description: "An orphaned governess finds her voice and her own path to independence and love in this enduring classic of English literature."
+    },
+    {
+        id: 9,
+        title: "The Prisoner of Zenda",
+        author: "Anthony Hope",
+        price: 20.00,
+        popularity: 780,
+        image: "images/book1.jpg",
+        description: "An Englishman on holiday is mistaken for a king he happens to resemble, and is drawn into a plot to save the throne in this classic adventure of swashbuckling and mistaken identity."
+    },
+    {
+        id: 10,
+        title: "The Metamorphosis",
+        author: "Franz Kafka",
+        price: 19.50,
+        popularity: 1600,
+        image: "images/book3.jpg",
+        description: "A traveling salesman wakes one morning to find himself transformed into a giant insect, in Kafka's unsettling meditation on alienation and the fragility of identity."
+    },
+    {
+        id: 11,
+        title: "Jannat Kay Pattay",
+        author: "Nemrah Ahmed",
+        price: 18.00,
+        popularity: 1400,
+        image: "images/book4.jpg",
+        description: "A story of faith, love, and self-discovery that follows its characters through personal struggle toward a deeper understanding of purpose and belief."
+    },
+    {
+        id: 12,
+        title: "The Kite Runner",
+        author: "Khaled Hosseini",
+        price: 22.50,
+        popularity: 2200,
+        image: "images/book5.jpg",
+        description: "A story of friendship and betrayal between two boys in Afghanistan, and one man's journey to atone for the mistakes of his childhood."
+    },
+    {
+        id: 13,
+        title: "Wuthering Heights",
+        author: "The Brontë Sisters",
+        price: 23.00,
+        popularity: 1850,
+        image: "images/book-2.jpg",
+        description: "A turbulent tale of passion and revenge on the Yorkshire moors, following the destructive love between Catherine Earnshaw and Heathcliff across two generations."
     }
 ];
 /* END: Book Search & Cart Feature - shared book catalog data */
+
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = BOOKS;
+}
