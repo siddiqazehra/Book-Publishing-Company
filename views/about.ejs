@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <section id="contact-img">
+        <div id="contact-content">
+            <p>HOME > ABOUT</p>
+            <h1>About Us</h1>
+        </div>
+    </section>
+    <section id="welcome">
+        <div id="welcome-div">
+            <p class="orange-text" id="orange-welcome-text">WELCOME TO PUBLISHING COMPANY</p>
+            <h2 class="welcome-heading">Welcome to Publishing Company</h2>
+            <p class="welcome-text">Far far away, behind the word mountains, far from the countries Vokalia and
+                Consonantia, there live the
+                blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language
+                ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It
+                is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+            <blockquote cite="https://preview.colorlib.com/theme/publishingcompany/about.html">
+                Good friends, good books, and a sleepy conscience: this is the ideal life.
+            </blockquote>
+            <p class="welcome-text">When she reached the first hills of the Italic Mountains, she had a last view back
+                on the skyline of her
+                hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line
+                Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
+        </div>
+    </section>
+    <section id="writers">
+        <div id="writers-parent">
+            <div id="writers-heading">
+                <p class="orange-text">MEET OUR AUTHORS</p>
+                <h2 class="welcome-heading">Authors</h2>
+            </div>
+            <div id="writers-cards-div">
+                <div class="writers-row">
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-1.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>Mary Shelley</h2>
+                            <p>Mary Shelley, the British author, is best known for her novel "Frankenstein". She was a prolific writer and her works continue to be popular today.</p>
+                            <!-- BEGIN: View Books by Author feature -->
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Mary Shelley')">View All Books</button>
+                            <!-- END: View Books by Author feature -->
+                        </div>
+                    </div>
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-2.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>Anthony Hope</h2>
+                            <p>Anthony Hope, the British author, is best known for his novel "The Prisoner of Zenda". He was a prolific writer and his works continue to be popular today.</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Anthony Hope')">View All Books</button>
+                        </div>
+                    </div>
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-3.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>Jane Austen</h2>
+                            <p>Jane Austen, the world renowned English author, completed just six works during her time and yet manages to command a legion of fans around the world.</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Jane Austen')">View All Books</button>
+                        </div>
+                    </div>
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-4.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>Franz Kafka</h2>
+                            <p>Franz Kafka, the Austrian author, is known for his surreal and often disturbing literary works that explore themes of alienation and absurdity.</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Franz Kafka')">View All Books</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="writers-row">
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-3.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>Nemrah Ahmed</h2>
+                            <p>Nemrah Ahmed is a talented writer with a passion for storytelling. Her works explore themes of identity, culture, and human relationships.</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Nemrah Ahmed')">View All Books</button>
+                        </div>
+                    </div>
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-2.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>khaled hosseini</h2>
+                            <p>Khaled Hosseini is a renowned Afghan-American novelist and short story writer. He is best known for his novel "The Kite Runner" and "A Thousand Splendid Suns".</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Khaled Hosseini')">View All Books</button>
+                        </div>
+                    </div>
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-4.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>The Brontë Sisters</h2>
+                            <p>The Brontë sisters, Charlotte, Emily, and Anne, were influential English novelists who wrote under the pseudonymsCurrer, Ellis, and Acton Bell.</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('The Brontë Sisters')">View All Books</button>
+                        </div>
+                    </div>
+                    <div class="writers-card">
+                        <div class="writer-img">
+                            <img src="/images/writer-1.jpg" alt="Author's Image">
+                        </div>
+                        <div class="writers-info">
+                            <h2>Charles Dickens</h2>
+                            <p>Charles Dickens was an English novelist and social critic. He is best known for his novels that depict the lives of the poor and the marginalized.</p>
+                            <button onclick="window.location.href='/author/' + encodeURIComponent('Charles Dickens')">View All Books</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section id="top-sellers">
+        <div id="seller-parent">
+            <div id="seller-heading">
+                <p class="orange-text">TOP SELLERS</p>
+                <h2 class="welcome-heading">Top Sellers</h2>
+            </div>
+            <div id="seller-book-card">
+                <div id="seller-row-2" class="seller-rows">
+                    <div class="seller-book">
+                        <div class="seller-book-img">
+                            <img src="/images/book5.jpg" alt="Author's Image">
+                        </div>
+                        <div class="seller-book-info">
+                            <p class="orange-text">$ 24.00</p>
+                            <h2>This is: Book Name</h2>
+                            <p>By Respected Author</p>
+                        </div>
+                    </div>
+                    <div class="seller-book">
+                        <div class="seller-book-img">
+                            <img src="/images/book6.jpg" alt="">
+                        </div>
+                        <div class="seller-book-info">
+                            <p class="orange-text">$ 24.00</p>
+                            <h2>This is: Book Name</h2>
+                            <p>By Respected Author</p>
+                        </div>
+                    </div>
+                    <div class="seller-book">
+                        <div class="seller-book-img">
+                            <img src="/images/book1.jpg" alt="">
+                        </div>
+                        <div class="seller-book-info">
+                            <p class="orange-text">$ 24.00</p>
+                            <h2>This is: Book Name</h2>
+                            <p>By Respected Author</p>
+                        </div>
+                    </div>
+                    <div id="seller-genre">
+                        <h2>GENRES WE PUBLISH</h2>
+                        <ul>
+                            <li>Fantasy</li>
+                            <li>Adventure</li>
+                            <li>Romance</li>
+                            <li>Contemporary</li>
+                            <li>Dystopian</li>
+                            <li>Mystery</li>
+                            <li>Horror</li>
+                            <li>Thriller</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div id="seller-row-1" class="seller-rows">
+                    <div class="seller-book">
+                        <div class="seller-book-img">
+                            <img src="/images/book1.jpg" alt="">
+                        </div>
+                        <div class="seller-book-info">
+                            <p class="orange-text">$ 24.00</p>
+                            <h2>This is: Book Name</h2>
+                            <p>By Respected Author</p>
+                        </div>
+                    </div>
+                    <div class="seller-book">
+                        <div class="seller-book-img">
+                            <img src="/images/book4.jpg" alt="">
+                        </div>
+                        <div class="seller-book-info">
+                            <p class="orange-text">$ 24.00</p>
+                            <h2>This is: Book Name</h2>
+                            <p>By Respected Author</p>
+                        </div>
+                    </div>
+                    <div class="seller-book">
+                        <div class="seller-book-img">
+                            <img src="/images/book3.jpg" alt="">
+                        </div>
+                        <div class="seller-book-info">
+                            <p class="orange-text">$ 24.00</p>
+                            <h2>This is: Book Name</h2>
+                            <p>By Respected Author</p>
+                        </div>
+                    </div>
+                    <div id="seller-genre">
+                        <h2>OUR TOP AUTHORS</h2>
+                        <ul>
+                            <li>Jane Austen</li>
+                            <li>Nemrah Ahmed</li>
+                            <li>Khaled Hosseini</li>
+                            <li>The Brontë Sisters</li>
+                            <li>Charles Dickens</li>
+                            <li>Mary Shelley</li>
+                            <li> Anthony Hope</li>
+                            <li>Franz Kafka</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+    </section>
+
+    <%- include('partials/footer', { books: books }) %>
+</body>
+
+</html>

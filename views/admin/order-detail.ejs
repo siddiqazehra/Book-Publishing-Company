@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+    <div id="admin-shell">
+        <%- include('../partials/admin-sidebar', { active: 'orders' }) %>
+
+        <main id="admin-main">
+            <div id="admin-topbar">
+                <h1>Order #<%= order.orderId %></h1>
+                <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Customer & Shipping</h2>
+                <p><strong>Name:</strong> <%= order.shipping.name %></p>
+                <p><strong>Email:</strong> <%= order.shipping.email %></p>
+                <p><strong>Address:</strong> <%= order.shipping.address %></p>
+                <p><strong>Account:</strong> <%= order.user ? order.user.name + ' (' + order.user.email + ')' : 'Unknown' %></p>
+                <p><strong>Payment:</strong> Card ending in <%= order.payment && order.payment.cardLast4 ? order.payment.cardLast4 : '—' %> (demo payment)</p>
+                <p><strong>Placed:</strong> <%= new Date(order.createdAt).toLocaleString() %></p>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Items</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Cover</th>
+                            <th>Title</th>
+                            <th>Unit Price</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% order.items.forEach(function(item) { %>
+                            <tr>
+                                <td><img class="thumb" src="/<%= item.image %>" alt="<%= item.title %>"></td>
+                                <td><%= item.title %></td>
+                                <td>$ <%= item.price.toFixed(2) %></td>
+                                <td><%= item.quantity %></td>
+                                <td>$ <%= (item.price * item.quantity).toFixed(2) %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align:right; font-weight:bold;">Total</td>
+                            <td style="font-weight:bold;">$ <%= order.totalAmount.toFixed(2) %></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="admin-panel" style="max-width: 420px;">
+                <h2>Update Status</h2>
+                <% if (error) { %><div class="admin-error"><%= error %></div><% } %>
+                <form class="admin-form" method="POST" action="/admin/orders/<%= order._id %>/status">
+                    <select name="status">
+                        <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="processing" <%= order.status === 'processing' ? 'selected' : '' %>>Processing</option>
+                        <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                        <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                        <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                    </select>
+                    <div class="admin-form-actions">
+                        <button type="submit" class="btn-sm btn-add" style="padding:10px 24px;">Save Status</button>
+                        <a href="/admin/orders" class="btn-sm btn-edit" style="padding:10px 24px;">Back to Orders</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

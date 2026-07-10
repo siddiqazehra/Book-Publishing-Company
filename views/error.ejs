@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Error' %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <section id="auth-section">
+        <div id="auth-parent">
+            <h2><%= title || 'Something went wrong' %></h2>
+            <p class="auth-subtext"><%= message || 'Please try again.' %></p>
+            <a class="button" id="blue-button" href="/">Back to Home</a>
+        </div>
+    </section>
+
+    <%- include('partials/footer', { books: [] }) %>
+</body>
+
+</html>

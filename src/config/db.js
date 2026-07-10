@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 export async function connectDB() {
   const uri = process.env.MONGODB_URI;
 
@@ -9,15 +10,14 @@ export async function connectDB() {
 
   try {
     await mongoose.connect(uri, {
+      dbName: "PublishingCompany",
       maxPoolSize: 10,
       minPoolSize: 2,
       serverSelectionTimeoutMS: 10000,
     });
-    console.log("Connected to MongoDB Atlas");
+    console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection failed:", err.message);
     process.exit(1);
   }
 }
-
-

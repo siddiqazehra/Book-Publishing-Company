@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <!-- BEGIN: Book Search & Cart Feature - simulated checkout page -->
+    <section id="checkout-section">
+        <div id="checkout-parent">
+            <h1>Checkout</h1>
+            <p id="checkout-demo-notice">This is a demo checkout. No real payment is processed and no card details are
+                sent anywhere.</p>
+
+            <div id="checkout-layout">
+                <div id="checkout-summary">
+                    <h2>Order Summary</h2>
+                    <div id="checkout-summary-items"></div>
+                    <div id="checkout-summary-total"></div>
+                </div>
+
+                <form id="checkout-form">
+                    <h2>Shipping Details</h2>
+                    <input type="text" id="checkout-name" placeholder="Full Name" value="<%= user ? user.name : '' %>" required>
+                    <input type="email" id="checkout-email" placeholder="Email Address" value="<%= user ? user.email : '' %>" required>
+                    <input type="text" id="checkout-address" placeholder="Shipping Address" required>
+
+                    <h2>Payment Details (Demo)</h2>
+                    <input type="text" id="checkout-card-number" placeholder="Card Number (16 digits)" maxlength="19"
+                        required>
+                    <div id="checkout-card-row">
+                        <input type="text" id="checkout-card-expiry" placeholder="MM/YY" maxlength="5" required>
+                        <input type="text" id="checkout-card-cvv" placeholder="CVV" maxlength="4" required>
+                    </div>
+
+                    <p id="checkout-error" class="error"></p>
+                    <button type="submit" class="button" id="checkout-place-order">Place Order</button>
+                </form>
+            </div>
+
+            <div id="checkout-confirmation" hidden>
+                <h2>Thank you! Your order has been placed.</h2>
+                <p>This was a simulated order — no payment was actually charged.</p>
+                <a class="button" id="blue-button" href="/">Continue Shopping</a>
+            </div>
+        </div>
+    </section>
+    <!-- END: Book Search & Cart Feature - simulated checkout page -->
+
+    <%- include('partials/footer', { books: books }) %>
+    <script src="/js/checkout.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,281 @@
+import bcrypt from "bcryptjs";
+import { Book } from "../models/Book.js";
+import { User } from "../models/User.js";
+import { Order } from "../models/Order.js";
+import { getNextSequence } from "../models/Counter.js";
+
+/* ==================== DASHBOARD ==================== */
+
+export const dashboard = async (req, res, next) => {
+  try {
+    const [bookCount, userCount, orderCount, orders] = await Promise.all([
+      Book.countDocuments(),
+      User.countDocuments(),
+      Order.countDocuments(),
+      Order.find().sort({ createdAt: -1 }).limit(5).populate("user", "name email").lean(),
+    ]);
+
+    const revenueAgg = await Order.aggregate([
+      { $match: { status: { $ne: "cancelled" } } },
+      { $group: { _id: null, total: { $sum: "$totalAmount" } } },
+    ]);
+    const totalRevenue = revenueAgg[0]?.total || 0;
+
+    res.render("admin/dashboard", {
+      title: "Admin Dashboard",
+      bookCount,
+      userCount,
+      orderCount,
+      totalRevenue,
+      recentOrders: orders,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ==================== BOOKS ==================== */
+
+export const listBooks = async (req, res, next) => {
+  try {
+    const q = (req.query.q || "").trim();
+    const filter = q ? { $text: { $search: q } } : {};
+    const books = await Book.find(filter).sort({ createdAt: -1 }).lean();
+    res.render("admin/books", { title: "Manage Books", books, q });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const newBookForm = (req, res) => {
+  res.render("admin/book-form", { title: "Add Book", book: {}, error: null, mode: "create" });
+};
+
+export const createBook = async (req, res) => {
+  try {
+    const { title, author, description, genre, price, image, stock } = req.body;
+    await Book.create({
+      title,
+      author,
+      description,
+      genre,
+      price: Number(price) || 0,
+      image: image || undefined,
+      stock: Number(stock) || 0,
+    });
+    res.redirect("/admin/books");
+  } catch (err) {
+    const message =
+      err.name === "ValidationError"
+        ? Object.values(err.errors)[0]?.message || "Invalid input."
+        : "Could not create the book. Please check the fields and try again.";
+    res.status(400).render("admin/book-form", {
+      title: "Add Book",
+      book: req.body,
+      error: message,
+      mode: "create",
+    });
+  }
+};
+
+export const editBookForm = async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id).lean();
+    if (!book) return res.status(404).render("error", { title: "Not found", message: "Book not found." });
+    res.render("admin/book-form", { title: "Edit Book", book, error: null, mode: "edit" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateBook = async (req, res) => {
+  try {
+    const { title, author, description, genre, price, image, stock } = req.body;
+    const book = await Book.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        author,
+        description,
+        genre,
+        price: Number(price) || 0,
+        image,
+        stock: Number(stock) || 0,
+      },
+      { new: true, runValidators: true }
+    );
+    if (!book) return res.status(404).render("error", { title: "Not found", message: "Book not found." });
+    res.redirect("/admin/books");
+  } catch (err) {
+    const message =
+      err.name === "ValidationError"
+        ? Object.values(err.errors)[0]?.message || "Invalid input."
+        : "Could not update the book. Please check the fields and try again.";
+    res.status(400).render("admin/book-form", {
+      title: "Edit Book",
+      book: { ...req.body, _id: req.params.id },
+      error: message,
+      mode: "edit",
+    });
+  }
+};
+
+export const deleteBook = async (req, res, next) => {
+  try {
+    await Book.findByIdAndDelete(req.params.id);
+    res.redirect("/admin/books");
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ==================== USERS ==================== */
+
+export const listUsers = async (req, res, next) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 }).lean();
+    res.render("admin/users", { title: "Manage Users", users });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const newUserForm = (req, res) => {
+  res.render("admin/user-form", { title: "Add User", editUser: {}, error: null, mode: "create" });
+};
+
+export const createUser = async (req, res) => {
+  try {
+    const { name, email, password, accessLevel } = req.body;
+
+    if (!name || !email || !password || password.length < 8) {
+      throw Object.assign(new Error("Name, email, and an 8+ character password are required."), {
+        name: "SimpleValidation",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const userId = await getNextSequence("userId");
+
+    await User.create({
+      userId,
+      name: name.trim(),
+      email: String(email).trim().toLowerCase(),
+      password: hashedPassword,
+      accessLevel: accessLevel === "master" ? "master" : "usual",
+    });
+    res.redirect("/admin/users");
+  } catch (err) {
+    const message =
+      err.code === 11000
+        ? "An account with that email already exists."
+        : err.name === "ValidationError"
+        ? Object.values(err.errors)[0]?.message || "Invalid input."
+        : err.message || "Could not create the user.";
+    res.status(400).render("admin/user-form", {
+      title: "Add User",
+      editUser: req.body,
+      error: message,
+      mode: "create",
+    });
+  }
+};
+
+export const editUserForm = async (req, res, next) => {
+  try {
+    const editUser = await User.findById(req.params.id).lean();
+    if (!editUser) return res.status(404).render("error", { title: "Not found", message: "User not found." });
+    res.render("admin/user-form", { title: "Edit User", editUser, error: null, mode: "edit" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { name, email, accessLevel, password } = req.body;
+    const update = {
+      name,
+      email: String(email).trim().toLowerCase(),
+      accessLevel: accessLevel === "master" ? "master" : "usual",
+    };
+    if (password) {
+      if (password.length < 8) throw Object.assign(new Error("Password must be at least 8 characters."), {});
+      const salt = await bcrypt.genSalt(10);
+      update.password = await bcrypt.hash(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
+    if (!user) return res.status(404).render("error", { title: "Not found", message: "User not found." });
+    res.redirect("/admin/users");
+  } catch (err) {
+    const message =
+      err.code === 11000
+        ? "An account with that email already exists."
+        : err.name === "ValidationError"
+        ? Object.values(err.errors)[0]?.message || "Invalid input."
+        : err.message || "Could not update the user.";
+    res.status(400).render("admin/user-form", {
+      title: "Edit User",
+      editUser: { ...req.body, _id: req.params.id },
+      error: message,
+      mode: "edit",
+    });
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    if (String(req.params.id) === String(req.user._id)) {
+      return res.status(400).render("error", {
+        title: "Not allowed",
+        message: "You can't delete your own account while logged in as it.",
+      });
+    }
+    await User.findByIdAndDelete(req.params.id);
+    res.redirect("/admin/users");
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ==================== ORDERS ==================== */
+
+export const listOrders = async (req, res, next) => {
+  try {
+    const statusFilter = req.query.status;
+    const filter = statusFilter ? { status: statusFilter } : {};
+    const orders = await Order.find(filter)
+      .sort({ createdAt: -1 })
+      .populate("user", "name email")
+      .lean();
+    res.render("admin/orders", { title: "All Orders", orders, statusFilter: statusFilter || "" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const viewOrder = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id).populate("user", "name email").lean();
+    if (!order) return res.status(404).render("error", { title: "Not found", message: "Order not found." });
+    res.render("admin/order-detail", { title: `Order #${order.orderId}`, order, error: null });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateOrderStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    const valid = ["pending", "processing", "shipped", "delivered", "cancelled"];
+    if (!valid.includes(status)) {
+      return res.redirect(`/admin/orders/${req.params.id}`);
+    }
+    await Order.findByIdAndUpdate(req.params.id, { status });
+    res.redirect(`/admin/orders/${req.params.id}`);
+  } catch (err) {
+    next(err);
+  }
+};
