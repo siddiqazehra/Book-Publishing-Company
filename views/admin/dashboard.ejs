@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+    <div id="admin-shell">
+        <%- include('../partials/admin-sidebar', { active: 'dashboard' }) %>
+
+        <main id="admin-main">
+            <div id="admin-topbar">
+                <h1>Dashboard</h1>
+                <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <div class="stat-label">Total Books</div>
+                    <div class="stat-value"><%= bookCount %></div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-value"><%= userCount %></div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-value"><%= orderCount %></div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-label">Revenue</div>
+                    <div class="stat-value orange">$ <%= totalRevenue.toFixed(2) %></div>
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Recent Orders</h2>
+                <% if (!recentOrders || recentOrders.length === 0) { %>
+                    <p class="admin-empty">No orders yet.</p>
+                <% } else { %>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentOrders.forEach(function(order) { %>
+                                <tr>
+                                    <td>#<%= order.orderId %></td>
+                                    <td><%= order.user ? order.user.name : 'Unknown' %></td>
+                                    <td>$ <%= order.totalAmount.toFixed(2) %></td>
+                                    <td><span class="status-badge status-<%= order.status %>"><%= order.status %></span></td>
+                                    <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                                    <td><a class="btn-sm btn-edit" href="/admin/orders/<%= order._id %>">View</a></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

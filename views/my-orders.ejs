@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <section id="contact-img">
+        <div id="contact-content">
+            <p>HOME &gt; MY ORDERS</p>
+            <h1>My Orders</h1>
+        </div>
+    </section>
+
+    <section id="my-orders-section">
+        <div id="my-orders-parent">
+            <% if (!orders || orders.length === 0) { %>
+                <p id="my-orders-empty">You haven't placed any orders yet. <a href="/">Browse books</a> to get started.</p>
+            <% } else { %>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(function(order) { %>
+                            <tr>
+                                <td>#<%= order.orderId %></td>
+                                <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                                <td>
+                                    <% order.items.forEach(function(item) { %>
+                                        <div><%= item.title %> &times; <%= item.quantity %></div>
+                                    <% }); %>
+                                </td>
+                                <td>$ <%= order.totalAmount.toFixed(2) %></td>
+                                <td><span class="status-badge status-<%= order.status %>"><%= order.status %></span></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </section>
+
+    <%- include('partials/footer', { books: [] }) %>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+    <header>
+        <div id="header-search-cart">
+                        <div id="header-cart">
+                <button id="cart-icon" aria-label="Open cart">
+                    <span id="cart-icon-label">&#128722;</span>
+                    <span id="cart-count-badge">0</span>
+                </button>
+            </div>
+            <div id="header-searchbar">
+                <form id="header-search-form" role="search">
+                    <input type="text" id="header-search-input" placeholder="Search by title or author..."
+                        aria-label="Search books">
+                </form>
+                <div id="header-magnifying-glass">
+                    <button type="button" id="header-search-button" aria-label="Search">
+                        <img src="/images/magnifying-glass.png" alt="" height="20px" width="20px">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="website-title">
+            <a href="/" style="text-decoration:none; color:inherit;">
+                <h1><span id="black-title">PUBLISHING </span><span class="orange-text"> COMPANY</span></h1>
+                <h2 id="website-title-h2"> BOOK PUBLISHING COMPANY</h2>
+            </a>
+        </div>
+
+        <div id="login-register">
+            <% if (user) { %>
+                <span id="header-greeting">Hi, <%= user.name.split(' ')[0] %></span>
+                <% if (user.accessLevel === 'master') { %>
+                    <a href="/admin" class="button" id="white-button">Admin Panel</a>
+                <% } else { %>
+                    <!-- <a href="/my-orders" class="button" id="white-button">My Orders</a>
+                <% } %> -->
+                <form action="/logout" method="POST" id="logout-form">
+                    <button type="submit" class="button" id="blue-button">Log out</button>
+                </form>
+            <% } else { %>
+                <a href="/login" class="button" id="white-button">Login</a>
+                <a href="/register" class="button" id="blue-button">Register</a>
+            <% } %>
+        </div>
+    </header>
+    <section id="navbar">
+        <nav id="tabs">
+            <a href="/" class="active-tab-hover">HOME</a>
+            <a href="/about" class="active-tab-hover">ABOUT</a>
+            <a href="/contact-us" class="active-tab-hover">CONTACT</a>
+        </nav>
+    </section>
