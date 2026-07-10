@@ -1,6 +1,5 @@
 // Catches anything passed to next(err) from any controller.
-// Keeps error formatting consistent as you add more collections/routes.
-export function errorHandler(err, req, res, next) {
+export function apiErrorHandler(err, req, res, next) {
   console.error(err);
 
   if (err.code === 11000) {
@@ -20,3 +19,11 @@ export function errorHandler(err, req, res, next) {
   res.status(err.status || 500).json({ message: err.message || "Something went wrong." });
 }
 
+// Fallback for page (non-API) routes that error out.
+export function pageErrorHandler(err, req, res, next) {
+  console.error(err);
+  res.status(err.status || 500).render("error", {
+    title: "Something went wrong",
+    message: err.message || "Something went wrong. Please try again.",
+  });
+}

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const bookSchema = new mongoose.Schema(
   {
     title: {
@@ -17,22 +18,34 @@ const bookSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 2000,
+      default: "",
     },
     genre: {
       type: String,
       trim: true,
-      index: true, // frequently filtered on ("show me all Mystery books")
+      index: true,
+      default: "",
     },
     price: {
       type: Number,
       required: [true, "Price is required"],
       min: 0,
     },
-    coverImage: {
-      type: String, // URL or /images/... path
+    // Path or URL to the cover image, e.g. "images/book-1.jfif" (frontend
+    // templates prefix this with "/" when rendering <img src>).
+    image: {
+      type: String,
       trim: true,
+      default: "images/book-1.jfif",
     },
     stock: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    // How many copies have been "bought" — drives the popularity sort in the
+    // catalog overlay and the "N readers have bought this book" line.
+    popularity: {
       type: Number,
       default: 0,
       min: 0,
@@ -41,11 +54,8 @@ const bookSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Text index enables $text search across title/author, e.g. for the
-// search bar already in your header.
+// Text index enables $text search across title/author.
 bookSchema.index({ title: "text", author: "text" });
-
-// Common sort/filter combo: newest books within a genre.
 bookSchema.index({ genre: 1, createdAt: -1 });
 
 export const Book = mongoose.model("Book", bookSchema);

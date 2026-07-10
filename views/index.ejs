@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <!-- BEGIN: Book Search & Cart Feature - full catalog search/sort overlay -->
+    <div id="catalog-overlay">
+        <div id="catalog-panel">
+            <div id="catalog-panel-header">
+                <h2>All Books</h2>
+                <button id="catalog-close" aria-label="Close catalog">&times;</button>
+            </div>
+            <div id="catalog-controls">
+                <input type="text" id="catalog-search-input" placeholder="Search by title or author...">
+                <select id="catalog-sort-select">
+                    <option value="title">Sort: Title (A-Z)</option>
+                    <option value="author">Sort: Author (A-Z)</option>
+                    <option value="price-asc">Sort: Price (Low to High)</option>
+                    <option value="price-desc">Sort: Price (High to Low)</option>
+                    <option value="popularity">Sort: Popularity</option>
+                </select>
+            </div>
+            <div id="catalog-grid"></div>
+        </div>
+    </div>
+    <!-- END: Book Search & Cart Feature - full catalog search/sort overlay -->
+
+    <%- include('partials/header') %>
+
+    <section id="img-under-navbar">
+        <div id="img-under-navbar-div">
+            <h2>Good books don't give up <br> all their secrets at once</h2>
+            <br>
+            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+            <br>
+            <div id="img-under-navbar-buttons">
+                <button class="button" id="blue-button">View all books</button>
+            </div>
+        </div>
+    </section>
+    <section id="genres">
+        <div id="genre-parent">
+            <div class="genre-cards reveal">
+                <div class="genre-logos">
+                    <img src="/images/box-img-1.png" alt="">
+                </div>
+                <h2>Fantasy</h2>
+                <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
+                    regelialia.</p>
+            </div>
+            <div class="genre-cards reveal">
+                <div class="genre-logos">
+                    <img src="/images/box-img-2.png" alt="">
+                </div>
+                <h2>Thriller</h2>
+                <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
+                    regelialia.</p>
+            </div>
+            <div class="genre-cards reveal">
+                <div class="genre-logos">
+                    <img src="/images/box-img-3.png" alt="">
+                </div>
+                <h2>Horror Fiction</h2>
+                <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
+                    regelialia.</p>
+            </div>
+            <div class="genre-cards reveal">
+                <div class="genre-logos">
+                    <img src="/images/box-img-4.png" alt="">
+                </div>
+                <h2>Science Fiction</h2>
+                <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
+                    regelialia.</p>
+            </div>
+        </div>
+    </section>
+    <section id="counter-section">
+        <div id="counter-parent">
+            <div class="counter-div">
+                <p class="counter" data-target="75000">0</p>
+                <p class="counter-text">ACTIVE ORDERS</p>
+            </div>
+            <div class="counter-div">
+                <p class="counter" data-target="3000">0</p>
+                <p class="counter-text">TOTAL PAGES</p>
+            </div>
+            <div class="counter-div">
+                <p class="counter" data-target="280">0</p>
+                <p class="counter-text">CUPS OF COFFEE</p>
+            </div>
+            <div class="counter-div">
+                <p class="counter" data-target="14500">0</p>
+                <p class="counter-text">FACEBOOK FANS</p>
+            </div>
+
+        </div>
+    </section>
+    <section id="authors">
+        <div id="author-parent">
+            <div id="author-image">
+                <img src="/images/author-img-1.jpg" alt="">
+            </div>
+            <div id="author-content">
+                <p class="orange-text reveal">WELCOME TO PUBLISHING COMPANY</p><br>
+                <h2 class="reveal">Publishing Company <br> Created By Authors</h2><br>
+                <p class="author-text reveal">A small river named Duden flows by their place and supplies it with the
+                    necessary
+                    regelialia. It is a
+                    paradisematic country, in which roasted parts of sentences fly into your mouth.</p><br>
+
+                <p class="author-text reveal">On her way she met a copy. The copy warned the Little Blind Text, that
+                    where it
+                    came from it would
+                    have been rewritten a thousand times and everything that was left from its origin would be the word
+                    "and" and the Little Blind Text should turn around and return to its own, safe country.</p>
+                <a href="/about"><button class="button">View All Authors</button></a>
+            </div>
+        </div>
+    </section>
+    <section id="new-release">
+        <div id="release-parent">
+            <div id="release-heading" class="reveal">
+                <p class="orange-text">BOOKS</p>
+                <h2>New Release</h2>
+            </div>
+            <!-- BEGIN: Book Search & Cart Feature - clickable book cards, from MongoDB -->
+            <div class="release-row" id="release-row-1">
+                <% books.slice(0, 3).forEach(function(book) { %>
+                    <a class="book" href="/book-details?id=<%= book._id %>">
+                        <div class="book-card">
+                            <img src="/<%= book.image %>" alt="<%= book.title %>">
+                        </div>
+                        <div class="book-content">
+                            <p class="orange-text content-hover">$ <%= book.price.toFixed(2) %></p>
+                            <h3><%= book.title %></h3>
+                            <p>By <%= book.author %></p>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+            <div class="release-row" id="release-row-2">
+                <% books.slice(0, 3).forEach(function(book) { %>
+                    <a class="book" href="/book-details?id=<%= book._id %>">
+                        <div class="book-content">
+                            <p class="orange-text">$ <%= book.price.toFixed(2) %></p>
+                            <h3><%= book.title %></h3>
+                            <p>By <%= book.author %></p>
+                        </div>
+                        <div class="book-card">
+                            <img src="/<%= book.image %>" alt="<%= book.title %>">
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+            <!-- END: Book Search & Cart Feature - clickable book cards -->
+        </div>
+    </section>
+    <section id="testimonials">
+        <div id="testimonials-heading">
+            <p>TESTIMONIAL</p>
+            <h2>Kinds Words From Our Clients</h2>
+        </div>
+        <div id="testimonials-slider">
+            <div class="slider">
+                <div class="slider-row">
+                    <div class="card">
+                        <div class="card-text">
+                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
+                                Quality
+                                Assurance (SQA) comes in. .</p>
+                        </div>
+                        <div class="card-div">
+                            <div class="card-div-img">
+                                <img src="/images/author-img-1.jpg" alt="">
+                            </div>
+                            <div class="card-div-author">
+                                <h3>Liz Bennet</h3>
+                                <p>Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-text">
+                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
+                                Quality
+                                Assurance (SQA) comes in. .</p>
+                        </div>
+                        <div class="card-div">
+                            <div class="card-div-img">
+                                <img src="/images/author-img-1.jpg" alt="">
+                            </div>
+                            <div class="card-div-author">
+                                <h3>Liz Bennet</h3>
+                                <p>Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-text">
+                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
+                                Quality
+                                Assurance (SQA) comes in. .</p>
+                        </div>
+                        <div class="card-div">
+                            <div class="card-div-img">
+                                <img src="/images/author-img-1.jpg" alt="">
+                            </div>
+                            <div class="card-div-author">
+                                <h3>Liz Bennet</h3>
+                                <p>Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-text">
+                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
+                                Quality
+                                Assurance (SQA) comes in. .</p>
+                        </div>
+                        <div class="card-div">
+                            <div class="card-div-img">
+                                <img src="/images/author-img-1.jpg" alt="">
+                            </div>
+                            <div class="card-div-author">
+                                <h3>Liz Bennet</h3>
+                                <p>Manager</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('partials/footer', { books: books }) %>
+
+    <script src="/js/catalog.js"></script>
+
+    <script>
+
+        //counters
+        const counters = document.querySelectorAll('.counter');
+
+        counters.forEach(counter => {
+            counter.innerText = '0';
+
+            const updateCounter = () => {
+                const target = +counter.getAttribute('data-target');
+                const current = +counter.innerText;
+                const increment = target / 200;
+
+                if (current < target) {
+                    counter.innerText = Math.ceil(current + increment);
+                    setTimeout(updateCounter, 10);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+
+            updateCounter();
+        });
+
+        // rise on scroll
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.2
+            }
+        );
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        //slider
+        const row = document.querySelector('.slider-row');
+        const cards = document.querySelectorAll('.card');
+
+        const cardWidth = cards[0].offsetWidth + 20;
+        let index = 0;
+
+        cards.forEach(card => {
+            const clone = card.cloneNode(true);
+            row.appendChild(clone);
+        });
+
+        const totalCards = cards.length;
+
+        function slide() {
+            index++;
+            row.style.transition = 'transform 1.2s ease-in-out';
+            row.style.transform = `translateX(-${index * cardWidth}px)`;
+
+            if (index === totalCards) {
+                setTimeout(() => {
+                    row.style.transition = 'none';
+                    row.style.transform = 'translateX(0)';
+                    index = 0;
+                }, 1200);
+            }
+        }
+
+        setInterval(slide, 3500);
+
+    </script>
+</body>
+
+</html>

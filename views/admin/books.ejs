@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+    <div id="admin-shell">
+        <%- include('../partials/admin-sidebar', { active: 'books' }) %>
+
+        <main id="admin-main">
+            <div id="admin-topbar">
+                <h1>Manage Books</h1>
+                <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="admin-toolbar">
+                    <form action="/admin/books" method="GET">
+                        <input type="text" name="q" placeholder="Search title or author..." value="<%= q || '' %>">
+                        <button type="submit" class="btn-sm btn-edit">Search</button>
+                    </form>
+                    <a href="/admin/books/new" class="btn-sm btn-add">+ Add Book</a>
+                </div>
+
+                <% if (!books || books.length === 0) { %>
+                    <p class="admin-empty">No books found.</p>
+                <% } else { %>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Genre</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% books.forEach(function(book) { %>
+                                <tr>
+                                    <td><img class="thumb" src="/<%= book.image %>" alt="<%= book.title %>"></td>
+                                    <td><%= book.title %></td>
+                                    <td><%= book.author %></td>
+                                    <td><%= book.genre || '—' %></td>
+                                    <td>$ <%= book.price.toFixed(2) %></td>
+                                    <td><%= book.stock %></td>
+                                    <td class="table-actions">
+                                        <a class="btn-sm btn-edit" href="/admin/books/<%= book._id %>/edit">Edit</a>
+                                        <form action="/admin/books/<%= book._id %>/delete" method="POST" onsubmit="return confirm('Delete this book? This cannot be undone.');">
+                                            <button type="submit" class="btn-sm btn-delete">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

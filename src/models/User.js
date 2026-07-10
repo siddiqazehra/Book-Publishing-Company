@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+
 const userSchema = new mongoose.Schema(
   {
-        userId: {
+    userId: {
       type: Number,
       unique: true,
       index: true,
@@ -27,15 +28,16 @@ const userSchema = new mongoose.Schema(
       minlength: 8,
       select: false, // never returned by default in queries
     },
-        accessLevel: {
+    accessLevel: {
       type: String,
-      enum: ["usual", "master"],
+      enum: ["usual", "master"], // "usual" = normal customer, "master" = admin
       default: "usual",
     },
   },
-  { timestamps: true,
-    collection: "user",
-   }
+  {
+    timestamps: true,
+    collection: "users",
+  }
 );
 
 export const User = mongoose.model("User", userSchema);

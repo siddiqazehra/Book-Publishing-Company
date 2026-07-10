@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= authorName %> — Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <section id="contact-img">
+        <div id="contact-content">
+            <p>HOME > ABOUT > <%= authorName %></p>
+            <h1><%= authorName %></h1>
+        </div>
+    </section>
+
+    <section id="top-sellers">
+        <div id="seller-parent">
+            <div id="seller-heading">
+                <p class="orange-text">BOOKS BY THIS AUTHOR</p>
+                <h2 class="welcome-heading"><%= authorName %></h2>
+            </div>
+
+            <% if (authorBooks.length === 0) { %>
+                <p style="text-align:center; font-family: var(--roboto); color: gray; padding: 40px 0;">
+                    No books found for <%= authorName %> yet.
+                </p>
+            <% } else { %>
+                <div id="seller-book-card">
+                    <div class="seller-rows">
+                        <% authorBooks.forEach(function(book) { %>
+                            <a class="seller-book" href="/book-details?id=<%= book._id %>">
+                                <div class="seller-book-img">
+                                    <img src="/<%= book.image %>" alt="<%= book.title %>">
+                                </div>
+                                <div class="seller-book-info">
+                                    <p class="orange-text">$ <%= book.price.toFixed(2) %></p>
+                                    <h2><%= book.title %></h2>
+                                    <p>By <%= book.author %></p>
+                                </div>
+                            </a>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <%- include('partials/footer', { books: books }) %>
+</body>
+
+</html>
