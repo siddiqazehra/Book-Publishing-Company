@@ -41,6 +41,9 @@ router.get("/orders/:id", admin.viewOrder);
 router.post("/orders/:id/status", admin.updateOrderStatus);
 router.post("/orders/:id/payment", markOrderPaid);
 
+// Reports
+router.get("/reports", admin.reports);
+
 // Settings
 router.get("/settings", admin.settingsPage);
 router.post("/settings", admin.updateSettings);

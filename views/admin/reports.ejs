@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+    <div id="admin-shell">
+        <%- include('../partials/admin-sidebar', { active: 'reports' }) %>
+
+        <main id="admin-main">
+            <div id="admin-topbar">
+                <h1>Sales Report</h1>
+                <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="admin-toolbar">
+                    <form action="/admin/reports" method="GET">
+                        <label>From <input type="date" name="from" value="<%= from %>"></label>
+                        <label>To <input type="date" name="to" value="<%= to %>"></label>
+                        <button type="submit" class="btn-sm btn-edit">Apply</button>
+                        <a href="/admin/reports" class="btn-sm btn-add">Reset</a>
+                    </form>
+                </div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <div class="stat-label">Revenue (excl. cancelled)</div>
+                    <div class="stat-value orange">$ <%= totalRevenue.toFixed(2) %></div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-label">Orders</div>
+                    <div class="stat-value"><%= totalOrders %></div>
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Orders by Status</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% ['pending','processing','shipped','delivered','cancelled'].forEach(function(s){ %>
+                            <tr>
+                                <td><span class="status-badge status-<%= s %>"><%= s %></span></td>
+                                <td><%= byStatus[s] || 0 %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="admin-panel">
+                <h2>Best Sellers</h2>
+                <% if (!bestSellers || bestSellers.length === 0) { %>
+                    <p class="admin-empty">No sales yet.</p>
+                <% } else { %>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Copies Sold</th>
+                                <th>Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% bestSellers.forEach(function(b){ %>
+                                <tr>
+                                    <td><%= b.title %></td>
+                                    <td><%= b.qty %></td>
+                                    <td>$ <%= b.revenue.toFixed(2) %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

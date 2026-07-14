@@ -368,6 +368,38 @@ export const deleteGenre = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+/* ==================== REPORTS ==================== */
+
+export const reports = async (req, res, next) => {
+  try {
+    const from = (req.query.from || "").trim();
+    const to = (req.query.to || "").trim();
+    const match = { status: { $ne: "cancelled" } };
+    if (from || to) {
+      match.createdAt = {};
+      if (from) match.createdAt.$gte = new Date(from);
+      if (to) match.createdAt.$lte = new Date(to);
+    }
+    const orders = await Order.find(match).lean();
+    const totalOrders = orders.length;
+    const totalRevenue = orders.reduce((s, o) => s + o.totalAmount, 0);
+
+    const byStatusAgg = await Order.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }]);
+    const byStatus = byStatusAgg.reduce((m, r) => { m[r._id] = r.count; return m; }, {});
+
+    const bestSellers = await Order.aggregate([
+      { $match: match },
+      { $unwind: "$items" },
+      { $group: { _id: "$items.title", qty: { $sum: "$items.quantity" }, revenue: { $sum: { $multiply: ["$items.quantity", "$items.price"] } } } },
+      { $sort: { qty: -1 } },
+      { $limit: 10 },
+      { $project: { _id: 0, title: "$_id", qty: 1, revenue: 1 } },
+    ]);
+
+    res.render("admin/reports", { title: "Sales Report", totalRevenue, totalOrders, byStatus, bestSellers, from, to });
+  } catch (err) { next(err); }
+};
+
 /* ==================== SETTINGS ==================== */
 
 export const settingsPage = async (req, res, next) => {
