@@ -40,21 +40,32 @@ export const dashboard = async (req, res, next) => {
 export const listBooks = async (req, res, next) => {
   try {
     const q = (req.query.q || "").trim();
-    const filter = q ? { $text: { $search: q } } : {};
-    const books = await Book.find(filter).sort({ createdAt: -1 }).lean();
-    res.render("admin/books", { title: "Manage Books", books, q });
+    const genre = (req.query.genre || "").trim();
+    const filter = {};
+    if (q) filter.$text = { $search: q };
+    if (genre) filter.genre = genre;
+    const [books, genres] = await Promise.all([
+      Book.find(filter).sort({ createdAt: -1 }).lean(),
+      genreOptions(),
+    ]);
+    res.render("admin/books", { title: "Manage Books", books, q, genre, genres });
   } catch (err) {
     next(err);
   }
 };
 
-export const newBookForm = (req, res) => {
-  res.render("admin/book-form", { title: "Add Book", book: {}, error: null, mode: "create" });
+export const newBookForm = async (req, res, next) => {
+  try {
+    res.render("admin/book-form", { title: "Add Book", book: {}, error: null, mode: "create", genres: await genreOptions() });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const createBook = async (req, res) => {
   try {
-    const { title, author, description, genre, price, image, stock } = req.body;
+    const { title, author, description, price, image, stock } = req.body;
+    const genre = (req.body.genreNew && req.body.genreNew.trim()) ? req.body.genreNew.trim() : (req.body.genre || "");
     const coverPath = req.file ? `uploads/${req.file.filename}` : (image || undefined);
     await Book.create({
       title,
@@ -76,6 +87,7 @@ export const createBook = async (req, res) => {
       book: req.body,
       error: message,
       mode: "create",
+      genres: await genreOptions(),
     });
   }
 };
@@ -84,7 +96,7 @@ export const editBookForm = async (req, res, next) => {
   try {
     const book = await Book.findById(req.params.id).lean();
     if (!book) return res.status(404).render("error", { title: "Not found", message: "Book not found." });
-    res.render("admin/book-form", { title: "Edit Book", book, error: null, mode: "edit" });
+    res.render("admin/book-form", { title: "Edit Book", book, error: null, mode: "edit", genres: await genreOptions() });
   } catch (err) {
     next(err);
   }
@@ -92,7 +104,8 @@ export const editBookForm = async (req, res, next) => {
 
 export const updateBook = async (req, res) => {
   try {
-    const { title, author, description, genre, price, image, stock } = req.body;
+    const { title, author, description, price, image, stock } = req.body;
+    const genre = (req.body.genreNew && req.body.genreNew.trim()) ? req.body.genreNew.trim() : (req.body.genre || "");
     const update = {
       title,
       author,
@@ -116,6 +129,7 @@ export const updateBook = async (req, res) => {
       book: { ...req.body, _id: req.params.id },
       error: message,
       mode: "edit",
+      genres: await genreOptions(),
     });
   }
 };
@@ -281,6 +295,16 @@ export const updateOrderStatus = async (req, res, next) => {
 };
 
 /* ==================== GENRES ==================== */
+
+export async function genreOptions() {
+  const [managed, used] = await Promise.all([
+    Genre.find().sort({ name: 1 }).lean(),
+    Book.distinct("genre"),
+  ]);
+  const set = new Set(managed.map((g) => g.name));
+  used.filter((n) => n && n.trim()).forEach((n) => set.add(n));
+  return [...set].sort((a, b) => a.localeCompare(b));
+}
 
 export async function ensureGenresSeeded() {
   const names = (await Book.distinct("genre")).filter((n) => n && n.trim());

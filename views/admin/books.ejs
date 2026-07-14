@@ -23,6 +23,12 @@
                 <div class="admin-toolbar">
                     <form action="/admin/books" method="GET">
                         <input type="text" name="q" placeholder="Search title or author..." value="<%= q || '' %>">
+                        <select name="genre">
+                          <option value="">All genres</option>
+                          <% genres.forEach(function(g) { %>
+                            <option value="<%= g %>" <%= genre === g ? 'selected' : '' %>><%= g %></option>
+                          <% }); %>
+                        </select>
                         <button type="submit" class="btn-sm btn-edit">Search</button>
                     </form>
                     <a href="/admin/books/new" class="btn-sm btn-add">+ Add Book</a>
