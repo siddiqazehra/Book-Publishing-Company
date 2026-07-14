@@ -1,5 +1,6 @@
 import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
+import { Settings } from "../models/Settings.js";
 import { getSafepay, SAFEPAY_CURRENCY } from "../config/safepay.js";
 
 const APP_BASE_URL = process.env.APP_BASE_URL || "http://localhost:3000";
@@ -41,6 +42,44 @@ export const createOrder = async (req, res, next) => {
     }
 
     totalAmount = Math.round(totalAmount * 100) / 100;
+
+    const METHODS = ["safepay", "easypaisa", "jazzcash", "cash"];
+    const paymentMethod = METHODS.includes(req.body.paymentMethod) ? req.body.paymentMethod : "safepay";
+
+    if (paymentMethod !== "safepay") {
+      const order = await Order.create({
+        user: req.user._id,
+        items: orderItems,
+        totalAmount,
+        shipping: { name: shipping.name, email: shipping.email, address: shipping.address },
+        payment: {
+          provider: paymentMethod,
+          status: "pending",
+          reference: (req.body.reference || "").trim(),
+        },
+        status: paymentMethod === "cash" ? "processing" : "pending",
+      });
+
+      Book.bulkWrite(
+        orderItems.map((i) => ({ updateOne: { filter: { _id: i.book }, update: { $inc: { popularity: i.quantity } } } }))
+      ).catch((e) => console.error("popularity update failed:", e.message));
+
+      let payTo = null;
+      if (paymentMethod === "easypaisa" || paymentMethod === "jazzcash") {
+        const s = await Settings.getSingleton();
+        payTo = paymentMethod === "easypaisa"
+          ? { number: s.easypaisaNumber, name: s.easypaisaName }
+          : { number: s.jazzcashNumber, name: s.jazzcashName };
+      }
+
+      return res.status(201).json({
+        manual: true,
+        method: paymentMethod,
+        order: { id: order._id, orderId: order.orderId },
+        payTo,
+        totalAmount,
+      });
+    }
 
     const order = await Order.create({
       user: req.user._id,
