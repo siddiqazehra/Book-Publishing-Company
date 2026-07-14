@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+    <div id="admin-shell">
+        <%- include('../partials/admin-sidebar', { active: 'genres' }) %>
+
+        <main id="admin-main">
+            <div id="admin-topbar">
+                <h1><%= mode === 'create' ? 'Add Genre' : 'Edit Genre' %></h1>
+                <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
+            </div>
+
+            <div class="admin-panel" style="max-width: 480px;">
+                <% if (error) { %>
+                    <div class="admin-error"><%= error %></div>
+                <% } %>
+
+                <form class="admin-form" method="POST"
+                    action="<%= mode === 'create' ? '/admin/genres' : '/admin/genres/' + genre._id + '/update' %>">
+
+                    <label for="name">Genre name</label>
+                    <input type="text" id="name" name="name" value="<%= genre.name || '' %>" required maxlength="80">
+
+                    <div class="admin-form-actions">
+                        <button type="submit" class="btn-sm btn-add" style="padding:10px 24px;">
+                            <%= mode === 'create' ? 'Add Genre' : 'Save Changes' %>
+                        </button>
+                        <a href="/admin/genres" class="btn-sm btn-edit" style="padding:10px 24px;">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

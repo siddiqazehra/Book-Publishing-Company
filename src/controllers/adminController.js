@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { Book } from "../models/Book.js";
 import { User } from "../models/User.js";
 import { Order } from "../models/Order.js";
+import { Genre } from "../models/Genre.js";
 import { getNextSequence } from "../models/Counter.js";
 
 /* ==================== DASHBOARD ==================== */
@@ -277,4 +278,67 @@ export const updateOrderStatus = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+/* ==================== GENRES ==================== */
+
+export async function ensureGenresSeeded() {
+  const names = (await Book.distinct("genre")).filter((n) => n && n.trim());
+  await Promise.all(
+    names.map((name) =>
+      Genre.updateOne({ name }, { $setOnInsert: { name } }, { upsert: true }).catch(() => {})
+    )
+  );
+}
+
+export const listGenres = async (req, res, next) => {
+  try {
+    await ensureGenresSeeded();
+    const genres = await Genre.find().sort({ name: 1 }).lean();
+    res.render("admin/genres", { title: "Manage Genres", genres });
+  } catch (err) { next(err); }
+};
+
+export const newGenreForm = (req, res) => {
+  res.render("admin/genre-form", { title: "Add Genre", genre: {}, error: null, mode: "create" });
+};
+
+export const createGenre = async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) throw Object.assign(new Error("Name is required."), { name: "SimpleValidation" });
+    await Genre.create({ name });
+    res.redirect("/admin/genres");
+  } catch (err) {
+    const message = err.code === 11000 ? "That genre already exists." : err.message || "Could not create the genre.";
+    res.status(400).render("admin/genre-form", { title: "Add Genre", genre: req.body, error: message, mode: "create" });
+  }
+};
+
+export const editGenreForm = async (req, res, next) => {
+  try {
+    const genre = await Genre.findById(req.params.id).lean();
+    if (!genre) return res.status(404).render("error", { title: "Not found", message: "Genre not found." });
+    res.render("admin/genre-form", { title: "Edit Genre", genre, error: null, mode: "edit" });
+  } catch (err) { next(err); }
+};
+
+export const updateGenre = async (req, res) => {
+  try {
+    const name = (req.body.name || "").trim();
+    if (!name) throw Object.assign(new Error("Name is required."), { name: "SimpleValidation" });
+    const genre = await Genre.findByIdAndUpdate(req.params.id, { name }, { new: true, runValidators: true });
+    if (!genre) return res.status(404).render("error", { title: "Not found", message: "Genre not found." });
+    res.redirect("/admin/genres");
+  } catch (err) {
+    const message = err.code === 11000 ? "That genre already exists." : err.message || "Could not update the genre.";
+    res.status(400).render("admin/genre-form", { title: "Edit Genre", genre: { ...req.body, _id: req.params.id }, error: message, mode: "edit" });
+  }
+};
+
+export const deleteGenre = async (req, res, next) => {
+  try {
+    await Genre.findByIdAndDelete(req.params.id);
+    res.redirect("/admin/genres");
+  } catch (err) { next(err); }
 };

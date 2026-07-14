@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import { connectDB } from "../config/db.js";
 import { Book } from "../models/Book.js";
 import { User } from "../models/User.js";
+import { Genre } from "../models/Genre.js";
 import { getNextSequence } from "../models/Counter.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -172,6 +173,12 @@ async function seed() {
   } else {
     console.log(`Skipped book seeding — ${existingBooks} books already exist.`);
   }
+
+  const genreNames = (await Book.distinct("genre")).filter((n) => n && n.trim());
+  for (const name of genreNames) {
+    await Genre.updateOne({ name }, { $setOnInsert: { name } }, { upsert: true });
+  }
+  console.log(`Seeded ${genreNames.length} genres.`);
 
   const adminEmail = (process.env.SEED_ADMIN_EMAIL || "admin@publishingcompany.com").toLowerCase();
   const existingAdmin = await User.findOne({ email: adminEmail });
