@@ -66,6 +66,20 @@ export const handlePaymentCancel = async (req, res) => {
   }
 };
 
+export const markOrderPaid = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).render("error", { title: "Not found", message: "Order not found." });
+    if (order.payment.provider !== "safepay") {
+      order.payment.status = "paid";
+      order.payment.paidAt = new Date();
+      if (order.status === "pending") order.status = "processing";
+      await order.save();
+    }
+    res.redirect("/admin/orders/" + order._id);
+  } catch (err) { next(err); }
+};
+
 export const handleSafepayWebhook = async (req, res) => {
   try {
     const { tracker, signature, order_id: orderId, reference, reference_code } = req.body || {};

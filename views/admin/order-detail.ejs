@@ -32,6 +32,14 @@
         (ref: <%= order.payment.reference %>)
     <% } %>
 </p>
+                <% if (order.payment && order.payment.proof) { %>
+                    <p><strong>Proof:</strong> <img class="thumb" src="/<%= order.payment.proof %>" alt="payment proof"></p>
+                <% } %>
+                <% if (order.payment && order.payment.provider !== 'safepay' && order.payment.status !== 'paid') { %>
+                    <form method="POST" action="/admin/orders/<%= order._id %>/payment" style="margin-top:8px;">
+                        <button type="submit" class="btn-sm btn-add">Mark as Paid</button>
+                    </form>
+                <% } %>
                 <p><strong>Placed:</strong> <%= new Date(order.createdAt).toLocaleString() %></p>
             </div>
 
