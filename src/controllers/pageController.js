@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
+import { Settings } from "../models/Settings.js";
 
 // Small helper: every page needs the full book list for the header search /
 // catalog overlay + "BOOKS" JS global (see partials/footer.ejs).
@@ -42,7 +43,12 @@ export const bookDetails = async (req, res, next) => {
 export const checkoutPage = async (req, res, next) => {
   try {
     const books = await getAllBooksLean();
-    res.render("checkout", { title: "Checkout", books, error: null });
+    const settings = await Settings.getSingleton();
+    const payment = {
+      easypaisa: { number: settings.easypaisaNumber, name: settings.easypaisaName },
+      jazzcash: { number: settings.jazzcashNumber, name: settings.jazzcashName },
+    };
+    res.render("checkout", { title: "Checkout", books, payment, error: null });
   } catch (err) {
     next(err);
   }

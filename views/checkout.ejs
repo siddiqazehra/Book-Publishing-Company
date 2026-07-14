@@ -15,8 +15,7 @@
     <section id="checkout-section">
         <div id="checkout-parent">
             <h1>Checkout</h1>
-            <p id="checkout-demo-notice">You'll enter your card details securely on Safepay's payment page - we never
-    see or store your card number.</p>
+            <p id="checkout-demo-notice">Choose how you'd like to pay. Card payments are handled securely by SafePay; EasyPaisa/JazzCash and Cash on Delivery are also available.</p>
 
             <div id="checkout-layout">
                 <div id="checkout-summary">
@@ -31,10 +30,36 @@
                     <input type="email" id="checkout-email" placeholder="Email Address" value="<%= user ? user.email : '' %>" required>
                     <input type="text" id="checkout-address" placeholder="Shipping Address" required>
 
-<p id="checkout-error" class="error"></p>
-<button type="submit" class="button" id="checkout-place-order">Continue to Payment</button>
+                    <h2>Payment Method</h2>
+                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="safepay" checked> Card (SafePay)</label>
+                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="easypaisa"> EasyPaisa</label>
+                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="jazzcash"> JazzCash</label>
+                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="cash"> Cash on Delivery</label>
+
+                    <div id="pay-easypaisa" class="pay-info" hidden>
+                        Send <strong id="pay-total-ep"></strong> to EasyPaisa
+                        <strong><%= payment.easypaisa.number || 'N/A' %></strong>
+                        <% if (payment.easypaisa.name) { %>(<%= payment.easypaisa.name %>)<% } %>,
+                        then enter your transaction ID below.
+                    </div>
+                    <div id="pay-jazzcash" class="pay-info" hidden>
+                        Send <strong id="pay-total-jc"></strong> to JazzCash
+                        <strong><%= payment.jazzcash.number || 'N/A' %></strong>
+                        <% if (payment.jazzcash.name) { %>(<%= payment.jazzcash.name %>)<% } %>,
+                        then enter your transaction ID below.
+                    </div>
+                    <input type="text" id="checkout-reference" placeholder="Transaction ID (EasyPaisa/JazzCash)" hidden>
+
+                    <p id="checkout-error" class="error"></p>
+                    <button type="submit" class="button" id="checkout-place-order">Place Order</button>
                 </form>
             </div>
+        </div>
+
+        <div id="checkout-confirmation" hidden>
+            <h2>Order placed!</h2>
+            <p id="checkout-confirmation-msg"></p>
+            <a href="/my-orders" class="button">View my orders</a>
         </div>
     </section>
     <!-- END: Book Search & Cart Feature - simulated checkout page -->
