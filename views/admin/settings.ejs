@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Publishing Company</title>
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <div id="admin-shell">
+    <%- include('../partials/admin-sidebar', { active: 'settings' }) %>
+    <main id="admin-main">
+      <div id="admin-topbar"><h1>Payment Settings</h1><div class="admin-user">Signed in as <strong><%= user.name %></strong></div></div>
+      <div class="admin-panel" style="max-width: 560px;">
+        <% if (saved) { %><div class="admin-success">Settings saved.</div><% } %>
+        <form class="admin-form" method="POST" action="/admin/settings">
+          <label for="shopName">Shop name</label>
+          <input type="text" id="shopName" name="shopName" value="<%= settings.shopName || '' %>">
+          <h3>EasyPaisa</h3>
+          <label for="easypaisaNumber">EasyPaisa number</label>
+          <input type="text" id="easypaisaNumber" name="easypaisaNumber" value="<%= settings.easypaisaNumber || '' %>" placeholder="03XX-XXXXXXX">
+          <label for="easypaisaName">EasyPaisa account name</label>
+          <input type="text" id="easypaisaName" name="easypaisaName" value="<%= settings.easypaisaName || '' %>">
+          <h3>JazzCash</h3>
+          <label for="jazzcashNumber">JazzCash number</label>
+          <input type="text" id="jazzcashNumber" name="jazzcashNumber" value="<%= settings.jazzcashNumber || '' %>" placeholder="03XX-XXXXXXX">
+          <label for="jazzcashName">JazzCash account name</label>
+          <input type="text" id="jazzcashName" name="jazzcashName" value="<%= settings.jazzcashName || '' %>">
+          <div class="admin-form-actions">
+            <button type="submit" class="btn-sm btn-add" style="padding:10px 24px;">Save Settings</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
