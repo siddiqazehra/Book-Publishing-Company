@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+    <div id="admin-shell">
+        <%- include('../partials/admin-sidebar', { active: 'genres' }) %>
+
+        <main id="admin-main">
+            <div id="admin-topbar">
+                <h1>Manage Genres</h1>
+                <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="admin-toolbar">
+                    <span></span>
+                    <a href="/admin/genres/new" class="btn-sm btn-add">+ Add Genre</a>
+                </div>
+
+                <% if (!genres || genres.length === 0) { %>
+                    <p class="admin-empty">No genres yet.</p>
+                <% } else { %>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% genres.forEach(function(g) { %>
+                                <tr>
+                                    <td><%= g.name %></td>
+                                    <td class="table-actions">
+                                        <a class="btn-sm btn-edit" href="/admin/genres/<%= g._id %>/edit">Edit</a>
+                                        <form action="/admin/genres/<%= g._id %>/delete" method="POST" onsubmit="return confirm('Delete this genre? Books keep their genre text.');">
+                                            <button type="submit" class="btn-sm btn-delete">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } %>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

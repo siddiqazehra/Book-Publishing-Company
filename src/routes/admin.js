@@ -18,6 +18,14 @@ router.get("/books/:id/edit", admin.editBookForm);
 router.post("/books/:id/update", uploadCover, admin.updateBook);
 router.post("/books/:id/delete", admin.deleteBook);
 
+// Genres
+router.get("/genres", admin.listGenres);
+router.get("/genres/new", admin.newGenreForm);
+router.post("/genres", admin.createGenre);
+router.get("/genres/:id/edit", admin.editGenreForm);
+router.post("/genres/:id/update", admin.updateGenre);
+router.post("/genres/:id/delete", admin.deleteGenre);
+
 // Users
 router.get("/users", admin.listUsers);
 router.get("/users/new", admin.newUserForm);
