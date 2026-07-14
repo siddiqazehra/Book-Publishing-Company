@@ -3,6 +3,7 @@ import { Book } from "../models/Book.js";
 import { User } from "../models/User.js";
 import { Order } from "../models/Order.js";
 import { Genre } from "../models/Genre.js";
+import { Settings } from "../models/Settings.js";
 import { getNextSequence } from "../models/Counter.js";
 
 /* ==================== DASHBOARD ==================== */
@@ -364,5 +365,24 @@ export const deleteGenre = async (req, res, next) => {
   try {
     await Genre.findByIdAndDelete(req.params.id);
     res.redirect("/admin/genres");
+  } catch (err) { next(err); }
+};
+
+/* ==================== SETTINGS ==================== */
+
+export const settingsPage = async (req, res, next) => {
+  try {
+    const settings = await Settings.getSingleton();
+    res.render("admin/settings", { title: "Payment Settings", settings, saved: req.query.saved === "1" });
+  } catch (err) { next(err); }
+};
+
+export const updateSettings = async (req, res, next) => {
+  try {
+    const doc = await Settings.getSingleton();
+    const fields = ["shopName", "easypaisaNumber", "easypaisaName", "jazzcashNumber", "jazzcashName"];
+    fields.forEach((f) => { doc[f] = (req.body[f] || "").trim(); });
+    await doc.save();
+    res.redirect("/admin/settings?saved=1");
   } catch (err) { next(err); }
 };

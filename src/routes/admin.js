@@ -39,4 +39,8 @@ router.get("/orders", admin.listOrders);
 router.get("/orders/:id", admin.viewOrder);
 router.post("/orders/:id/status", admin.updateOrderStatus);
 
+// Settings
+router.get("/settings", admin.settingsPage);
+router.post("/settings", admin.updateSettings);
+
 export const adminRoutes = router;
