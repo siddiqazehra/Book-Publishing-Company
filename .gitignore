@@ -2,3 +2,10 @@ node_modules/
 .env
 *.log
 .DS_Store
+
+# superpowers scratch (ledger, briefs, reports)
+.superpowers/
+
+# uploaded book covers (keep the dir, ignore contents)
+public/uploads/*
+!public/uploads/.gitkeep
