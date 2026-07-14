@@ -1,6 +1,7 @@
 import express from "express";
 import * as admin from "../controllers/adminController.js";
 import { requirePageAdmin } from "../middleware/auth.js";
+import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
 
@@ -12,9 +13,9 @@ router.get("/", admin.dashboard);
 // Books
 router.get("/books", admin.listBooks);
 router.get("/books/new", admin.newBookForm);
-router.post("/books", admin.createBook);
+router.post("/books", upload.single("cover"), admin.createBook);
 router.get("/books/:id/edit", admin.editBookForm);
-router.post("/books/:id/update", admin.updateBook);
+router.post("/books/:id/update", upload.single("cover"), admin.updateBook);
 router.post("/books/:id/delete", admin.deleteBook);
 
 // Users

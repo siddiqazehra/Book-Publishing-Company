@@ -54,13 +54,14 @@ export const newBookForm = (req, res) => {
 export const createBook = async (req, res) => {
   try {
     const { title, author, description, genre, price, image, stock } = req.body;
+    const coverPath = req.file ? `uploads/${req.file.filename}` : (image || undefined);
     await Book.create({
       title,
       author,
       description,
       genre,
       price: Number(price) || 0,
-      image: image || undefined,
+      image: coverPath,
       stock: Number(stock) || 0,
     });
     res.redirect("/admin/books");
@@ -91,19 +92,17 @@ export const editBookForm = async (req, res, next) => {
 export const updateBook = async (req, res) => {
   try {
     const { title, author, description, genre, price, image, stock } = req.body;
-    const book = await Book.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        author,
-        description,
-        genre,
-        price: Number(price) || 0,
-        image,
-        stock: Number(stock) || 0,
-      },
-      { new: true, runValidators: true }
-    );
+    const update = {
+      title,
+      author,
+      description,
+      genre,
+      price: Number(price) || 0,
+      stock: Number(stock) || 0,
+    };
+    if (req.file) update.image = `uploads/${req.file.filename}`;
+    else if (image) update.image = image;
+    const book = await Book.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
     if (!book) return res.status(404).render("error", { title: "Not found", message: "Book not found." });
     res.redirect("/admin/books");
   } catch (err) {
