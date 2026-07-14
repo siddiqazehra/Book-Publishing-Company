@@ -34,7 +34,14 @@
                     <input type="text" id="author" name="author" value="<%= book.author || '' %>" required maxlength="120">
 
                     <label for="genre">Genre</label>
-                    <input type="text" id="genre" name="genre" value="<%= book.genre || '' %>" placeholder="e.g. Mystery, Classic, Thriller">
+                    <select id="genre" name="genre">
+                      <option value="">— Select a genre —</option>
+                      <% genres.forEach(function(g) { %>
+                        <option value="<%= g %>" <%= book.genre === g ? 'selected' : '' %>><%= g %></option>
+                      <% }); %>
+                    </select>
+                    <input type="text" name="genreNew" placeholder="…or type a new genre" maxlength="80">
+                    <small class="admin-hint">If you type a new genre, it is used instead of the dropdown selection.</small>
 
                     <label for="price">Price ($)</label>
                     <input type="number" id="price" name="price" value="<%= book.price || '' %>" required min="0" step="0.01">

@@ -2,6 +2,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import { genreOptions } from "../controllers/adminController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,18 +28,25 @@ function fileFilter(req, file, cb) {
 export const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 
 export function uploadCover(req, res, next) {
-  upload.single("cover")(req, res, (err) => {
+  upload.single("cover")(req, res, async (err) => {
     if (err) {
       const mode = req.params.id ? "edit" : "create";
       const message = err.code === "LIMIT_FILE_SIZE"
         ? "The image is too large (max 5 MB)."
         : (err.message || "Could not upload the image.");
       const book = mode === "edit" ? { ...req.body, _id: req.params.id } : req.body;
+      let genres = [];
+      try {
+        genres = await genreOptions();
+      } catch (_e) {
+        // Fall back to an empty list rather than failing the error render.
+      }
       return res.status(400).render("admin/book-form", {
         title: mode === "create" ? "Add Book" : "Edit Book",
         book,
         error: message,
         mode,
+        genres,
       });
     }
     next();
