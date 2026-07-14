@@ -25,3 +25,22 @@ function fileFilter(req, file, cb) {
 }
 
 export const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
+
+export function uploadCover(req, res, next) {
+  upload.single("cover")(req, res, (err) => {
+    if (err) {
+      const mode = req.params.id ? "edit" : "create";
+      const message = err.code === "LIMIT_FILE_SIZE"
+        ? "The image is too large (max 5 MB)."
+        : (err.message || "Could not upload the image.");
+      const book = mode === "edit" ? { ...req.body, _id: req.params.id } : req.body;
+      return res.status(400).render("admin/book-form", {
+        title: mode === "create" ? "Add Book" : "Edit Book",
+        book,
+        error: message,
+        mode,
+      });
+    }
+    next();
+  });
+}
