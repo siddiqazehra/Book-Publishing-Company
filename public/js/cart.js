@@ -55,8 +55,34 @@ function getCartTotal() {
     }, 0);
 }
 
+// CHANGED: this used to sum every stored item's quantity blindly, including
+// entries whose id no longer matches a real book (e.g. left over from
+// testing, or a book that was later deleted in the admin panel). That's why
+// the badge could show a count that didn't match what the cart drawer
+// actually displayed (the drawer already skips unmatched items, the badge
+// didn't). Now both agree.
 function getCartCount() {
-    return getCart().reduce((count, item) => count + item.quantity, 0);
+    return getCart().reduce((count, item) => {
+        const book = BOOKS.find(b => b._id === item.id);
+        return book ? count + item.quantity : count;
+    }, 0);
+}
+
+// NEW: self-healing cleanup — removes any cart entries that don't match a
+// real book, so old/orphaned localStorage data doesn't linger forever.
+// Guarded on BOOKS actually being loaded: pages like /login and /register
+// don't fetch the book catalog (see authController.js), so BOOKS is `[]`
+// there — pruning against an empty list would look like "every book is
+// invalid" and wipe a perfectly good cart. Only prune on pages that have
+// the real catalog loaded.
+function pruneInvalidCartItems() {
+    if (!Array.isArray(BOOKS) || BOOKS.length === 0) return;
+    const validIds = new Set(BOOKS.map(b => b._id));
+    const cart = getCart();
+    const cleaned = cart.filter(item => validIds.has(item.id));
+    if (cleaned.length !== cart.length) {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cleaned));
+    }
 }
 
 function updateCartBadge() {
@@ -149,6 +175,7 @@ function renderCartDrawer() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    pruneInvalidCartItems(); // CHANGED: added, cleans up orphaned cart entries before rendering
     buildCartDrawer();
     updateCartBadge();
     renderCartDrawer();

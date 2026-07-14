@@ -70,6 +70,21 @@ export const authorBooks = async (req, res, next) => {
   }
 };
 
+// NEW: GET /genre/:name — powers the four genre circles on the home page.
+// Matches against the Book.genre field (case-insensitive, exact match).
+export const genreBooks = async (req, res, next) => {
+  try {
+    const genreName = decodeURIComponent(req.params.name);
+    const books = await getAllBooksLean();
+    const genreBooksList = books.filter(
+      (b) => (b.genre || "").trim().toLowerCase() === genreName.trim().toLowerCase()
+    );
+    res.render("genre-books", { title: genreName, genreName, genreBooks: genreBooksList, books });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // GET /my-orders (logged-in customers)
 export const myOrders = async (req, res, next) => {
   try {

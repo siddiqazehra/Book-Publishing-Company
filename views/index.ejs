@@ -40,44 +40,46 @@
             <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
             <br>
             <div id="img-under-navbar-buttons">
-                <button class="button" id="blue-button">View all books</button>
+                <!-- CHANGED: now links straight to the New Release section instead of opening the search overlay -->
+                <a class="button" id="blue-button" href="#new-release">View all books</a>
             </div>
         </div>
     </section>
     <section id="genres">
         <div id="genre-parent">
-            <div class="genre-cards reveal">
+            <!-- CHANGED: each genre card is now a link to /genre/<name>, showing that genre's books -->
+            <a class="genre-cards reveal" href="/genre/Fantasy">
                 <div class="genre-logos">
                     <img src="/images/box-img-1.png" alt="">
                 </div>
                 <h2>Fantasy</h2>
                 <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
                     regelialia.</p>
-            </div>
-            <div class="genre-cards reveal">
+            </a>
+            <a class="genre-cards reveal" href="/genre/Thriller">
                 <div class="genre-logos">
                     <img src="/images/box-img-2.png" alt="">
                 </div>
                 <h2>Thriller</h2>
                 <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
                     regelialia.</p>
-            </div>
-            <div class="genre-cards reveal">
+            </a>
+            <a class="genre-cards reveal" href="/genre/Horror%20Fiction">
                 <div class="genre-logos">
                     <img src="/images/box-img-3.png" alt="">
                 </div>
                 <h2>Horror Fiction</h2>
                 <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
                     regelialia.</p>
-            </div>
-            <div class="genre-cards reveal">
+            </a>
+            <a class="genre-cards reveal" href="/genre/Science%20Fiction">
                 <div class="genre-logos">
                     <img src="/images/box-img-4.png" alt="">
                 </div>
                 <h2>Science Fiction</h2>
                 <p class="genre-text">A small river named Duden flows by their place and supplies it with the necessary
                     regelialia.</p>
-            </div>
+            </a>
         </div>
     </section>
     <section id="counter-section">
@@ -125,40 +127,29 @@
     </section>
     <section id="new-release">
         <div id="release-parent">
+            <!-- CHANGED: heading now sits alongside a sort filter (was just centered text) -->
             <div id="release-heading" class="reveal">
-                <p class="orange-text">BOOKS</p>
-                <h2>New Release</h2>
+                <div id="release-heading-text">
+                    <p class="orange-text">BOOKS</p>
+                    <h2>New Release</h2>
+                </div>
+                <div id="release-controls">
+                    <select id="release-sort-select" aria-label="Sort new releases">
+                        <option value="newest">Sort: Newest</option>
+                        <option value="title">Sort: Title (A-Z)</option>
+                        <option value="price-asc">Sort: Price (Low to High)</option>
+                        <option value="price-desc">Sort: Price (High to Low)</option>
+                        <option value="popularity">Sort: Popularity</option>
+                    </select>
+                    <button type="button" id="release-prev" aria-label="Scroll left">&#8249;</button>
+                    <button type="button" id="release-next" aria-label="Scroll right">&#8250;</button>
+                </div>
             </div>
-            <!-- BEGIN: Book Search & Cart Feature - clickable book cards, from MongoDB -->
-            <div class="release-row" id="release-row-1">
-                <% books.slice(0, 3).forEach(function(book) { %>
-                    <a class="book" href="/book-details?id=<%= book._id %>">
-                        <div class="book-card">
-                            <img src="/<%= book.image %>" alt="<%= book.title %>">
-                        </div>
-                        <div class="book-content">
-                            <p class="orange-text content-hover">$ <%= book.price.toFixed(2) %></p>
-                            <h3><%= book.title %></h3>
-                            <p>By <%= book.author %></p>
-                        </div>
-                    </a>
-                <% }); %>
-            </div>
-            <div class="release-row" id="release-row-2">
-                <% books.slice(0, 3).forEach(function(book) { %>
-                    <a class="book" href="/book-details?id=<%= book._id %>">
-                        <div class="book-content">
-                            <p class="orange-text">$ <%= book.price.toFixed(2) %></p>
-                            <h3><%= book.title %></h3>
-                            <p>By <%= book.author %></p>
-                        </div>
-                        <div class="book-card">
-                            <img src="/<%= book.image %>" alt="<%= book.title %>">
-                        </div>
-                    </a>
-                <% }); %>
-            </div>
-            <!-- END: Book Search & Cart Feature - clickable book cards -->
+            <!-- CHANGED: was two hardcoded rows repeating the same first 3 books. Now shows every
+                 book in the catalog, arranged into 3 rows and swipeable/scrollable sideways for
+                 more — see #release-grid in style.css and public/js/new-release.js, which renders
+                 this from the full BOOKS list (populated by pageController.js -> Book.find({})). -->
+            <div id="release-grid"></div>
         </div>
     </section>
     <section id="testimonials">
@@ -242,6 +233,7 @@
     <%- include('partials/footer', { books: books }) %>
 
     <script src="/js/catalog.js"></script>
+    <script src="/js/new-release.js"></script>
 
     <script>
 

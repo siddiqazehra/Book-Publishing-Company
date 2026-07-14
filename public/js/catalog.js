@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("catalog-search-input");
     const sortSelect = document.getElementById("catalog-sort-select");
     const closeBtn = document.getElementById("catalog-close");
-    const viewAllBtn = document.getElementById("blue-button");
     const headerForm = document.getElementById("header-search-form");
     const headerInput = document.getElementById("header-search-input");
     const headerSearchBtn = document.getElementById("header-search-button");
@@ -81,9 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) closeCatalogOverlay();
     });
 
-    if (viewAllBtn) {
-        viewAllBtn.addEventListener("click", () => openCatalogOverlay(""));
-    }
+    // CHANGED: "View all books" is now a plain <a href="#new-release"> link
+    // (scrolls to the New Release section) instead of opening this overlay,
+    // so the old #blue-button click-to-open wiring was removed here.
 
     if (headerForm) {
         headerForm.addEventListener("submit", (e) => {

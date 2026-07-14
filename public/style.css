@@ -6,6 +6,9 @@
     padding: 0px;
     box-sizing: border-box;
 }
+html{
+    scroll-behavior: smooth;
+}
 :root{
     --gray: rgb(196, 196, 196);
     --peach: rgb(255, 122, 92);
@@ -23,19 +26,18 @@
 /* ======
    header 
 ======= */
-/* CHANGED: was "1fr auto 1fr auto" (4 columns) — now a clean 1:2:1 grid with the
-   title centered in the middle column, per the requested layout. */
+/* 1:2:1 grid — left = logo, middle (wide) = search + cart, right = login/register */
 header{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
     margin-top: 3%;
-    /* gap: 1%; */
+    gap: 2%;
 }
 #header-socialmediaicons{
     display: flex;
     justify-content: space-between;
-    /* gap: 2%; */
+    gap: 2%;
     justify-content: center;
     align-items: center;
 }
@@ -54,7 +56,6 @@ header{
 .orange-text{
     color: var(--peach);
 }
-/* CHANGED: center column content (logo/title) so it sits in the true middle of its grid cell */
 #website-title{
     display: flex;
     flex-direction: column;
@@ -72,52 +73,55 @@ header{
     padding-left: 2px;
     font-family: lora;
 }
-/* NEW: wraps the search bar + cart button so they sit together, centered,
-   in the left grid column (previously these were two separate top-level
-   grid columns pinned to the far right). */
+/* CHANGED: this now sits in the wide (2fr) MIDDLE column instead of the left
+   column, which is why the search bar can be noticeably bigger/more
+   prominent below — it has much more room to work with. */
 #header-search-cart{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
 }
 #header-searchbar{
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    max-width: 420px;
 }
 /* BEGIN: Book Search & Cart Feature - functional header search input */
 #header-search-form{
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 }
-/* CHANGED: fixed height (was percentage padding, which made the input shorter
-   than the search-icon button) so the input + icon button line up into one
-   seamless rounded pill. */
+/* CHANGED: bigger + wider (was 40px tall / 160px wide) now that this column
+   has more room, so the search bar reads as the dominant element in the header. */
 #header-search-input{
     background-color: white;
-    border: 2px solid gainsboro;
-    height: 40px;
-    padding: 0 16px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border: 1px solid gainsboro;
+    height: 48px;
+    padding: 0 20px;
     font-family: var(--roboto);
-    width: 200px;
+    font-size: 15px;
+    width: 100%;
+    min-width: 220px;
     box-sizing: border-box;
 }
 #header-search-input:focus{
     outline: 2px solid var(--dark-gray);
 }
-/* CHANGED: same fixed 40px height as the input, and a fixed square width so
-   the icon side is proportional to the text side, together forming one
-   complete rounded rectangle. */
+/* CHANGED: scaled up to match the taller 48px input (was 40px/44px) so the
+   pill stays proportional end-to-end. */
 #header-magnifying-glass{
     background-color: var(--dark-gray);
-    height: 40px;
-    width: 44px;
+    height: 48px;
+    width: 52px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
     box-sizing: border-box;
 }
 #header-search-button{
@@ -134,23 +138,28 @@ header{
 #header-cart{
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
-/* CHANGED: label text removed (icon-only now), so padding/size were adjusted
-   to keep the button a comfortable tap target instead of shrinking to the emoji. */
+/* CHANGED: now exactly matches the search bar's 48px height (was 44px) so
+   the two sit perfectly level instead of being off by a few pixels. */
 #cart-icon{
     position: relative;
     background-color: var(--beige);
     border: 1px solid var(--gray);
     border-radius: 50%;
-    height: 40px;
-    width: 40px;
+    height: 48px;
+    width: 48px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 23px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+/* CHANGED: hidden by default (was always display:flex, showing "0" briefly
+   on every page load before JS updated it). JS (cart.js) now switches this
+   to display:flex only when the cart actually has items — see updateCartBadge(). */
 #cart-count-badge{
+    display: none;
     position: absolute;
     top: -4px;
     right: -4px;
@@ -160,18 +169,18 @@ header{
     font-size: 11px;
     min-width: 18px;
     height: 18px;
-    display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 4px;
 }
 /* END: Book Search & Cart Feature - functional header search input */
-/* NEW: was missing entirely from the merged stylesheet — the Login/My Orders/
+/* was missing entirely from the merged stylesheet — the Login/My Orders/
    Admin Panel buttons were rendering with no background/border before this. */
 #login-register{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
 }
 #header-greeting{
     font-family: var(--roboto);
@@ -179,7 +188,7 @@ header{
     color: var(--medium-gray);
     margin-right: 4px;
 }
-/* NEW: also missing from the merged stylesheet (only #blue-button existed). */
+/* was also missing from the merged stylesheet (only #blue-button existed). */
 #white-button{
     background-color: gainsboro;
     color: black;
@@ -238,25 +247,23 @@ header{
     color: var(--light-black);
 }
 .button{
-    padding: 1%;
+    padding: 12px 20px;
     border-radius: 5px;
     font-size: 16px;
     border: none;
     cursor: pointer;
     font-family: var(--roboto);
+    /* CHANGED: added so .button looks identical on <a> and <button> elements
+       (View all books is now a link, not a button, so it needs this) */
+    display: inline-block;
     text-decoration: none;
-}
-#login-register a{
-    padding: 2.5% 6%;
+    text-align: center;
 }
 #blue-button{
     background-color: var(--dark-gray);
     color: white;
 }
-#logout-form button{
-    width: 100px;
-    height: 35px;
-}
+
 @keyframes rise_up {
     from{
         transform: translateY(30px);
@@ -284,6 +291,13 @@ header{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* CHANGED: these cards are now <a> links (see index.ejs), so reset link styling */
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+.genre-cards:hover .genre-logos{
+    background-color: var(--gray); /* NEW: small hover cue now that the whole card is clickable */
 }
 .genre-cards h2{
     margin: -18% 0% 5% 0%;
@@ -405,6 +419,7 @@ header{
     justify-content: center;
     align-items: center;
     margin: 0% 0% 5% 0%;
+    scroll-margin-top: 24px; /* small offset so the anchor-scroll from "View all books" doesn't land flush at the top */
 }
 #release-parent{
     display: flex;
@@ -412,29 +427,101 @@ header{
     justify-content: center;
     flex-direction: column;
 }
-.release-row{
+/* CHANGED: heading row now also holds the sort dropdown + scroll arrows (was just centered text) */
+#release-heading{
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+#release-heading-text{
+    display: flex;
+    flex-direction: column;
+}
+#release-heading p{
+    font-family: var(--roboto);
+}
+#release-heading h2{
+    font-size: 40px;
+    font-weight: lighter;
+    font-family: lora;
     margin: 1% 0%;
 }
-#release-row-1{
-    margin-top: 4%;
+/* NEW: sort dropdown + prev/next scroll buttons for the release grid */
+#release-controls{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#release-sort-select{
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--gray);
+    border-radius: 6px;
+    font-family: var(--roboto);
+    font-size: 14px;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+#release-prev,
+#release-next{
+    height: 40px;
+    width: 40px;
+    border: 1px solid var(--gray);
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--light-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#release-prev:hover,
+#release-next:hover{
+    background-color: var(--beige);
+}
+/* NEW: the swipeable grid itself — 3 fixed rows, extra books flow into new
+   columns off to the right that you scroll/swipe through (mouse trackpad,
+   touch swipe, or the prev/next arrow buttons above). */
+#release-grid{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 300px;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    margin-top: 3%;
+    padding-bottom: 12px;
+}
+#release-empty{
+    font-family: var(--roboto);
+    color: gray;
+    padding: 40px 0;
 }
 .book{
     display: flex;
     justify-content: center;
     width: 32%;
-    text-decoration: none; /* BEGIN/END: Book Search & Cart Feature - .book is now an <a> */
+    text-decoration: none; /* .book is used as an <a> */
     color: inherit;
 }
-#release-heading{
+/* NEW: release-grid cards are stacked (image on top, info below) rather
+   than the old side-by-side layout, since they're now compact grid tiles
+   instead of full-width rows. */
+.release-book{
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    width: 300px;
+    scroll-snap-align: start;
 }
-#release-heading p{
-    font-family: var(--roboto);
+.release-book .book-card{
+    width: 100%;
+}
+.release-book .book-content{
+    width: 100%;
 }
 .book-card{
     width: 50%;
@@ -467,12 +554,6 @@ header{
 .book-card img{
     width: 100%;
     aspect-ratio: 7/8;
-}
-#release-heading h2{
-    font-size: 40px;
-    font-weight: lighter;
-    font-family: lora;
-    margin: 1% 0%;
 }
 .book-content h3{
     font-size: 23px;
@@ -1047,23 +1128,36 @@ footer {
     cursor: pointer;
     line-height: 1;
 }
+/* CHANGED: fixed sizing for both controls (was shared percentage-based
+   padding, which made the sort dropdown render oversized relative to the
+   search box — percentage padding on a select behaves differently than on
+   a text input). */
 #catalog-controls{
     display: flex;
-    gap: 3%;
-    margin-bottom: 3%;
-}
-#catalog-search-input,
-#catalog-sort-select{
-    padding: 2%;
-    border: 1px solid var(--gray);
-    border-radius: 5px;
-    font-family: var(--roboto);
+    gap: 12px;
+    margin-bottom: 20px;
 }
 #catalog-search-input{
     flex: 2;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--gray);
+    border-radius: 6px;
+    font-family: var(--roboto);
+    font-size: 14px;
+    margin-bottom: 0;
+    box-sizing: border-box;
 }
 #catalog-sort-select{
     flex: 1;
+    max-width: 220px;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--gray);
+    border-radius: 6px;
+    font-family: var(--roboto);
+    font-size: 14px;
+    box-sizing: border-box;
 }
 #catalog-grid{
     display: grid;
@@ -1433,12 +1527,6 @@ footer {
         width: 100%;
     }
 }
-
-/* ===========================================================
-    END: Book Search & Cart Feature CSS
-   =========================================================== */
-
-/* ===== Merged from branch1: Auth Pages (Login/Register) ===== */
 /* ===========
     Auth Pages (Login / Register)
     =========== */

@@ -8,7 +8,7 @@
     grid-template-columns: 240px 1fr;
     min-height: 100vh;
     background-color: var(--beige);
-    font-family: var(--roboto);
+    font-family: lora;
 }
 
 #admin-sidebar {
@@ -142,7 +142,7 @@
     border: 1px solid gainsboro;
     border-radius: 4px;
     padding: 8px 12px;
-    font-family: var(--roboto);
+    font-family: lora;
     width: 240px;
     margin: 0;
 }
@@ -197,7 +197,7 @@
     border: none;
     cursor: pointer;
     text-decoration: none;
-    font-family: var(--roboto);
+    font-family: lora;
 }
 
 .btn-sm.btn-edit {
@@ -247,7 +247,7 @@
     padding: 10px 12px;
     border: 1px solid gainsboro;
     border-radius: 4px;
-    font-family: var(--roboto);
+    font-family: lora;
     margin-bottom: 0;
 }
 

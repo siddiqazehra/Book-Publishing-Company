@@ -12,6 +12,7 @@ router.get("/checkout", requirePageAuth, pages.checkoutPage);
 router.get("/contact-us", pages.contactUs);
 router.post("/contact", pages.submitContact);
 router.get("/author/:name", pages.authorBooks);
+router.get("/genre/:name", pages.genreBooks); // NEW: powers the genre circles on the home page
 
 router.get("/my-orders", requirePageAuth, pages.myOrders);
 

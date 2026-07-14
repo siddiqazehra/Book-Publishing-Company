@@ -31,6 +31,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(attachUser); // makes req.user / res.locals.user available everywhere
+app.use((req, res, next) => {
+  // Default so any render() call that forgets to pass `books` still works —
+  // views that do pass `books` explicitly simply override this.
+  res.locals.books = [];
+  next();
+});
 
 // ===== STATIC ASSETS =====
 app.use(express.static(path.join(__dirname, "../public")));

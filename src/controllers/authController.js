@@ -1,28 +1,29 @@
 import bcrypt from "bcryptjs";
 import { User } from "../models/User.js";
-import { Book } from "../models/Book.js";
 import { getNextSequence } from "../models/Counter.js";
 import { signToken, setAuthCookie, clearAuthCookie } from "../middleware/auth.js";
 
-async function getAllBooksLean() {
-  return Book.find({}).sort({ createdAt: -1 }).lean();
-}
+// CHANGED: login/register no longer fetch the full book catalog before
+// rendering. They don't need it (these are quick transactional pages), and
+// that extra DB round-trip on every click was the cause of the "flash of a
+// books panel" when navigating to/from these pages — the previous page
+// stayed on screen while the query ran. `books` now just falls back to the
+// global res.locals.books = [] default set in app.js.
 
 // GET /login
-export const showLogin = async (req, res) => {
+export const showLogin = (req, res) => {
   if (req.user) return res.redirect("/");
   res.render("login", {
     title: "Log in",
     error: null,
     next: req.query.next || "/",
-    books: await getAllBooksLean(),
   });
 };
 
 // GET /register
-export const showRegister = async (req, res) => {
+export const showRegister = (req, res) => {
   if (req.user) return res.redirect("/");
-  res.render("register", { title: "Register", error: null, books: await getAllBooksLean() });
+  res.render("register", { title: "Register", error: null });
 };
 
 // POST /login
