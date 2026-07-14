@@ -2,6 +2,7 @@ import express from "express";
 import * as admin from "../controllers/adminController.js";
 import { requirePageAdmin } from "../middleware/auth.js";
 import { uploadCover } from "../middleware/upload.js";
+import { markOrderPaid } from "../controllers/paymentController.js";
 
 const router = express.Router();
 
@@ -38,6 +39,7 @@ router.post("/users/:id/delete", admin.deleteUser);
 router.get("/orders", admin.listOrders);
 router.get("/orders/:id", admin.viewOrder);
 router.post("/orders/:id/status", admin.updateOrderStatus);
+router.post("/orders/:id/payment", markOrderPaid);
 
 // Settings
 router.get("/settings", admin.settingsPage);
