@@ -9,3 +9,6 @@ node_modules/
 # uploaded book covers (keep the dir, ignore contents)
 public/uploads/*
 !public/uploads/.gitkeep
+
+# nested duplicate project copy (leftover from a bad merge) — do not track
+/Book-Publishing-Company/

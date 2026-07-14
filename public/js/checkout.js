@@ -30,22 +30,15 @@ function renderCheckoutSummary() {
     if (placeOrderBtn) placeOrderBtn.disabled = false;
 }
 
-function validateCheckoutForm() {
-    const cardNumber = document.getElementById("checkout-card-number").value.replace(/\s+/g, "");
-    const expiry = document.getElementById("checkout-card-expiry").value.trim();
-    const cvv = document.getElementById("checkout-card-cvv").value.trim();
-
-    if (!/^\d{16}$/.test(cardNumber)) {
-        return "Card number must be 16 digits.";
-    }
-    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
-        return "Expiry must be in MM/YY format.";
-    }
-    if (!/^\d{3,4}$/.test(cvv)) {
-        return "CVV must be 3 or 4 digits.";
-    }
-    return null;
+if (!res.ok || !data.checkoutUrl) {
+    errorEl.textContent = data.message || "Something went wrong. Please try again.";
+    placeOrderBtn.disabled = false;
+    placeOrderBtn.textContent = "Continue to Payment";
+    return;
 }
+
+clearCart();
+window.location.href = data.checkoutUrl;
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("checkout-form");
@@ -78,11 +71,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 email: document.getElementById("checkout-email").value.trim(),
                 address: document.getElementById("checkout-address").value.trim(),
             },
+            // Demo payment only — never store full card numbers/CVV in a real app.
             cardNumber: document.getElementById("checkout-card-number").value,
         };
 
         placeOrderBtn.disabled = true;
-        placeOrderBtn.textContent = "Placing order...";
+        placeOrderBtn.textContent = "Redirecting to Safepay...";
 
         try {
             const res = await fetch("/api/orders", {

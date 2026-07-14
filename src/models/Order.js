@@ -27,10 +27,18 @@ const orderSchema = new mongoose.Schema(
       address: { type: String, required: true },
     },
     payment: {
-      // Demo payment only — never store full card numbers/CVV in a real app.
-      cardLast4: { type: String },
-      method: { type: String, default: "card" },
-    },
+  provider: { type: String, default: "safepay" },
+  status: {
+    type: String,
+    enum: ["pending", "paid", "failed", "cancelled"],
+    default: "pending",
+    index: true,
+  },
+  token: { type: String },
+  tracker: { type: String },
+  reference: { type: String },
+  paidAt: { type: Date },
+},
     status: {
       type: String,
       enum: ["pending", "processing", "shipped", "delivered", "cancelled"],

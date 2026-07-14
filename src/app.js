@@ -5,6 +5,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+
+import { paymentApiRoutes } from "./routes/payments.js";
 import { connectDB } from "./config/db.js";
 import { attachUser } from "./middleware/auth.js";
 import { apiErrorHandler, pageErrorHandler } from "./middleware/errorHandler.js";
@@ -42,6 +44,7 @@ app.use("/", pageRoutes);
 // ===== JSON API ROUTES =====
 app.use("/api/books", bookApiRoutes);
 app.use("/api/orders", orderApiRoutes);
+app.use("/api/payments", paymentApiRoutes);
 
 app.use("/api", (req, res) => {
   res.status(404).json({ message: "Not found" });

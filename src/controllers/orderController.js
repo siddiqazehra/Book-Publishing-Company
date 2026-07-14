@@ -1,12 +1,12 @@
 import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
+import { getSafepay, SAFEPAY_CURRENCY } from "../config/safepay.js";
 
-// POST /api/orders  — creates an order from the cart the browser sends us.
-// Prices are always re-read from the database here — never trust the
-// price the client sends, only the book id + quantity.
+const APP_BASE_URL = process.env.APP_BASE_URL || "http://localhost:3000";
+
 export const createOrder = async (req, res, next) => {
   try {
-    const { items, shipping, cardNumber } = req.body;
+    const { items, shipping } = req.body;
 
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: "Your cart is empty." });
@@ -25,7 +25,7 @@ export const createOrder = async (req, res, next) => {
     for (const item of items) {
       const book = bookMap.get(String(item.id));
       const quantity = Math.max(1, Number(item.quantity) || 1);
-      if (!book) continue; // book removed/deleted since it was added to cart
+      if (!book) continue;
       orderItems.push({
         book: book._id,
         title: book.title,
@@ -40,36 +40,67 @@ export const createOrder = async (req, res, next) => {
       return res.status(400).json({ message: "None of the items in your cart are available anymore." });
     }
 
+    totalAmount = Math.round(totalAmount * 100) / 100;
+
     const order = await Order.create({
       user: req.user._id,
       items: orderItems,
-      totalAmount: Math.round(totalAmount * 100) / 100,
+      totalAmount,
       shipping: {
         name: shipping.name,
         email: shipping.email,
         address: shipping.address,
       },
-      payment: {
-        cardLast4: typeof cardNumber === "string" ? cardNumber.replace(/\s+/g, "").slice(-4) : undefined,
-        method: "card",
-      },
+      payment: { provider: "safepay", status: "pending" },
       status: "pending",
     });
 
-    // bump popularity counters (best-effort, don't block the response on it)
+    const amountInSubunits = Math.round(totalAmount * 100);
+
+    let checkoutUrl;
+    try {
+      const safepay = getSafepay();
+
+      const { token } = await safepay.payments.create({
+        amount: amountInSubunits,
+        currency: SAFEPAY_CURRENCY,
+      });
+
+      checkoutUrl = safepay.checkout.create({
+        token,
+        orderId: String(order.orderId),
+        cancelUrl: `${APP_BASE_URL}/checkout/cancel?orderId=${order.orderId}`,
+        redirectUrl: `${APP_BASE_URL}/checkout/complete`,
+        source: "custom",
+        webhooks: true,
+      });
+
+      order.payment.token = token;
+      await order.save();
+    } catch (safepayErr) {
+      order.payment.status = "failed";
+      order.status = "cancelled";
+      await order.save();
+      console.error("Safepay payment creation failed:", safepayErr?.message || safepayErr);
+      return res.status(502).json({ message: "We couldn't start the payment. Please try again." });
+    }
+
     Book.bulkWrite(
       orderItems.map((i) => ({
         updateOne: { filter: { _id: i.book }, update: { $inc: { popularity: i.quantity } } },
       }))
     ).catch((e) => console.error("popularity update failed:", e.message));
 
-    res.status(201).json({ message: "Order placed.", order: { id: order._id, orderId: order.orderId } });
+    res.status(201).json({
+      message: "Order created. Redirecting to Safepay.",
+      order: { id: order._id, orderId: order.orderId },
+      checkoutUrl,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-// GET /api/orders/mine
 export const myOrdersApi = async (req, res, next) => {
   try {
     const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 }).lean();

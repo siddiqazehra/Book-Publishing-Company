@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Cancelled - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <section id="auth-section">
+        <div id="auth-parent">
+            <h2>Payment cancelled</h2>
+            <p class="auth-subtext">You cancelled the payment before it was completed. No charge was made. Your cart
+                has been cleared — feel free to try again whenever you're ready.</p>
+            <a class="button" id="blue-button" href="/">Continue Shopping</a>
+        </div>
+    </section>
+    <%- include('partials/footer', { books: [] }) %>
+</body>
+</html>
