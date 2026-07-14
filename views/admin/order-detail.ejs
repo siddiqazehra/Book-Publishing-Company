@@ -25,7 +25,13 @@
                 <p><strong>Email:</strong> <%= order.shipping.email %></p>
                 <p><strong>Address:</strong> <%= order.shipping.address %></p>
                 <p><strong>Account:</strong> <%= order.user ? order.user.name + ' (' + order.user.email + ')' : 'Unknown' %></p>
-                <p><strong>Payment:</strong> Card ending in <%= order.payment && order.payment.cardLast4 ? order.payment.cardLast4 : '—' %> (demo payment)</p>
+                <p><strong>Payment:</strong>
+    <%= order.payment && order.payment.provider ? order.payment.provider : 'safepay' %> —
+    <%= order.payment && order.payment.status ? order.payment.status : 'pending' %>
+    <% if (order.payment && order.payment.reference) { %>
+        (ref: <%= order.payment.reference %>)
+    <% } %>
+</p>
                 <p><strong>Placed:</strong> <%= new Date(order.createdAt).toLocaleString() %></p>
             </div>
 

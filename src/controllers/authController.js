@@ -36,6 +36,7 @@ export const login = async (req, res) => {
         title: "Log in",
         error: "Email and password are required.",
         next: safeNext,
+        books: await getAllBooksLean(),
       });
     }
 
@@ -47,6 +48,7 @@ export const login = async (req, res) => {
         title: "Log in",
         error: "Incorrect email or password.",
         next: safeNext,
+        books: await getAllBooksLean(),
       });
     }
 
@@ -59,6 +61,7 @@ export const login = async (req, res) => {
       title: "Log in",
       error: "Something went wrong. Please try again.",
       next: "/",
+      books: await getAllBooksLean().catch(() => []),
     });
   }
 };
@@ -72,6 +75,7 @@ export const register = async (req, res) => {
       return res.status(400).render("register", {
         title: "Register",
         error: "Name, email, and password are all required.",
+        books: await getAllBooksLean(),
       });
     }
 
@@ -79,6 +83,7 @@ export const register = async (req, res) => {
       return res.status(400).render("register", {
         title: "Register",
         error: "Passwords do not match.",
+        books: await getAllBooksLean(),
       });
     }
 
@@ -88,6 +93,7 @@ export const register = async (req, res) => {
       return res.status(400).render("register", {
         title: "Register",
         error: "Password must be at least 8 characters.",
+        books: await getAllBooksLean(),
       });
     }
 
@@ -96,6 +102,7 @@ export const register = async (req, res) => {
       return res.status(409).render("register", {
         title: "Register",
         error: "An account with that email already exists.",
+        books: await getAllBooksLean(),
       });
     }
 
@@ -122,7 +129,7 @@ export const register = async (req, res) => {
         : err.name === "ValidationError"
         ? Object.values(err.errors)[0]?.message || "Invalid input."
         : "Something went wrong. Please try again.";
-    res.status(400).render("register", { title: "Register", error: message });
+    res.status(400).render("register", { title: "Register", error: message, books: await getAllBooksLean().catch(() => []) });
   }
 };
 

@@ -15,8 +15,8 @@
     <section id="checkout-section">
         <div id="checkout-parent">
             <h1>Checkout</h1>
-            <p id="checkout-demo-notice">This is a demo checkout. No real payment is processed and no card details are
-                sent anywhere.</p>
+            <p id="checkout-demo-notice">You'll enter your card details securely on Safepay's payment page - we never
+    see or store your card number.</p>
 
             <div id="checkout-layout">
                 <div id="checkout-summary">
@@ -31,23 +31,9 @@
                     <input type="email" id="checkout-email" placeholder="Email Address" value="<%= user ? user.email : '' %>" required>
                     <input type="text" id="checkout-address" placeholder="Shipping Address" required>
 
-                    <h2>Payment Details (Demo)</h2>
-                    <input type="text" id="checkout-card-number" placeholder="Card Number (16 digits)" maxlength="19"
-                        required>
-                    <div id="checkout-card-row">
-                        <input type="text" id="checkout-card-expiry" placeholder="MM/YY" maxlength="5" required>
-                        <input type="text" id="checkout-card-cvv" placeholder="CVV" maxlength="4" required>
-                    </div>
-
-                    <p id="checkout-error" class="error"></p>
-                    <button type="submit" class="button" id="checkout-place-order">Place Order</button>
+<p id="checkout-error" class="error"></p>
+<button type="submit" class="button" id="checkout-place-order">Continue to Payment</button>
                 </form>
-            </div>
-
-            <div id="checkout-confirmation" hidden>
-                <h2>Thank you! Your order has been placed.</h2>
-                <p>This was a simulated order — no payment was actually charged.</p>
-                <a class="button" id="blue-button" href="/">Continue Shopping</a>
             </div>
         </div>
     </section>

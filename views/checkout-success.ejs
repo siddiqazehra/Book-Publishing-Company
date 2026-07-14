@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <section id="auth-section">
+        <div id="auth-parent">
+            <h2>Payment successful!</h2>
+            <p class="auth-subtext">
+                Thank you, <%= order.shipping.name %>. Your order
+                #<%= order.orderId %> (Rs. <%= order.totalAmount.toFixed(2) %>) has been paid and is now processing.
+                A confirmation has been sent to <%= order.shipping.email %>.
+            </p>
+            <a class="button" id="blue-button" href="/my-orders">View My Orders</a>
+        </div>
+    </section>
+    <%- include('partials/footer', { books: [] }) %>
+</body>
+</html>
