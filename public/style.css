@@ -1514,3 +1514,175 @@ footer {
 /* Checkout payment-method selector (EasyPaisa/JazzCash/Cash) */
 .pay-opt { display: block; margin: 6px 0; cursor: pointer; }
 .pay-info { background: #f1f5f9; border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: 14px; }
+
+/* ============================================================
+   PREMIUM THEME LAYER — "Publishing House"
+   Appended last so it retones the storefront to match the admin:
+   deep emerald + warm brass on ivory/ink, Lora serif display.
+   Retones via :root then polishes high-visibility components.
+   ============================================================ */
+
+:root {
+    --gray: #e4dac8;
+    --peach: #b0894c;          /* accent → brass */
+    --dark-gray: #1f4d3a;      /* primary buttons → emerald */
+    --beige: #f3eee4;          /* app background → warm ivory */
+    --light-black: #201e1a;    /* dark sections/footer → warm ink */
+    --medium-gray: #4b463d;
+
+    --emerald: #1f4d3a;
+    --emerald-deep: #17392b;
+    --brass: #b0894c;
+    --brass-bright: #c39c58;
+    --ivory: #f3eee4;
+    --surface: #fffdf8;
+    --ink: #201e1a;
+    --muted: #8c8474;
+    --line: #e4dac8;
+    --p-shadow: 0 14px 40px -18px rgba(23, 57, 43, 0.30), 0 3px 10px -6px rgba(32, 30, 26, 0.12);
+}
+
+body {
+    background: var(--ivory);
+    color: var(--ink);
+    font-family: var(--roboto);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Buttons ---- */
+.button, #blue-button, #white-button, #form-button, .cart-checkout-btn {
+    border-radius: 999px !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 13px 28px !important;
+    font-size: 15px !important;
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+}
+#blue-button, #form-button {
+    background: var(--emerald) !important;
+    color: #fdfaf2 !important;
+    border: none !important;
+    box-shadow: 0 10px 24px -12px rgba(31, 77, 58, 0.8);
+}
+#blue-button:hover, #form-button:hover, .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85);
+}
+#white-button {
+    background: transparent !important;
+    color: #fdfaf2 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+}
+#white-button:hover { background: rgba(255,255,255,0.12) !important; }
+
+/* ---- Header ---- */
+#header-socialmediaicons { background: var(--emerald-deep); }
+#website-title, #website-title * { font-family: lora; letter-spacing: 0.5px; }
+#header-search-button { background: var(--emerald) !important; border-radius: 0 10px 10px 0 !important; }
+#header-search-input { border-radius: 10px 0 0 10px !important; }
+#cart-count-badge { background: var(--brass) !important; }
+#navbar { border-top: 1px solid var(--line); }
+#tabs a {
+    position: relative;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.18s ease;
+}
+#tabs a:hover { color: var(--emerald); }
+
+/* ---- Hero: emerald wash over the photo + editorial type ---- */
+#img-under-navbar {
+    position: relative;
+    background-attachment: scroll;
+}
+#img-under-navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(15, 40, 32, 0.86) 0%, rgba(23, 57, 43, 0.66) 45%, rgba(32, 30, 26, 0.42) 100%);
+}
+#img-under-navbar-div { position: relative; z-index: 1; color: #fdfaf2; max-width: 640px; }
+#img-under-navbar-div h2 {
+    font-family: lora;
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    color: #fdfaf2;
+}
+#img-under-navbar-div h2::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 3px;
+    margin: 22px 0 6px;
+    background: linear-gradient(90deg, var(--brass-bright), transparent);
+}
+#img-under-navbar-div p { color: rgba(253, 250, 242, 0.86); font-size: 17px; line-height: 1.7; }
+
+/* ---- Section headings: refined serif ---- */
+#release-heading, #seller-heading, #writers-heading, #testimonials-heading,
+.welcome-heading, #genres h2, #authors h2, #contact-content h2 {
+    font-family: lora;
+    letter-spacing: -0.3px;
+}
+.orange-text, #orange-welcome-text, .blue-text { color: var(--brass) !important; }
+
+/* ---- Cards: surface, hairline, soft lift, serif titles, brass price ---- */
+.genre-cards, .book-card, .card, .writers-card, .seller-book, .catalog-card, .card-div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--p-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.genre-cards:hover, .book-card:hover, .writers-card:hover, .seller-book:hover, .catalog-card:hover, .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--brass);
+    box-shadow: 0 22px 48px -20px rgba(23, 57, 43, 0.38);
+}
+.book-content h2, .book-content h3, .card-div h2, .card-div h3,
+.writers-info h2, .seller-book-info h2, .catalog-card-info h2, .genre-cards h2 {
+    font-family: lora;
+    letter-spacing: -0.2px;
+}
+
+/* ---- Footer ---- */
+footer {
+    background: linear-gradient(180deg, var(--emerald-deep), #0f2820) !important;
+    border: none !important;
+    color: #e9e3d4 !important;
+}
+footer h2, footer h3 { font-family: lora; color: #fdfaf2; }
+.footer-icons { transition: transform 0.15s ease; }
+.footer-icons:hover { transform: translateY(-2px); }
+
+/* ---- Forms: refined inputs, emerald focus ---- */
+input[type="text"], input[type="email"], input[type="password"],
+input[type="search"], textarea, select {
+    font-family: var(--roboto);
+}
+#checkout-form input, #form-section input, .form-div input, textarea,
+#login-form input, #register-form input {
+    border: 1px solid var(--line) !important;
+    border-radius: 10px !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+#checkout-form input:focus, textarea:focus, .form-div input:focus,
+input[type="email"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: var(--emerald) !important;
+    box-shadow: 0 0 0 3px rgba(31, 77, 58, 0.12) !important;
+}
+
+/* ---- Checkout payment selector polish (from earlier task) ---- */
+.pay-opt { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); transition: border-color 0.15s ease; }
+.pay-opt:hover { border-color: var(--brass); }
+.pay-info { background: #eef2ee; border: 1px solid #d5e0d8; border-left: 3px solid var(--emerald); }
+
+/* ---- Catalog overlay + cart drawer surfaces ---- */
+#catalog-panel, #cart-drawer { background: var(--surface); }
+#catalog-panel-header, #cart-drawer-header { border-bottom: 1px solid var(--line); }
+#catalog-search-input, #catalog-sort-select { border: 1px solid var(--line); border-radius: 10px; }
+.catalog-card { border-radius: 12px; }
