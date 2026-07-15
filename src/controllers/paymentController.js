@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { Order } from "../models/Order.js";
+import { sendOrderEmails } from "../utils/mailer.js";
 
 function isValidSafepaySignature(tracker, signature) {
   if (!tracker || !signature) return false;
@@ -35,13 +36,17 @@ export const handlePaymentComplete = async (req, res) => {
     }
 
     order.payment.status = "paid";
-    order.payment.tracker = tracker;
-    order.payment.reference = reference || reference_code;
-    order.payment.paidAt = new Date();
-    order.status = "processing";
-    await order.save();
+order.payment.tracker = tracker;
+order.payment.reference = reference || reference_code;
+order.payment.paidAt = new Date();
+order.status = "processing";
+await order.save();
 
-    res.render("checkout-success", { title: "Payment successful", order });
+if (!order.payment.emailSent) {                    
+  sendOrderEmails(order).catch((e) => console.error("Order email failed:", e.message));
+}
+
+res.render("checkout-success", { title: "Payment successful", order });
   } catch (err) {
     console.error("Safepay redirect handling failed:", err.message);
     res.status(500).render("error", { title: "Something went wrong", message: "Please contact support with your order details." });
@@ -93,14 +98,16 @@ export const handleSafepayWebhook = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (order.payment.status !== "paid") {
-      order.payment.status = "paid";
-      order.payment.tracker = tracker;
-      order.payment.reference = reference || reference_code;
-      order.payment.paidAt = new Date();
-      order.status = "processing";
-      await order.save();
-    }
+   if (order.payment.status !== "paid") {
+  order.payment.status = "paid";
+  order.payment.tracker = tracker;
+  order.payment.reference = reference || reference_code;
+  order.payment.paidAt = new Date();
+  order.status = "processing";
+  await order.save();
+
+  sendOrderEmails(order).catch((e) => console.error("Order email failed:", e.message));
+}
 
     res.status(200).json({ received: true });
   } catch (err) {
