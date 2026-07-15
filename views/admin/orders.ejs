@@ -54,7 +54,7 @@
                                     <td>#<%= order.orderId %></td>
                                     <td><%= order.user ? order.user.name : 'Unknown' %><br><small style="color:var(--medium-gray);"><%= order.user ? order.user.email : '' %></small></td>
                                     <td><%= order.items.length %> item(s)</td>
-                                    <td>$ <%= order.totalAmount.toFixed(2) %></td>
+                                    <td>Rs. <%= order.totalAmount.toFixed(2) %></td>
                                     <td><span class="status-badge status-<%= order.status %>"><%= order.status %></span></td>
                                     <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
                                     <td><a class="btn-sm btn-edit" href="/admin/orders/<%= order._id %>">View</a></td>

@@ -38,7 +38,7 @@ function renderCatalogGrid(searchTerm, sortBy) {
         '<div class="catalog-card-info">' +
         "<h3>" + book.title + "</h3>" +
         "<p>" + book.author + "</p>" +
-        '<p class="orange-text">$ ' + book.price.toFixed(2) + "</p>" +
+        '<p class="orange-text">Rs. ' + book.price.toFixed(2) + "</p>" +
         "</div>" +
         "</a>"
     ).join("");

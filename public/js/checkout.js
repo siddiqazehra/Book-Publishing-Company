@@ -15,9 +15,9 @@ function renderCheckoutSummary() {
     const book = BOOKS.find((b) => b._id === item.id);
     if (!book) return "";
     return '<div class="checkout-summary-item"><span>' + book.title + " &times; " + item.quantity +
-      "</span><span>$ " + (book.price * item.quantity).toFixed(2) + "</span></div>";
+      "</span><span>Rs. " + (book.price * item.quantity).toFixed(2) + "</span></div>";
   }).join("");
-  totalContainer.textContent = "Total: $ " + getCartTotal().toFixed(2);
+  totalContainer.textContent = "Total: Rs. " + getCartTotal().toFixed(2);
   if (placeOrderBtn) placeOrderBtn.disabled = false;
 }
 
@@ -28,7 +28,7 @@ function selectedMethod() {
 
 function syncPaymentUI() {
   const method = selectedMethod();
-  const total = "$ " + getCartTotal().toFixed(2);
+  const total = "Rs. " + getCartTotal().toFixed(2);
   const ep = document.getElementById("pay-easypaisa");
   const jc = document.getElementById("pay-jazzcash");
   const ref = document.getElementById("checkout-reference");
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const msg = document.getElementById("checkout-confirmation-msg");
       let text = "Your order #" + (data.order?.orderId ?? "") + " has been placed.";
       if (data.method === "cash") text += " Pay cash on delivery.";
-      else if (data.payTo) text += " Please send $ " + (data.totalAmount?.toFixed?.(2) ?? "") + " to " + data.method + " " + (data.payTo.number || "") + ".";
+      else if (data.payTo) text += " Please send Rs. " + (data.totalAmount?.toFixed?.(2) ?? "") + " to " + data.method + " " + (data.payTo.number || "") + ".";
       msg.textContent = text;
       conf.hidden = false;
     } catch (err) {

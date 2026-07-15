@@ -56,7 +56,7 @@
                                     <td><%= book.title %></td>
                                     <td><%= book.author %></td>
                                     <td><%= book.genre || '—' %></td>
-                                    <td>$ <%= book.price.toFixed(2) %></td>
+                                    <td>Rs. <%= book.price.toFixed(2) %></td>
                                     <td><%= book.stock %><% if (book.stock <= 5) { %> <span class="low-stock-tag">Low</span><% } %></td>
                                     <td class="table-actions">
                                         <a class="btn-sm btn-edit" href="/admin/books/<%= book._id %>/edit">Edit</a>

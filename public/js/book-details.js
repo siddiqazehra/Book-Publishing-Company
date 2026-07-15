@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML =
         '<div id="book-details-image"><img src="/' + book.image + '" alt="' + book.title + '"></div>' +
         '<div id="book-details-info">' +
-        '<p class="orange-text">$ ' + book.price.toFixed(2) + "</p>" +
+        '<p class="orange-text">Rs. ' + book.price.toFixed(2) + "</p>" +
         "<h1>" + book.title + "</h1>" +
         "<p id=\"book-details-author\">By " + book.author + "</p>" +
         '<p id="book-details-popularity">' + book.popularity.toLocaleString() + " readers have bought this book</p>" +
