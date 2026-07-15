@@ -1569,12 +1569,14 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85);
 }
+/* Secondary header button (Login / Admin Panel) sits on the LIGHT header,
+   so it must read as emerald outline — not white text. */
 #white-button {
     background: transparent !important;
-    color: #fdfaf2 !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+    color: var(--emerald) !important;
+    border: 1.5px solid var(--emerald) !important;
 }
-#white-button:hover { background: rgba(255,255,255,0.12) !important; }
+#white-button:hover { background: var(--emerald) !important; color: #fdfaf2 !important; }
 
 /* ---- Header ---- */
 #header-socialmediaicons { background: var(--emerald-deep); }
