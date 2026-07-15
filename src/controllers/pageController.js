@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
 import { Settings } from "../models/Settings.js";
+import { Genre } from "../models/Genre.js";
 
 // Small helper: every page needs the full book list for the header search /
 // catalog overlay + "BOOKS" JS global (see partials/footer.ejs).
@@ -24,6 +25,19 @@ export const about = async (req, res, next) => {
   try {
     const books = await getAllBooksLean();
     res.render("about", { title: "About Us", books });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /books — full catalog / shop page
+export const booksPage = async (req, res, next) => {
+  try {
+    const [books, genres] = await Promise.all([
+      getAllBooksLean(),
+      Genre.find().sort({ name: 1 }).lean(),
+    ]);
+    res.render("books", { title: "Books", books, genres });
   } catch (err) {
     next(err);
   }

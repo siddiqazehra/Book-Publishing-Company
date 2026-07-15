@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <section id="books-page">
+        <header id="books-hero">
+            <p class="books-eyebrow">The Collection</p>
+            <h1>Books</h1>
+            <p class="books-sub">Browse every title in our catalogue — search, filter by genre, and add your next read to the cart.</p>
+        </header>
+
+        <div id="books-toolbar">
+            <input type="text" id="books-search" placeholder="Search by title or author...">
+            <select id="books-genre">
+                <option value="">All genres</option>
+                <% (genres || []).forEach(function(g) { %>
+                    <option value="<%= g.name.toLowerCase() %>"><%= g.name %></option>
+                <% }); %>
+            </select>
+            <select id="books-sort">
+                <option value="title">Sort: Title (A–Z)</option>
+                <option value="author">Sort: Author (A–Z)</option>
+                <option value="price-asc">Sort: Price (Low to High)</option>
+                <option value="price-desc">Sort: Price (High to Low)</option>
+                <option value="popularity">Sort: Popularity</option>
+            </select>
+        </div>
+
+        <div id="books-grid">
+            <% if (!books || books.length === 0) { %>
+                <p id="books-empty">No books available yet. Please check back soon.</p>
+            <% } else { %>
+                <% books.forEach(function(book) { %>
+                    <article class="book-card books-card"
+                        data-title="<%= book.title.toLowerCase() %>"
+                        data-author="<%= book.author.toLowerCase() %>"
+                        data-genre="<%= (book.genre || '').toLowerCase() %>"
+                        data-price="<%= book.price %>"
+                        data-pop="<%= book.popularity || 0 %>">
+                        <a class="books-card-cover" href="/book-details?id=<%= book._id %>">
+                            <img src="/<%= book.image %>" alt="<%= book.title %>" loading="lazy">
+                        </a>
+                        <div class="books-card-body">
+                            <% if (book.genre) { %><span class="books-card-genre"><%= book.genre %></span><% } %>
+                            <h3><a href="/book-details?id=<%= book._id %>"><%= book.title %></a></h3>
+                            <p class="books-card-author"><%= book.author %></p>
+                            <div class="books-card-foot">
+                                <span class="books-card-price">Rs. <%= book.price.toFixed(2) %></span>
+                                <button type="button" class="books-add-btn" data-id="<%= book._id %>">Add to cart</button>
+                            </div>
+                        </div>
+                    </article>
+                <% }); %>
+            <% } %>
+        </div>
+
+        <p id="books-no-results" hidden>No books match your search. Try a different term or genre.</p>
+    </section>
+
+    <%- include('partials/footer', { books: books }) %>
+
+    <script>
+        (function () {
+            var searchEl = document.getElementById("books-search");
+            var genreEl = document.getElementById("books-genre");
+            var sortEl = document.getElementById("books-sort");
+            var grid = document.getElementById("books-grid");
+            var noResults = document.getElementById("books-no-results");
+            if (!grid) return;
+            var cards = Array.prototype.slice.call(grid.querySelectorAll(".books-card"));
+
+            function apply() {
+                var term = (searchEl.value || "").trim().toLowerCase();
+                var genre = genreEl.value;
+                var sort = sortEl.value;
+                var visible = 0;
+
+                cards.forEach(function (c) {
+                    var matchTerm = !term || c.dataset.title.indexOf(term) > -1 || c.dataset.author.indexOf(term) > -1;
+                    var matchGenre = !genre || c.dataset.genre === genre;
+                    var show = matchTerm && matchGenre;
+                    c.style.display = show ? "" : "none";
+                    if (show) visible++;
+                });
+
+                var sorted = cards.slice().sort(function (a, b) {
+                    switch (sort) {
+                        case "price-asc": return a.dataset.price - b.dataset.price;
+                        case "price-desc": return b.dataset.price - a.dataset.price;
+                        case "popularity": return b.dataset.pop - a.dataset.pop;
+                        case "author": return a.dataset.author.localeCompare(b.dataset.author);
+                        default: return a.dataset.title.localeCompare(b.dataset.title);
+                    }
+                });
+                sorted.forEach(function (c) { grid.appendChild(c); });
+
+                noResults.hidden = visible !== 0;
+            }
+
+            searchEl.addEventListener("input", apply);
+            genreEl.addEventListener("change", apply);
+            sortEl.addEventListener("change", apply);
+            apply();
+
+            grid.addEventListener("click", function (e) {
+                var btn = e.target.closest(".books-add-btn");
+                if (!btn) return;
+                if (typeof addToCart === "function") addToCart(btn.dataset.id, 1);
+                var badge = document.getElementById("cart-count-badge");
+                if (badge && typeof getCartCount === "function") badge.textContent = getCartCount();
+                var original = btn.textContent;
+                btn.textContent = "Added ✓";
+                btn.classList.add("added");
+                setTimeout(function () { btn.textContent = original; btn.classList.remove("added"); }, 1100);
+            });
+        })();
+    </script>
+</body>
+
+</html>

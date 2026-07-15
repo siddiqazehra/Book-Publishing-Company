@@ -7,6 +7,7 @@ import { requirePageAuth } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/", pages.home);
+router.get("/books", pages.booksPage);
 router.get("/about", pages.about);
 router.get("/book-details", pages.bookDetails);
 router.get("/checkout", requirePageAuth, pages.checkoutPage);
