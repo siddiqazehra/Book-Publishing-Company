@@ -1776,3 +1776,18 @@ input[type="email"]:focus, input[type="password"]:focus {
     transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 #hero-view-all:hover { transform: translateY(-2px); background: var(--emerald-deep); box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85); }
+
+/* ---- Header account buttons: keep them compact so the row never overflows ---- */
+#login-register {
+    justify-content: flex-end !important;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+#login-register .button,
+#login-register #blue-button,
+#login-register #white-button {
+    padding: 8px 15px !important;
+    font-size: 13px !important;
+}
+#login-register #logout-form { margin: 0; display: inline-flex; }
+#header-greeting { white-space: nowrap; }
