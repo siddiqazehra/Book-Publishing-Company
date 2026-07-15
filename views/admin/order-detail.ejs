@@ -60,16 +60,16 @@
                             <tr>
                                 <td><img class="thumb" src="/<%= item.image %>" alt="<%= item.title %>"></td>
                                 <td><%= item.title %></td>
-                                <td>$ <%= item.price.toFixed(2) %></td>
+                                <td>Rs. <%= item.price.toFixed(2) %></td>
                                 <td><%= item.quantity %></td>
-                                <td>$ <%= (item.price * item.quantity).toFixed(2) %></td>
+                                <td>Rs. <%= (item.price * item.quantity).toFixed(2) %></td>
                             </tr>
                         <% }); %>
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colspan="4" style="text-align:right; font-weight:bold;">Total</td>
-                            <td style="font-weight:bold;">$ <%= order.totalAmount.toFixed(2) %></td>
+                            <td style="font-weight:bold;">Rs. <%= order.totalAmount.toFixed(2) %></td>
                         </tr>
                     </tfoot>
                 </table>

@@ -41,7 +41,7 @@
                 </div>
                 <div class="admin-stat-card">
                     <div class="stat-label">Revenue</div>
-                    <div class="stat-value orange">$ <%= totalRevenue.toFixed(2) %></div>
+                    <div class="stat-value orange">Rs. <%= totalRevenue.toFixed(2) %></div>
                 </div>
                 <div class="admin-stat-card">
                     <div class="stat-label">Low-stock Books (&le; 5)</div>
@@ -70,7 +70,7 @@
                                 <tr>
                                     <td>#<%= order.orderId %></td>
                                     <td><%= order.user ? order.user.name : 'Unknown' %></td>
-                                    <td>$ <%= order.totalAmount.toFixed(2) %></td>
+                                    <td>Rs. <%= order.totalAmount.toFixed(2) %></td>
                                     <td><span class="status-badge status-<%= order.status %>"><%= order.status %></span></td>
                                     <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
                                     <td><a class="btn-sm btn-edit" href="/admin/orders/<%= order._id %>">View</a></td>

@@ -132,7 +132,7 @@ function renderCartDrawer() {
             '<img src="/' + book.image + '" alt="' + book.title + '">' +
             '<div class="cart-item-info">' +
             "<h4>" + book.title + "</h4>" +
-            "<p>$ " + book.price.toFixed(2) + "</p>" +
+            "<p>Rs. " + book.price.toFixed(2) + "</p>" +
             '<div class="cart-item-qty">' +
             '<button onclick="updateCartQuantity(\'' + book._id + '\', ' + (item.quantity - 1) + ')" aria-label="Decrease quantity">-</button>' +
             "<span>" + item.quantity + "</span>" +
@@ -144,7 +144,7 @@ function renderCartDrawer() {
         );
     }).join("");
 
-    totalContainer.textContent = "Subtotal: $ " + getCartTotal().toFixed(2);
+    totalContainer.textContent = "Subtotal: Rs. " + getCartTotal().toFixed(2);
     if (checkoutBtn) checkoutBtn.disabled = false;
 }
 

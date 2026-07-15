@@ -137,7 +137,7 @@
                             <img src="/<%= book.image %>" alt="<%= book.title %>">
                         </div>
                         <div class="book-content">
-                            <p class="orange-text content-hover">$ <%= book.price.toFixed(2) %></p>
+                            <p class="orange-text content-hover">Rs. <%= book.price.toFixed(2) %></p>
                             <h3><%= book.title %></h3>
                             <p>By <%= book.author %></p>
                         </div>
@@ -148,7 +148,7 @@
                 <% books.slice(0, 3).forEach(function(book) { %>
                     <a class="book" href="/book-details?id=<%= book._id %>">
                         <div class="book-content">
-                            <p class="orange-text">$ <%= book.price.toFixed(2) %></p>
+                            <p class="orange-text">Rs. <%= book.price.toFixed(2) %></p>
                             <h3><%= book.title %></h3>
                             <p>By <%= book.author %></p>
                         </div>
