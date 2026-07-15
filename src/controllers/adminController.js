@@ -10,11 +10,12 @@ import { getNextSequence } from "../models/Counter.js";
 
 export const dashboard = async (req, res, next) => {
   try {
-    const [bookCount, userCount, orderCount, orders] = await Promise.all([
+    const [bookCount, userCount, orderCount, orders, lowStockCount] = await Promise.all([
       Book.countDocuments(),
       User.countDocuments(),
       Order.countDocuments(),
       Order.find().sort({ createdAt: -1 }).limit(5).populate("user", "name email").lean(),
+      Book.countDocuments({ stock: { $lte: 5 } }),
     ]);
 
     const revenueAgg = await Order.aggregate([
@@ -30,6 +31,7 @@ export const dashboard = async (req, res, next) => {
       orderCount,
       totalRevenue,
       recentOrders: orders,
+      lowStockCount,
     });
   } catch (err) {
     next(err);

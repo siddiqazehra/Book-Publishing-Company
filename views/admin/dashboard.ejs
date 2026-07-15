@@ -19,6 +19,13 @@
                 <div class="admin-user">Signed in as <strong><%= user.name %></strong></div>
             </div>
 
+            <div class="admin-quick-actions">
+                <a class="btn-sm btn-add" href="/admin/books/new">+ Add Book</a>
+                <a class="btn-sm btn-edit" href="/admin/genres">Manage Genres</a>
+                <a class="btn-sm btn-edit" href="/admin/reports">Sales Report</a>
+                <a class="btn-sm btn-edit" href="/admin/settings">Payment Settings</a>
+            </div>
+
             <div class="admin-stats">
                 <div class="admin-stat-card">
                     <div class="stat-label">Total Books</div>
@@ -35,6 +42,10 @@
                 <div class="admin-stat-card">
                     <div class="stat-label">Revenue</div>
                     <div class="stat-value orange">$ <%= totalRevenue.toFixed(2) %></div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="stat-label">Low-stock Books (&le; 5)</div>
+                    <div class="stat-value <%= lowStockCount > 0 ? 'orange' : '' %>"><%= lowStockCount %></div>
                 </div>
             </div>
 
