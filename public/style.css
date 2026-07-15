@@ -1724,7 +1724,7 @@ input[type="email"]:focus, input[type="password"]:focus {
 }
 
 #books-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 26px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 26px;
 }
 
 .books-card {
@@ -1735,7 +1735,7 @@ input[type="email"]:focus, input[type="password"]:focus {
 }
 .books-card:hover { transform: translateY(-5px); border-color: var(--brass); box-shadow: 0 24px 50px -22px rgba(23, 57, 43, 0.4); }
 
-.books-card-cover { display: block; aspect-ratio: 3 / 4; overflow: hidden; background: #efe8db; }
+.books-card-cover { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: #efe8db; }
 .books-card-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .books-card:hover .books-card-cover img { transform: scale(1.05); }
 

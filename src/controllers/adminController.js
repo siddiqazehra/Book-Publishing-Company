@@ -5,6 +5,7 @@ import { Order } from "../models/Order.js";
 import { Genre } from "../models/Genre.js";
 import { Settings } from "../models/Settings.js";
 import { getNextSequence } from "../models/Counter.js";
+import { sendOrderStatusUpdate } from "../utils/mailer.js";
 
 /* ==================== DASHBOARD ==================== */
 
@@ -290,7 +291,9 @@ export const updateOrderStatus = async (req, res, next) => {
     if (!valid.includes(status)) {
       return res.redirect(`/admin/orders/${req.params.id}`);
     }
-    await Order.findByIdAndUpdate(req.params.id, { status });
+    const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    // Notify the customer of the new status (no-op if mail isn't configured).
+    if (order) sendOrderStatusUpdate(order).catch((e) => console.error("status email failed:", e.message));
     res.redirect(`/admin/orders/${req.params.id}`);
   } catch (err) {
     next(err);

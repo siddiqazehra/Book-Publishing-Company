@@ -2,6 +2,7 @@ import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
 import { Settings } from "../models/Settings.js";
 import { getSafepay, SAFEPAY_CURRENCY } from "../config/safepay.js";
+import { sendOrderConfirmation } from "../utils/mailer.js";
 
 const APP_BASE_URL = process.env.APP_BASE_URL || "http://localhost:3000";
 
@@ -64,13 +65,16 @@ export const createOrder = async (req, res, next) => {
         orderItems.map((i) => ({ updateOne: { filter: { _id: i.book }, update: { $inc: { popularity: i.quantity } } } }))
       ).catch((e) => console.error("popularity update failed:", e.message));
 
+      const s = await Settings.getSingleton();
       let payTo = null;
       if (paymentMethod === "easypaisa" || paymentMethod === "jazzcash") {
-        const s = await Settings.getSingleton();
         payTo = paymentMethod === "easypaisa"
           ? { number: s.easypaisaNumber, name: s.easypaisaName }
           : { number: s.jazzcashNumber, name: s.jazzcashName };
       }
+
+      // Email the customer their order confirmation (no-op if mail isn't configured).
+      sendOrderConfirmation(order, s).catch((e) => console.error("order email failed:", e.message));
 
       return res.status(201).json({
         manual: true,
@@ -129,6 +133,9 @@ export const createOrder = async (req, res, next) => {
         updateOne: { filter: { _id: i.book }, update: { $inc: { popularity: i.quantity } } },
       }))
     ).catch((e) => console.error("popularity update failed:", e.message));
+
+    // Email the customer their order confirmation (no-op if mail isn't configured).
+    sendOrderConfirmation(order, null).catch((e) => console.error("order email failed:", e.message));
 
     res.status(201).json({
       message: "Order created. Redirecting to Safepay.",
