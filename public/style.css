@@ -1686,3 +1686,80 @@ input[type="email"]:focus, input[type="password"]:focus {
 #catalog-panel-header, #cart-drawer-header { border-bottom: 1px solid var(--line); }
 #catalog-search-input, #catalog-sort-select { border: 1px solid var(--line); border-radius: 10px; }
 .catalog-card { border-radius: 12px; }
+
+/* ============================================================
+   BOOKS (shop) PAGE
+   ============================================================ */
+#books-page { max-width: 1200px; margin: 0 auto; padding: 56px 24px 80px; }
+
+#books-hero { text-align: center; margin-bottom: 40px; }
+.books-eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--brass); margin-bottom: 12px;
+}
+#books-hero h1 {
+    font-family: lora; font-size: clamp(38px, 5vw, 56px); font-weight: 600;
+    letter-spacing: -0.5px; color: var(--ink); line-height: 1.05;
+}
+#books-hero h1::after {
+    content: ""; display: block; width: 64px; height: 3px; margin: 20px auto 0;
+    background: linear-gradient(90deg, var(--brass-bright), var(--emerald));
+}
+.books-sub { max-width: 560px; margin: 18px auto 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+
+#books-toolbar {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    margin-bottom: 40px;
+}
+#books-toolbar input, #books-toolbar select {
+    padding: 12px 16px; border: 1px solid var(--line); border-radius: 999px;
+    font-family: var(--roboto); font-size: 14px; background: var(--surface); color: var(--ink);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+#books-toolbar input { min-width: 260px; }
+#books-toolbar input:focus, #books-toolbar select:focus {
+    outline: none; border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(31, 77, 58, 0.12);
+}
+
+#books-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 26px;
+}
+
+.books-card {
+    display: flex; flex-direction: column; overflow: hidden; padding: 0;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: var(--p-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.books-card:hover { transform: translateY(-5px); border-color: var(--brass); box-shadow: 0 24px 50px -22px rgba(23, 57, 43, 0.4); }
+
+.books-card-cover { display: block; aspect-ratio: 3 / 4; overflow: hidden; background: #efe8db; }
+.books-card-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.books-card:hover .books-card-cover img { transform: scale(1.05); }
+
+.books-card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.books-card-genre {
+    align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--emerald); background: rgba(31, 77, 58, 0.08); padding: 3px 9px; border-radius: 999px;
+}
+.books-card-body h3 { font-family: lora; font-size: 18px; font-weight: 600; line-height: 1.25; margin: 2px 0 0; }
+.books-card-body h3 a { color: var(--ink); text-decoration: none; }
+.books-card-body h3 a:hover { color: var(--emerald); }
+.books-card-author { color: var(--muted); font-size: 13.5px; }
+.books-card-foot { margin-top: auto; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.books-card-price { font-family: lora; font-size: 18px; font-weight: 600; color: var(--brass); }
+.books-add-btn {
+    border: none; cursor: pointer; font-family: var(--roboto); font-size: 12.5px; font-weight: 600;
+    padding: 9px 14px; border-radius: 999px; background: var(--emerald); color: #fdfaf2;
+    transition: background 0.18s ease, transform 0.08s ease;
+}
+.books-add-btn:hover { background: var(--emerald-deep); }
+.books-add-btn:active { transform: translateY(1px); }
+.books-add-btn.added { background: var(--brass); }
+
+#books-empty, #books-no-results { text-align: center; color: var(--muted); font-style: italic; padding: 40px 0; grid-column: 1 / -1; }
+
+@media (max-width: 600px) {
+    #books-toolbar input { min-width: 0; flex: 1 1 100%; }
+    #books-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+}
