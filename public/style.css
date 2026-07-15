@@ -1763,3 +1763,14 @@ input[type="email"]:focus, input[type="password"]:focus {
     #books-toolbar input { min-width: 0; flex: 1 1 100%; }
     #books-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
 }
+
+/* Hero "View all books" — now a link to /books, styled like the primary button */
+#hero-view-all {
+    display: inline-block; text-decoration: none;
+    border-radius: 999px; font-weight: 600; letter-spacing: 0.3px;
+    padding: 13px 28px; font-size: 15px;
+    background: var(--emerald); color: #fdfaf2; border: none;
+    box-shadow: 0 10px 24px -12px rgba(31, 77, 58, 0.8);
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+#hero-view-all:hover { transform: translateY(-2px); background: var(--emerald-deep); box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85); }

@@ -78,6 +78,10 @@
             if (!grid) return;
             var cards = Array.prototype.slice.call(grid.querySelectorAll(".books-card"));
 
+            // Pre-fill the search box when arriving via /books?search=term
+            var urlSearch = new URLSearchParams(window.location.search).get("search");
+            if (urlSearch) searchEl.value = urlSearch;
+
             function apply() {
                 var term = (searchEl.value || "").trim().toLowerCase();
                 var genre = genreEl.value;
