@@ -1510,3 +1510,7 @@ footer {
     font-weight: bold;
     text-decoration: none;
 }
+
+/* Checkout payment-method selector (EasyPaisa/JazzCash/Cash) */
+.pay-opt { display: block; margin: 6px 0; cursor: pointer; }
+.pay-info { background: #f1f5f9; border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: 14px; }
