@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const goToCatalog = () => {
         const input = document.getElementById("header-search-input");
         const query = encodeURIComponent((input && input.value) || "");
-        window.location.href = "/?search=" + query;
+        window.location.href = "/books?search=" + query;
     };
 
     form.addEventListener("submit", (e) => {

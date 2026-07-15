@@ -81,24 +81,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) closeCatalogOverlay();
     });
 
-    if (viewAllBtn) {
-        viewAllBtn.addEventListener("click", () => openCatalogOverlay(""));
-    }
-
+    // Header search now takes the reader to the dedicated /books catalogue page.
+    const goToBooks = () => {
+        const query = encodeURIComponent((headerInput && headerInput.value) || "");
+        window.location.href = "/books?search=" + query;
+    };
     if (headerForm) {
         headerForm.addEventListener("submit", (e) => {
             e.preventDefault();
-            openCatalogOverlay(headerInput.value);
+            goToBooks();
         });
     }
     if (headerSearchBtn) {
-        headerSearchBtn.addEventListener("click", () => openCatalogOverlay(headerInput.value));
-    }
-
-    // arrived here via a search box on another page (e.g. index.html?search=dracula)
-    const params = new URLSearchParams(window.location.search);
-    if (params.has("search")) {
-        openCatalogOverlay(params.get("search"));
+        headerSearchBtn.addEventListener("click", goToBooks);
     }
 });
 /* END: Book Search & Cart Feature - catalog overlay (search/sort), index.html only */
