@@ -386,7 +386,10 @@ export const reports = async (req, res, next) => {
     const totalOrders = orders.length;
     const totalRevenue = orders.reduce((s, o) => s + o.totalAmount, 0);
 
-    const byStatusAgg = await Order.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }]);
+    const byStatusAgg = await Order.aggregate([
+      { $match: match },
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]);
     const byStatus = byStatusAgg.reduce((m, r) => { m[r._id] = r.count; return m; }, {});
 
     const bestSellers = await Order.aggregate([

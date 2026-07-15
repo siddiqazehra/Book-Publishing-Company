@@ -55,7 +55,7 @@ export const createOrder = async (req, res, next) => {
         payment: {
           provider: paymentMethod,
           status: "pending",
-          reference: (req.body.reference || "").trim(),
+          reference: String(req.body.reference || "").trim(),
         },
         status: paymentMethod === "cash" ? "processing" : "pending",
       });
