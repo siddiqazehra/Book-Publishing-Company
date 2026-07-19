@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72" width="120" height="72">
+  <rect x="2" y="2" width="116" height="68" rx="12" fill="#b0182a"/>
+  <rect x="2" y="2" width="116" height="34" rx="12" fill="#d21f34"/>
+  <circle cx="26" cy="36" r="13" fill="#ffffff"/>
+  <text x="26" y="41" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="#b0182a" text-anchor="middle">J</text>
+  <text x="72" y="31" font-family="Arial, sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">Jazz</text>
+  <text x="72" y="52" font-family="Arial, sans-serif" font-size="12" font-weight="800" fill="#ffd24d" text-anchor="middle">Cash</text>
+</svg>

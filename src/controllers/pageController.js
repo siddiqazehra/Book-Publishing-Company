@@ -3,6 +3,8 @@ import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
 import { Settings } from "../models/Settings.js";
 import { Genre } from "../models/Genre.js";
+import { Testimonial } from "../models/Testimonial.js";
+import { Contact } from "../models/Contact.js";
 
 // Small helper: every page needs the full book list for the header search /
 // catalog overlay + "BOOKS" JS global (see partials/footer.ejs).
@@ -14,7 +16,8 @@ async function getAllBooksLean() {
 export const home = async (req, res, next) => {
   try {
     const books = await getAllBooksLean();
-    res.render("index", { title: "Publishing Company", books });
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 }).lean();
+    res.render("index", { title: "Publishing Company", books, testimonials });
   } catch (err) {
     next(err);
   }
@@ -108,6 +111,9 @@ export const submitContact = async (req, res) => {
     if (!name || !email || !subject || !message) {
       return res.status(400).json({ success: false, message: "All fields are required." });
     }
+
+    // Always store the message in the database first.
+    await Contact.create({ name, email, subject, message });
 
     if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
       // Email isn't configured in this environment — don't fail the whole

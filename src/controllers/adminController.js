@@ -5,6 +5,8 @@ import { Order } from "../models/Order.js";
 import { Genre } from "../models/Genre.js";
 import { Settings } from "../models/Settings.js";
 import { getNextSequence } from "../models/Counter.js";
+import { Testimonial } from "../models/Testimonial.js";
+import { Contact } from "../models/Contact.js";
 
 /* ==================== DASHBOARD ==================== */
 
@@ -421,5 +423,72 @@ export const updateSettings = async (req, res, next) => {
     fields.forEach((f) => { doc[f] = (req.body[f] || "").trim(); });
     await doc.save();
     res.redirect("/admin/settings?saved=1");
+  } catch (err) { next(err); }
+};
+
+/* ==================== TESTIMONIALS ==================== */
+
+export const listTestimonials = async (req, res, next) => {
+  try {
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 }).lean();
+    res.render("admin/testimonials", { title: "Manage Testimonials", testimonials });
+  } catch (err) { next(err); }
+};
+
+export const newTestimonialForm = (req, res) => {
+  res.render("admin/testimonial-form", { title: "Add Testimonial", testimonial: {}, error: null, mode: "create" });
+};
+
+export const createTestimonial = async (req, res) => {
+  try {
+    const { name, role, message, image } = req.body;
+    if (!name || !message) throw Object.assign(new Error("Name and message are required."), { name: "SimpleValidation" });
+    await Testimonial.create({ name: name.trim(), role: (role || "Reader").trim(), message: message.trim(), image: (image || "").trim() });
+    res.redirect("/admin/testimonials");
+  } catch (err) {
+    res.status(400).render("admin/testimonial-form", { title: "Add Testimonial", testimonial: req.body, error: err.message || "Could not save.", mode: "create" });
+  }
+};
+
+export const editTestimonialForm = async (req, res, next) => {
+  try {
+    const testimonial = await Testimonial.findById(req.params.id).lean();
+    if (!testimonial) return res.status(404).render("error", { title: "Not found", message: "Testimonial not found." });
+    res.render("admin/testimonial-form", { title: "Edit Testimonial", testimonial, error: null, mode: "edit" });
+  } catch (err) { next(err); }
+};
+
+export const updateTestimonial = async (req, res) => {
+  try {
+    const { name, role, message, image } = req.body;
+    if (!name || !message) throw Object.assign(new Error("Name and message are required."), { name: "SimpleValidation" });
+    const t = await Testimonial.findByIdAndUpdate(req.params.id, { name: name.trim(), role: (role || "Reader").trim(), message: message.trim(), image: (image || "").trim() }, { new: true, runValidators: true });
+    if (!t) return res.status(404).render("error", { title: "Not found", message: "Testimonial not found." });
+    res.redirect("/admin/testimonials");
+  } catch (err) {
+    res.status(400).render("admin/testimonial-form", { title: "Edit Testimonial", testimonial: { ...req.body, _id: req.params.id }, error: err.message || "Could not save.", mode: "edit" });
+  }
+};
+
+export const deleteTestimonial = async (req, res, next) => {
+  try {
+    await Testimonial.findByIdAndDelete(req.params.id);
+    res.redirect("/admin/testimonials");
+  } catch (err) { next(err); }
+};
+
+/* ==================== CONTACT MESSAGES ==================== */
+
+export const listMessages = async (req, res, next) => {
+  try {
+    const messages = await Contact.find().sort({ createdAt: -1 }).lean();
+    res.render("admin/messages", { title: "Contact Messages", messages });
+  } catch (err) { next(err); }
+};
+
+export const deleteMessage = async (req, res, next) => {
+  try {
+    await Contact.findByIdAndDelete(req.params.id);
+    res.redirect("/admin/messages");
   } catch (err) { next(err); }
 };

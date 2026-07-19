@@ -15,7 +15,7 @@
     <section id="checkout-section">
         <div id="checkout-parent">
             <h1>Checkout</h1>
-            <p id="checkout-demo-notice">Choose how you'd like to pay. Card payments are handled securely by SafePay; EasyPaisa/JazzCash and Cash on Delivery are also available.</p>
+            <p id="checkout-demo-notice">Pay easily with EasyPaisa, JazzCash, or Cash on Delivery. For mobile wallets, send the amount and enter your transaction ID.</p>
 
             <div id="checkout-layout">
                 <div id="checkout-summary">
@@ -31,10 +31,23 @@
                     <input type="text" id="checkout-address" placeholder="Shipping Address" required>
 
                     <h2>Payment Method</h2>
-                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="safepay" checked> Card (SafePay)</label>
-                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="easypaisa"> EasyPaisa</label>
-                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="jazzcash"> JazzCash</label>
-                    <label class="pay-opt"><input type="radio" name="paymentMethod" value="cash"> Cash on Delivery</label>
+                    <div class="pay-methods">
+                        <label class="pay-opt">
+                            <img class="pay-logo" src="/images/easypaisa.svg" alt="EasyPaisa">
+                            <span class="pay-name">EasyPaisa</span>
+                            <input type="radio" name="paymentMethod" value="easypaisa" checked>
+                        </label>
+                        <label class="pay-opt">
+                            <img class="pay-logo" src="/images/jazzcash.svg" alt="JazzCash">
+                            <span class="pay-name">JazzCash</span>
+                            <input type="radio" name="paymentMethod" value="jazzcash">
+                        </label>
+                        <label class="pay-opt">
+                            <span class="pay-logo pay-cod">COD</span>
+                            <span class="pay-name">Cash on Delivery</span>
+                            <input type="radio" name="paymentMethod" value="cash">
+                        </label>
+                    </div>
 
                     <div id="pay-easypaisa" class="pay-info" hidden>
                         Send <strong id="pay-total-ep"></strong> to EasyPaisa

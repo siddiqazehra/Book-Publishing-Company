@@ -22,8 +22,9 @@
             <div class="admin-panel">
                 <div class="admin-toolbar">
                     <form action="/admin/reports" method="GET">
-                        <label>From <input type="date" name="from" value="<%= from %>"></label>
-                        <label>To <input type="date" name="to" value="<%= to %>"></label>
+                        <% const _today = new Date().toISOString().slice(0, 10); %>
+                        <label>From <input type="date" name="from" value="<%= from %>" max="<%= _today %>"></label>
+                        <label>To <input type="date" name="to" value="<%= to %>" max="<%= _today %>"></label>
                         <button type="submit" class="btn-sm btn-edit">Apply</button>
                         <a href="/admin/reports" class="btn-sm btn-add">Reset</a>
                     </form>

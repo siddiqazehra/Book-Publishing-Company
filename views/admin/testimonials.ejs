@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Publishing Company</title>
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <div id="admin-shell">
+    <%- include('../partials/admin-sidebar', { active: 'testimonials' }) %>
+    <main id="admin-main">
+      <div id="admin-topbar"><h1>Manage Testimonials</h1><div class="admin-user">Signed in as <strong><%= user.name %></strong></div></div>
+      <div class="admin-panel">
+        <div class="admin-toolbar"><span></span><a href="/admin/testimonials/new" class="btn-sm btn-add">+ Add Testimonial</a></div>
+        <% if (!testimonials || testimonials.length === 0) { %>
+          <p class="admin-empty">No testimonials yet. Add one to show it on the home page.</p>
+        <% } else { %>
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Role</th><th>Message</th><th></th></tr></thead>
+            <tbody>
+              <% testimonials.forEach(function(t) { var _msg = t.message || t.testimonial || ''; %>
+                <tr>
+                  <td><%= t.name || '—' %></td>
+                  <td><%= t.role || t.designation || 'Reader' %></td>
+                  <td><%= _msg.length > 90 ? _msg.slice(0, 90) + '…' : _msg %></td>
+                  <td class="table-actions">
+                    <a class="btn-sm btn-edit" href="/admin/testimonials/<%= t._id %>/edit">Edit</a>
+                    <form action="/admin/testimonials/<%= t._id %>/delete" method="POST" onsubmit="return confirm('Delete this testimonial?');">
+                      <button type="submit" class="btn-sm btn-delete">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

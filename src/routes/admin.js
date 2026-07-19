@@ -48,4 +48,16 @@ router.get("/reports", admin.reports);
 router.get("/settings", admin.settingsPage);
 router.post("/settings", admin.updateSettings);
 
+// Testimonials
+router.get("/testimonials", admin.listTestimonials);
+router.get("/testimonials/new", admin.newTestimonialForm);
+router.post("/testimonials", admin.createTestimonial);
+router.get("/testimonials/:id/edit", admin.editTestimonialForm);
+router.post("/testimonials/:id/update", admin.updateTestimonial);
+router.post("/testimonials/:id/delete", admin.deleteTestimonial);
+
+// Contact messages
+router.get("/messages", admin.listMessages);
+router.post("/messages/:id/delete", admin.deleteMessage);
+
 export const adminRoutes = router;
