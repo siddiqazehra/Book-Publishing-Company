@@ -8,6 +8,17 @@ function getTransporter() {
   });
 }
 
+// Contact-form fields are free-text from an anonymous visitor (unlike order
+// data, which comes from our own DB/logged-in user), so escape before
+// dropping them into an HTML email.
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function itemsHtml(order) {
   return order.items
     .map((i) => `<tr><td>${i.title}</td><td>${i.quantity}</td><td>Rs. ${i.price}</td></tr>`)
@@ -51,4 +62,55 @@ export async function sendOrderEmails(order) {
 
   order.payment.emailSent = true;
   await order.save();
+}
+
+// NEW: contact form — sends two emails: one to the admin (so they see the
+// message and can just hit reply), and one to the visitor confirming their
+// message was actually received and won't be ignored.
+export async function sendContactEmails({ name, email, subject, message }) {
+  const transporter = getTransporter();
+  if (!transporter) {
+    console.warn("Contact form submitted, but email not sent — GMAIL_USER/GMAIL_APP_PASSWORD not set.");
+    return { sent: false };
+  }
+
+  const safeName = escapeHtml(name);
+  const safeSubject = escapeHtml(subject);
+  const safeMessage = escapeHtml(message).replace(/\n/g, "<br>");
+
+  // 1. Notify the admin — plain and functional, easy to act on.
+  await transporter.sendMail({
+    from: process.env.GMAIL_USER,
+    to: process.env.CONTACT_INBOX || process.env.GMAIL_USER,
+    replyTo: email, // hitting "reply" goes straight to the visitor, not to us
+    subject: `New message: ${subject}`,
+    html: `
+      <h2>New Contact Form Message</h2>
+      <p><strong>From:</strong> ${safeName} (${email})</p>
+      <p><strong>Subject:</strong> ${safeSubject}</p>
+      <p><strong>Message:</strong></p>
+      <p>${safeMessage}</p>
+    `,
+  });
+
+  // 2. Acknowledge the visitor — reassures them it was actually received,
+  // not a dismissive auto-reply.
+  await transporter.sendMail({
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: "We've received your message — Publishing Company",
+    html: `
+      <h2>We've received your message</h2>
+      <p>Hi ${safeName},</p>
+      <p>Thank you for reaching out to Publishing Company. We've received your
+      message about "<strong>${safeSubject}</strong>" and our team will review
+      it and get back to you as soon as possible.</p>
+      <p>For your records, here's what you sent us:</p>
+      <blockquote style="margin:0; padding:10px 16px; border-left:3px solid #1f4d3a; color:#4b463d;">${safeMessage}</blockquote>
+      <p>Thanks again for getting in touch.</p>
+      <p>— The Publishing Company Team</p>
+    `,
+  });
+
+  return { sent: true };
 }

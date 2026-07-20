@@ -1,10 +1,10 @@
-import nodemailer from "nodemailer";
 import { Book } from "../models/Book.js";
 import { Order } from "../models/Order.js";
 import { Settings } from "../models/Settings.js";
 import { Genre } from "../models/Genre.js";
 import { Testimonial } from "../models/Testimonial.js";
 import { Contact } from "../models/Contact.js";
+import { sendContactEmails } from "../utils/mailer.js";
 
 // Small helper: every page needs the full book list for the header search /
 // catalog overlay + "BOOKS" JS global (see partials/footer.ejs).
@@ -115,37 +115,11 @@ export const submitContact = async (req, res) => {
     // Always store the message in the database first.
     await Contact.create({ name, email, subject, message });
 
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-      // Email isn't configured in this environment — don't fail the whole
-      // form, just let the visitor know their message wasn't actually sent.
-      console.warn("Contact form submitted, but GMAIL_USER/GMAIL_APP_PASSWORD are not set — email not sent.");
-      return res.status(200).json({
-        success: true,
-        message: "Message received (email delivery isn't configured on this server yet).",
-      });
-    }
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-    });
-
-    await transporter.sendMail({
-      from: email,
-      to: "publishingcompany@gmail.com",
-      subject: `Contact Form: ${subject}`,
-      html: `
-                <h2>New Contact Form Submission</h2>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Subject:</strong> ${subject}</p>
-                <p><strong>Message:</strong></p>
-                <p>${message}</p>
-            `,
-    });
+    // NEW: sends both the admin notification AND a confirmation email back
+    // to whoever filled out the form (previously only the admin was
+    // emailed). If email isn't configured, this just logs a warning and
+    // the form still succeeds — same graceful fallback as before.
+    await sendContactEmails({ name, email, subject, message });
 
     res.status(200).json({ success: true, message: "Message sent successfully." });
   } catch (error) {

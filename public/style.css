@@ -855,69 +855,10 @@ footer {
     font-size: 40px;
 }
 
-/* =========
-    Logos Section
-   ========= */
-#logo-section{
-    display: flex;
-    justify-content: center;
-    padding: 5% 0%;
-    background-color: white;
-}
-#logo-parent{
-    width: 70%;
-    display: flex;
-    justify-content: center;
-    gap: 10%;
-}
-.logo-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-}
-.logo-div img{
-    width: 30%;
-}
-.logo-div p{
-    margin: 10% 0% 0% 0%;
-}
-.blue-text{
-    color: var(--dark-gray);
-}
-/* ====
-    forms
-    ==== */
-
-#form-section {
-    display: flex;
-    justify-content: center;
-    padding: 2% 0% 5% 0%;
-    background-color: var(--beige);
-}
-#form-parent{
-    display: flex;
-    background-color: white;
-    width: 60%;
-}
-#maps {
-    width: 45%;
-}
-#maps iframe{
-    height: 100%;
-}
-.form-div {
-    background-color: white;
-    padding: 5% 5%;
-}
-.form-div h2{
-    font-weight: lighter;
-    margin-bottom: 10%;
-}
-#blue-text {
-    color: var(--dark-gray);
-}
+/* Logos Section + Contact form styling now lives entirely in the
+   "REFINEMENTS" block near the end of this file — having two separate rule
+   sets for #logo-section/#form-parent/etc. was fighting itself and causing
+   the background/whitespace bugs on the contact page. */
 input,
 textarea {
     border-bottom: 1px solid gainsboro;
@@ -1824,25 +1765,43 @@ html { scroll-behavior: smooth; }
 .order-total-value { color: var(--brass); font-family: lora; font-size: 16px; }
 
 /* ---- Contact page (icons + full-length form) ---- */
-#logo-section { padding: 46px 24px; }
-#logo-parent { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; max-width: 1100px; margin: 0 auto; width: auto; }
-.logo-div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px 18px; box-shadow: var(--p-shadow); }
+/* CHANGED: section background is now the site's warm ivory/wheat tone (was
+   plain white, which was nearly indistinguishable from the cards sitting on
+   it and made the section look flat/broken against the rest of the site). */
+#logo-section { padding: 46px 24px; background: var(--beige); }
+/* CHANGED: wider (was max-width:1100px) — was looking compressed */
+#logo-parent { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; max-width: 1280px; margin: 0 auto; width: auto; }
+/* CHANGED: literal white now (was var(--surface), an off-white that barely
+   contrasted against the section background) */
+.logo-div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 18px; box-shadow: var(--p-shadow); }
 .logo-div a { width: 56px; height: 56px; border-radius: 50%; background: rgba(31,77,58,0.08); display: flex; align-items: center; justify-content: center; }
 .logo-div img { width: 26px; height: 26px; object-fit: contain; }
 .logo-div p { font-size: 14px; color: var(--ink-soft, #4b463d); }
 .blue-text { color: var(--brass) !important; font-weight: 600; }
-#form-section { padding: 20px 24px 70px; }
-#form-parent { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 1100px; margin: 0 auto; align-items: stretch; width: auto; }
-#maps { width: 100%; min-height: 440px; }
-#maps iframe { width: 100%; height: 100%; min-height: 440px; border-radius: 14px; }
-.form-div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 30px; box-shadow: var(--p-shadow); width: auto; }
+/* CHANGED: same wheatish tone as #logo-section, and no stray background on
+   #form-parent behind it (that leftover white was showing through the grid
+   gap between the map and the form, which is what read as a "whitespace
+   gap breaking the layout" between the two cards) */
+#form-section { padding: 20px 24px 70px; background: var(--beige); }
+/* CHANGED: narrower (was max-width:1280px, felt too wide) and this is now
+   the ONE card itself — background/border/radius/shadow moved here from
+   the two children below, so the map and form sit inside a single unified
+   shape split exactly in half, with no gap between them. */
+#form-parent { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 1000px; margin: 0 auto; align-items: stretch; width: 100%; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--p-shadow); overflow: hidden; }
+
+#maps { width: 100%; min-height: 500px; }
+#maps iframe { width: 100%; height: 100%; min-height: 440px; display: block; }
+
+.form-div { background: transparent; border: none; border-left: 1px solid var(--line); border-radius: 0; padding: 30px; box-shadow: none; width: auto; }
 .form-div h2 { font-family: lora; font-size: 24px; margin-bottom: 8px; color: var(--ink); }
 .form-div form label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin: 14px 0 6px; }
-.form-div form input, .form-div form textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font-family: var(--roboto); font-size: 15px; background: #fff; box-sizing: border-box; }
+.form-div form input, .form-div form textarea { width: 100% !important; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font-family: var(--roboto); font-size: 15px; background: #fff; box-sizing: border-box; margin: 0; }
 .form-div form input:focus, .form-div form textarea:focus { outline: none; border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(31,77,58,0.12); }
 .form-div label.error { display: block; color: #c0392b; font-size: 12px; text-transform: none; letter-spacing: 0; margin-top: 4px; }
 #form-button { margin-top: 18px; }
-@media (max-width: 800px) { #form-parent { grid-template-columns: 1fr; } }
+/* CHANGED: on narrow screens the two halves stack, so the divider needs to
+   move from the left edge to the top edge */
+@media (max-width: 800px) { #form-parent { grid-template-columns: 1fr; } .form-div { border-left: none; border-top: 1px solid var(--line); } }
 
 /* ---- Testimonials (professional grid) ---- */
 #testimonials { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
