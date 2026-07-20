@@ -102,6 +102,7 @@ header{
     font-family: var(--roboto);
     width: 200px;
     box-sizing: border-box;
+    margin-bottom: 0;
 }
 #header-search-input:focus{
     outline: 2px solid var(--dark-gray);
