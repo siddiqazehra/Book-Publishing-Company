@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 72" width="120" height="72">
+  <rect x="2" y="2" width="116" height="68" rx="12" fill="#0aa14b"/>
+  <rect x="2" y="2" width="116" height="34" rx="12" fill="#12b558"/>
+  <circle cx="26" cy="36" r="13" fill="#ffffff"/>
+  <text x="26" y="41" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="#0aa14b" text-anchor="middle">e</text>
+  <text x="70" y="31" font-family="Arial, sans-serif" font-size="13" font-weight="800" fill="#ffffff" text-anchor="middle">easy</text>
+  <text x="70" y="52" font-family="Arial, sans-serif" font-size="13" font-weight="800" fill="#ffffff" text-anchor="middle">paisa</text>
+</svg>

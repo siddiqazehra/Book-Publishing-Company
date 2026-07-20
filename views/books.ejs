@@ -40,7 +40,7 @@
                 <p id="books-empty">No books available yet. Please check back soon.</p>
             <% } else { %>
                 <% books.forEach(function(book) { %>
-                    <article class="book-card books-card"
+                    <article class="books-card"
                         data-title="<%= book.title.toLowerCase() %>"
                         data-author="<%= book.author.toLowerCase() %>"
                         data-genre="<%= (book.genre || '').toLowerCase() %>"

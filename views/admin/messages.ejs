@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - Publishing Company</title>
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <div id="admin-shell">
+    <%- include('../partials/admin-sidebar', { active: 'messages' }) %>
+    <main id="admin-main">
+      <div id="admin-topbar"><h1>Contact Messages</h1><div class="admin-user">Signed in as <strong><%= user.name %></strong></div></div>
+      <div class="admin-panel">
+        <% if (!messages || messages.length === 0) { %>
+          <p class="admin-empty">No messages yet.</p>
+        <% } else { %>
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th></th></tr></thead>
+            <tbody>
+              <% messages.forEach(function(m) { %>
+                <tr>
+                  <td><%= new Date(m.createdAt).toLocaleDateString() %></td>
+                  <td><%= m.name %></td>
+                  <td><%= m.email %></td>
+                  <td><%= m.subject %></td>
+                  <td><%= m.message %></td>
+                  <td class="table-actions">
+                    <form action="/admin/messages/<%= m._id %>/delete" method="POST" onsubmit="return confirm('Delete this message?');">
+                      <button type="submit" class="btn-sm btn-delete">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

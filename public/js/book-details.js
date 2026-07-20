@@ -29,9 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
         '<p id="book-details-description">' + book.description + "</p>" +
         '<div id="book-details-qty">' +
         '<label for="book-quantity">Quantity</label>' +
-        '<button type="button" id="qty-decrease" aria-label="Decrease quantity">-</button>' +
+        '<div class="qty-stepper">' +
+        '<button type="button" id="qty-decrease" aria-label="Decrease quantity">&minus;</button>' +
         '<input type="number" id="book-quantity" value="1" min="1">' +
         '<button type="button" id="qty-increase" aria-label="Increase quantity">+</button>' +
+        '</div>' +
         "</div>" +
         '<button class="button" id="add-to-cart-button">Add to Cart</button>' +
         "</div>";

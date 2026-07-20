@@ -102,6 +102,7 @@ header{
     font-family: var(--roboto);
     width: 200px;
     box-sizing: border-box;
+    margin-bottom: 0;
 }
 #header-search-input:focus{
     outline: 2px solid var(--dark-gray);
@@ -511,7 +512,7 @@ header{
     font-family: var(--roboto);
 }
 #testimonials-heading h2{
-    color: white;
+    color: red;
     margin-bottom: 10% ;
     font-family: lora;
     font-weight: 500;
@@ -855,69 +856,10 @@ footer {
     font-size: 40px;
 }
 
-/* =========
-    Logos Section
-   ========= */
-#logo-section{
-    display: flex;
-    justify-content: center;
-    padding: 5% 0%;
-    background-color: white;
-}
-#logo-parent{
-    width: 70%;
-    display: flex;
-    justify-content: center;
-    gap: 10%;
-}
-.logo-div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-}
-.logo-div img{
-    width: 30%;
-}
-.logo-div p{
-    margin: 10% 0% 0% 0%;
-}
-.blue-text{
-    color: var(--dark-gray);
-}
-/* ====
-    forms
-    ==== */
-
-#form-section {
-    display: flex;
-    justify-content: center;
-    padding: 2% 0% 5% 0%;
-    background-color: var(--beige);
-}
-#form-parent{
-    display: flex;
-    background-color: white;
-    width: 60%;
-}
-#maps {
-    width: 45%;
-}
-#maps iframe{
-    height: 100%;
-}
-.form-div {
-    background-color: white;
-    padding: 5% 5%;
-}
-.form-div h2{
-    font-weight: lighter;
-    margin-bottom: 10%;
-}
-#blue-text {
-    color: var(--dark-gray);
-}
+/* Logos Section + Contact form styling now lives entirely in the
+   "REFINEMENTS" block near the end of this file — having two separate rule
+   sets for #logo-section/#form-parent/etc. was fighting itself and causing
+   the background/whitespace bugs on the contact page. */
 input,
 textarea {
     border-bottom: 1px solid gainsboro;
@@ -1776,3 +1718,151 @@ input[type="email"]:focus, input[type="password"]:focus {
     transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 #hero-view-all:hover { transform: translateY(-2px); background: var(--emerald-deep); box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85); }
+
+/* ---- Header account buttons: keep them compact so the row never overflows ---- */
+#login-register {
+    justify-content: flex-end !important;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+#login-register .button,
+#login-register #blue-button,
+#login-register #white-button {
+    padding: 8px 15px !important;
+    font-size: 13px !important;
+}
+#login-register #logout-form { margin: 0; display: inline-flex; }
+#header-greeting { white-space: nowrap; }
+
+/* ============================================================
+   REFINEMENTS — headings, orders, contact, testimonials,
+   author cards, qty stepper, payment methods, smooth scroll
+   ============================================================ */
+html { scroll-behavior: smooth; }
+
+/* ---- Shared page heading (Books-page style, no image) ---- */
+.page-hero { text-align: center; padding: 64px 24px 8px; max-width: 1200px; margin: 0 auto; }
+.page-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--brass); margin-bottom: 12px; }
+.page-hero h1 { font-family: lora; font-size: clamp(36px, 5vw, 54px); font-weight: 600; letter-spacing: -0.5px; color: var(--ink); line-height: 1.05; }
+.page-hero h1::after { content: ""; display: block; width: 64px; height: 3px; margin: 20px auto 0; background: linear-gradient(90deg, var(--brass-bright), var(--emerald)); }
+
+/* ---- My Orders (professional order cards + items table) ---- */
+.orders-section { max-width: 1000px; margin: 0 auto; padding: 30px 24px 80px; }
+.orders-empty { text-align: center; color: var(--muted); padding: 40px 0; font-size: 16px; }
+.orders-empty a { color: var(--emerald); font-weight: 600; }
+.order-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--p-shadow); margin-bottom: 24px; overflow: hidden; }
+.order-card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 22px; background: var(--surface-2, #faf6ee); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.order-card-meta { display: flex; align-items: baseline; gap: 14px; }
+.order-id { font-family: lora; font-size: 18px; font-weight: 600; color: var(--ink); }
+.order-date { font-size: 13px; color: var(--muted); }
+.order-items-scroll { overflow-x: auto; }
+.order-items { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 520px; }
+.order-items th { text-align: left; padding: 12px 22px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; border-bottom: 1px solid var(--line); }
+.order-items td { padding: 12px 22px; border-bottom: 1px solid var(--line); color: var(--ink-soft, #4b463d); vertical-align: middle; }
+.order-thumb { width: 40px; height: 56px; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); }
+.order-item-title { font-weight: 600; color: var(--ink); }
+.order-items tfoot td { border-bottom: none; font-weight: 700; padding-top: 14px; }
+.order-total-label { text-align: right; color: var(--ink); }
+.order-total-value { color: var(--brass); font-family: lora; font-size: 16px; }
+
+/* ---- Contact page (icons + full-length form) ---- */
+/* CHANGED: section background is now the site's warm ivory/wheat tone (was
+   plain white, which was nearly indistinguishable from the cards sitting on
+   it and made the section look flat/broken against the rest of the site). */
+#logo-section { padding: 46px 24px; background: var(--beige); }
+/* CHANGED: wider (was max-width:1100px) — was looking compressed */
+#logo-parent { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; max-width: 1280px; margin: 0 auto; width: auto; }
+/* CHANGED: literal white now (was var(--surface), an off-white that barely
+   contrasted against the section background) */
+.logo-div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 18px; box-shadow: var(--p-shadow); }
+.logo-div a { width: 56px; height: 56px; border-radius: 50%; background: rgba(31,77,58,0.08); display: flex; align-items: center; justify-content: center; }
+.logo-div img { width: 26px; height: 26px; object-fit: contain; }
+.logo-div p { font-size: 14px; color: var(--ink-soft, #4b463d); }
+.blue-text { color: var(--brass) !important; font-weight: 600; }
+/* CHANGED: same wheatish tone as #logo-section, and no stray background on
+   #form-parent behind it (that leftover white was showing through the grid
+   gap between the map and the form, which is what read as a "whitespace
+   gap breaking the layout" between the two cards) */
+#form-section { padding: 20px 24px 70px; background: var(--beige); }
+/* CHANGED: narrower (was max-width:1280px, felt too wide) and this is now
+   the ONE card itself — background/border/radius/shadow moved here from
+   the two children below, so the map and form sit inside a single unified
+   shape split exactly in half, with no gap between them. */
+#form-parent { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 1000px; margin: 0 auto; align-items: stretch; width: 100%; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--p-shadow); overflow: hidden; }
+
+#maps { width: 100%; min-height: 500px; }
+#maps iframe { width: 100%; height: 100%; min-height: 440px; display: block; }
+
+.form-div { background: transparent; border: none; border-left: 1px solid var(--line); border-radius: 0; padding: 30px; box-shadow: none; width: auto; }
+.form-div h2 { font-family: lora; font-size: 24px; margin-bottom: 8px; color: var(--ink); }
+.form-div form label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin: 14px 0 6px; }
+.form-div form input, .form-div form textarea { width: 100% !important; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font-family: var(--roboto); font-size: 15px; background: #fff; box-sizing: border-box; margin: 0; }
+.form-div form input:focus, .form-div form textarea:focus { outline: none; border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(31,77,58,0.12); }
+.form-div label.error { display: block; color: #c0392b; font-size: 12px; text-transform: none; letter-spacing: 0; margin-top: 4px; }
+#form-button { margin-top: 18px; }
+/* CHANGED: on narrow screens the two halves stack, so the divider needs to
+   move from the left edge to the top edge */
+@media (max-width: 800px) { #form-parent { grid-template-columns: 1fr; } .form-div { border-left: none; border-top: 1px solid var(--line); } }
+
+/* ---- Testimonials (professional grid) ---- */
+#testimonials { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
+#testimonials-heading { text-align: center; margin-bottom: 40px; }
+#testimonials-heading p { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--brass); margin-bottom: 10px; }
+#testimonials-heading h2 { font-family: lora; font-size: clamp(28px, 4vw, 40px); color: var(--ink); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+.tcard { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 30px 28px 24px; box-shadow: var(--p-shadow); display: flex; flex-direction: column; gap: 16px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.tcard:hover { transform: translateY(-4px); box-shadow: 0 22px 48px -20px rgba(23,57,43,0.34); }
+.tcard-quote { position: absolute; top: 6px; right: 22px; font-family: Georgia, serif; font-size: 64px; line-height: 1; color: rgba(176,137,76,0.22); }
+.tcard-text { font-size: 15px; line-height: 1.7; color: var(--ink-soft, #4b463d); font-style: italic; border: none; margin: 0; padding: 0; }
+.tcard-author { display: flex; align-items: center; gap: 14px; margin-top: auto; padding-top: 8px; }
+.tcard-avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+.tcard-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.tcard-initials { display: flex; align-items: center; justify-content: center; background: var(--emerald); color: #fdfaf2; font-family: lora; font-size: 20px; font-weight: 700; }
+.tcard-meta { display: flex; flex-direction: column; }
+.tcard-meta strong { font-size: 15px; color: var(--ink); }
+.tcard-meta small { font-size: 13px; color: var(--brass); }
+.testimonials-empty { text-align: center; color: var(--muted); padding: 30px 0; }
+
+/* ---- Book details quantity stepper ---- */
+#book-details-qty { display: flex; align-items: center; gap: 14px; margin: 18px 0; }
+#book-details-qty label { font-weight: 600; color: var(--ink); }
+#book-details-qty .qty-stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; height: 44px; }
+#book-details-qty .qty-stepper button { width: 44px; height: 44px; border: none; background: var(--surface-2, #faf6ee); color: var(--ink); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s ease; }
+#book-details-qty .qty-stepper button:hover { background: rgba(31,77,58,0.10); color: var(--emerald); }
+#book-details-qty .qty-stepper input { width: 56px; height: 44px; border: none; border-left: 1px solid var(--line); border-right: 1px solid var(--line); border-radius: 0; text-align: center; font-size: 16px; font-family: var(--roboto); -moz-appearance: textfield; background: #fff; margin: 0; padding: 0; }
+#book-details-qty .qty-stepper input::-webkit-outer-spin-button, #book-details-qty .qty-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---- Author profile cards (about page) ---- */
+#writers-cards-div { display: flex; flex-direction: column; gap: 26px; }
+.writers-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 26px; width: 100%; }
+.writers-card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--p-shadow); overflow: hidden; text-align: center; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+.writers-card:hover { transform: translateY(-4px); border-color: var(--brass); box-shadow: 0 22px 48px -20px rgba(23,57,43,0.34); }
+.writer-img { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #efe8db; }
+.writer-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.writers-info { padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.writers-info h2 { font-family: lora; font-size: 19px; color: var(--ink); }
+.writers-info p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+.writers-info button { margin-top: auto; align-self: center; border: 1px solid var(--emerald); background: transparent; color: var(--emerald); font-weight: 600; font-size: 13px; padding: 9px 18px; border-radius: 999px; cursor: pointer; transition: all 0.18s ease; font-family: var(--roboto); }
+.writers-info button:hover { background: var(--emerald); color: #fdfaf2; }
+
+/* ---- Book cards on author page / top sellers (like books page) ---- */
+#seller-book-card { max-width: 1200px; margin: 0 auto; }
+.seller-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 26px; }
+.seller-book { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--p-shadow); overflow: hidden; text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+.seller-book:hover { transform: translateY(-4px); border-color: var(--brass); box-shadow: 0 22px 48px -20px rgba(23,57,43,0.34); }
+.seller-book-img { width: 100%; aspect-ratio: 4 / 5; overflow: hidden; background: #efe8db; }
+.seller-book-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.seller-book-info { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 4px; }
+.seller-book-info h2 { font-family: lora; font-size: 17px; color: var(--ink); line-height: 1.25; }
+.seller-book-info p { font-size: 13.5px; color: var(--muted); }
+.seller-book-info .orange-text { color: var(--brass) !important; font-family: lora; font-size: 17px; font-weight: 600; }
+
+/* ---- Checkout payment methods (radio right + logos, professional) ---- */
+.pay-methods { display: flex; flex-direction: column; gap: 12px; margin: 6px 0 14px; }
+.pay-opt { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease; margin: 0; }
+.pay-opt:hover { border-color: var(--brass); }
+.pay-opt:has(input:checked) { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(31,77,58,0.10); background: rgba(31,77,58,0.03); }
+.pay-logo { width: 58px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
+.pay-cod { display: flex; align-items: center; justify-content: center; background: var(--emerald); color: #fdfaf2; font-weight: 800; font-size: 13px; letter-spacing: 0.5px; }
+.pay-name { font-size: 15px; font-weight: 600; color: var(--ink); }
+.pay-opt input[type="radio"] { margin-left: auto; width: 20px; height: 20px; accent-color: var(--emerald); cursor: pointer; }

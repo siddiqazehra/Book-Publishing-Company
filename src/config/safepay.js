@@ -7,15 +7,10 @@ export function getSafepay() {
 
   const environment = process.env.SAFEPAY_ENV === "production" ? "production" : "sandbox";
 
-  if (!process.env.SAFEPAY_SECRET_KEY) {
-    throw new Error(
-      "SAFEPAY_SECRET_KEY is not set. Check that .env is in the project root and has SAFEPAY_SECRET_KEY set."
-    );
-  }
-
   _safepay = new Safepay({
     environment,
-    apiKey: process.env.SAFEPAY_SECRET_KEY,
+    apiKey: process.env.SAFEPAY_PUBLIC_KEY,
+    v1Secret: process.env.SAFEPAY_SECRET_KEY,
     webhookSecret: process.env.SAFEPAY_WEBHOOK_SECRET,
   });
 

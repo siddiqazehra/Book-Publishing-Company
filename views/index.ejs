@@ -163,80 +163,33 @@
     </section>
     <section id="testimonials">
         <div id="testimonials-heading">
-            <p>TESTIMONIAL</p>
-            <h2>Kinds Words From Our Clients</h2>
+            <p class="orange-text">TESTIMONIALS</p>
+            <h2>Kind Words From Our Readers</h2>
         </div>
-        <div id="testimonials-slider">
-            <div class="slider">
-                <div class="slider-row">
-                    <div class="card">
-                        <div class="card-text">
-                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
-                                Quality
-                                Assurance (SQA) comes in. .</p>
-                        </div>
-                        <div class="card-div">
-                            <div class="card-div-img">
-                                <img src="/images/author-img-1.jpg" alt="">
-                            </div>
-                            <div class="card-div-author">
-                                <h3>Liz Bennet</h3>
-                                <p>Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-text">
-                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
-                                Quality
-                                Assurance (SQA) comes in. .</p>
-                        </div>
-                        <div class="card-div">
-                            <div class="card-div-img">
-                                <img src="/images/author-img-1.jpg" alt="">
-                            </div>
-                            <div class="card-div-author">
-                                <h3>Liz Bennet</h3>
-                                <p>Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-text">
-                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
-                                Quality
-                                Assurance (SQA) comes in. .</p>
-                        </div>
-                        <div class="card-div">
-                            <div class="card-div-img">
-                                <img src="/images/author-img-1.jpg" alt="">
-                            </div>
-                            <div class="card-div-author">
-                                <h3>Liz Bennet</h3>
-                                <p>Manager</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-text">
-                            <p> In today's fast-paced tech world, quality is everything—and that's where Software
-                                Quality
-                                Assurance (SQA) comes in. .</p>
-                        </div>
-                        <div class="card-div">
-                            <div class="card-div-img">
-                                <img src="/images/author-img-1.jpg" alt="">
-                            </div>
-                            <div class="card-div-author">
-                                <h3>Liz Bennet</h3>
-                                <p>Manager</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+        <% if (testimonials && testimonials.length) { %>
+            <div class="testimonials-grid">
+                <% testimonials.forEach(function(t){
+                        var _m = t.message || t.testimonial || '';
+                        var _n = (t.name || 'Reader').trim();
+                        var _r = t.role || t.designation || 'Reader';
+                %>
+                    <figure class="tcard">
+                        <div class="tcard-quote">&ldquo;</div>
+                        <blockquote class="tcard-text"><%= _m %></blockquote>
+                        <figcaption class="tcard-author">
+                            <% if (t.image) { %>
+                                <span class="tcard-avatar"><img src="/<%= t.image %>" alt="<%= _n %>"></span>
+                            <% } else { %>
+                                <span class="tcard-avatar tcard-initials"><%= _n.charAt(0).toUpperCase() %></span>
+                            <% } %>
+                            <span class="tcard-meta"><strong><%= _n %></strong><small><%= _r %></small></span>
+                        </figcaption>
+                    </figure>
+                <% }); %>
             </div>
-        </div>
+        <% } else { %>
+            <p class="testimonials-empty">No testimonials yet.</p>
+        <% } %>
     </section>
 
     <%- include('partials/footer', { books: books }) %>

@@ -39,6 +39,7 @@ const orderSchema = new mongoose.Schema(
       reference: { type: String },
       proof: { type: String, default: "" },
       paidAt: { type: Date },
+emailSent: { type: Boolean, default: false },   
     },
     status: {
       type: String,
