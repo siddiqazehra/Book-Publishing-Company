@@ -511,7 +511,7 @@ header{
     font-family: var(--roboto);
 }
 #testimonials-heading h2{
-    color: white;
+    color: red;
     margin-bottom: 10% ;
     font-family: lora;
     font-weight: 500;
