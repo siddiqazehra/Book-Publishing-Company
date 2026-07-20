@@ -12,4 +12,6 @@ public/uploads/*
 
 # nested duplicate project copy (leftover from a bad merge) — do not track
 /Book-Publishing-Company/
+package-lock.json
+package.json
 .env
