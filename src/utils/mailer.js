@@ -119,3 +119,29 @@ export async function sendOrderStatusUpdate(order) {
   `);
   await send(order.shipping?.email, `Order #${order.orderId} is now ${order.status} — Publishing Company`, html);
 }
+
+// Notify the SHOP OWNER (GMAIL_USER) that an order was placed / paid. This is a
+// separate email from the customer confirmation, so it never double-sends.
+export async function sendOrderEmails(order) {
+  if (!order) return;
+  const html = shell(`
+    <h2 style="font-family:Georgia,serif;font-weight:normal;margin:0 0 6px;">New order received</h2>
+    <p style="font-size:14px;color:#4b463d;"><strong>Order:</strong> #${order.orderId}</p>
+    <p style="font-size:14px;color:#4b463d;"><strong>Customer:</strong> ${order.shipping?.name || ""} (${order.shipping?.email || ""})</p>
+    <p style="font-size:14px;color:#4b463d;"><strong>Address:</strong> ${order.shipping?.address || ""}</p>
+    <p style="font-size:14px;color:#4b463d;"><strong>Payment:</strong> ${order.payment?.provider || ""} — ${order.payment?.status || ""}</p>
+    ${itemsTable(order)}
+  `);
+  await send(process.env.GMAIL_USER, `New order #${order.orderId} — Publishing Company`, html);
+}
+
+// Sent to the SHOP OWNER when a visitor submits the Contact Us form.
+export async function sendContactEmails({ name, email, subject, message }) {
+  const html = shell(`
+    <h2 style="font-family:Georgia,serif;font-weight:normal;margin:0 0 6px;">New contact message</h2>
+    <p style="font-size:14px;color:#4b463d;"><strong>From:</strong> ${name || ""} (${email || ""})</p>
+    <p style="font-size:14px;color:#4b463d;"><strong>Subject:</strong> ${subject || ""}</p>
+    <p style="font-size:14px;color:#4b463d;white-space:pre-line;">${message || ""}</p>
+  `);
+  await send(process.env.GMAIL_USER, `Contact: ${subject || "New message"} — Publishing Company`, html);
+}

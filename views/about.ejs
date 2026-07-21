@@ -118,74 +118,27 @@
                 <p class="orange-text">TOP SELLERS</p>
                 <h2 class="welcome-heading">Top Sellers</h2>
             </div>
-            <div id="seller-book-card">
-                <div id="seller-row-2" class="seller-rows">
-                    <div class="seller-book">
-                        <div class="seller-book-img">
-                            <img src="/images/book5.jpg" alt="Author's Image">
-                        </div>
-                        <div class="seller-book-info">
-                            <p class="orange-text">Rs. 24.00</p>
-                            <h2>This is: Book Name</h2>
-                            <p>By Respected Author</p>
-                        </div>
+            <% if (topBooks && topBooks.length) { %>
+                <div id="seller-book-card">
+                    <div class="seller-rows">
+                        <% topBooks.forEach(function(book){ %>
+                            <a class="seller-book" href="/book-details?id=<%= book._id %>">
+                                <div class="seller-book-img">
+                                    <img src="/<%= book.image %>" alt="<%= book.title %>">
+                                </div>
+                                <div class="seller-book-info">
+                                    <p class="orange-text">Rs. <%= book.price.toFixed(2) %></p>
+                                    <h2><%= book.title %></h2>
+                                    <p>By <%= book.author %></p>
+                                </div>
+                            </a>
+                        <% }); %>
                     </div>
-                    <div class="seller-book">
-                        <div class="seller-book-img">
-                            <img src="/images/book6.jpg" alt="">
-                        </div>
-                        <div class="seller-book-info">
-                            <p class="orange-text">Rs. 24.00</p>
-                            <h2>This is: Book Name</h2>
-                            <p>By Respected Author</p>
-                        </div>
-                    </div>
-                    <div class="seller-book">
-                        <div class="seller-book-img">
-                            <img src="/images/book1.jpg" alt="">
-                        </div>
-                        <div class="seller-book-info">
-                            <p class="orange-text">Rs. 24.00</p>
-                            <h2>This is: Book Name</h2>
-                            <p>By Respected Author</p>
-                        </div>
-                    </div>
-
                 </div>
-                <div id="seller-row-1" class="seller-rows">
-                    <div class="seller-book">
-                        <div class="seller-book-img">
-                            <img src="/images/book1.jpg" alt="">
-                        </div>
-                        <div class="seller-book-info">
-                            <p class="orange-text">Rs. 24.00</p>
-                            <h2>This is: Book Name</h2>
-                            <p>By Respected Author</p>
-                        </div>
-                    </div>
-                    <div class="seller-book">
-                        <div class="seller-book-img">
-                            <img src="/images/book4.jpg" alt="">
-                        </div>
-                        <div class="seller-book-info">
-                            <p class="orange-text">Rs. 24.00</p>
-                            <h2>This is: Book Name</h2>
-                            <p>By Respected Author</p>
-                        </div>
-                    </div>
-                    <div class="seller-book">
-                        <div class="seller-book-img">
-                            <img src="/images/book3.jpg" alt="">
-                        </div>
-                        <div class="seller-book-info">
-                            <p class="orange-text">Rs. 24.00</p>
-                            <h2>This is: Book Name</h2>
-                            <p>By Respected Author</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <% } else { %>
+                <p style="text-align:center; color:#8c8474; padding:36px 0;">No books to show yet.</p>
+            <% } %>
+        </div>
     </section>
 
     <%- include('partials/footer', { books: books }) %>

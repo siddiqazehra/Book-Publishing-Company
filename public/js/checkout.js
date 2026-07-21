@@ -89,10 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       clearCart();
       if (data.checkoutUrl) { window.location.href = data.checkoutUrl; return; }
-      // manual / cash confirmation
-      document.getElementById("checkout-layout").hidden = true;
-      const notice = document.getElementById("checkout-demo-notice");
-      if (notice) notice.hidden = true;
+      // manual / cash confirmation — hide the whole checkout (heading + form)
+      // and show a centered success card in its place.
+      const parent = document.getElementById("checkout-parent");
+      if (parent) parent.hidden = true;
       const conf = document.getElementById("checkout-confirmation");
       const msg = document.getElementById("checkout-confirmation-msg");
       let text = "Your order #" + (data.order?.orderId ?? "") + " has been placed.";

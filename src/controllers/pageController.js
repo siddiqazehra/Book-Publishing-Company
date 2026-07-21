@@ -27,7 +27,9 @@ export const home = async (req, res, next) => {
 export const about = async (req, res, next) => {
   try {
     const books = await getAllBooksLean();
-    res.render("about", { title: "About Us", books });
+    // Real top-selling books (by how many were bought), for the About page.
+    const topBooks = await Book.find().sort({ popularity: -1, createdAt: -1 }).limit(8).lean();
+    res.render("about", { title: "About Us", books, topBooks });
   } catch (err) {
     next(err);
   }

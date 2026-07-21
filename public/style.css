@@ -1457,13 +1457,6 @@ footer {
 .pay-opt { display: block; margin: 6px 0; cursor: pointer; }
 .pay-info { background: #f1f5f9; border-radius: 6px; padding: 10px 12px; margin: 8px 0; font-size: 14px; }
 
-/* ============================================================
-   PREMIUM THEME LAYER — "Publishing House"
-   Appended last so it retones the storefront to match the admin:
-   deep emerald + warm brass on ivory/ink, Lora serif display.
-   Retones via :root then polishes high-visibility components.
-   ============================================================ */
-
 :root {
     --gray: #e4dac8;
     --peach: #b0894c;          /* accent → brass */
@@ -1621,7 +1614,15 @@ input[type="email"]:focus, input[type="password"]:focus {
 }
 
 /* ---- Checkout payment selector polish (from earlier task) ---- */
-.pay-opt { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); transition: border-color 0.15s ease; }
+.pay-opt input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+}
 .pay-opt:hover { border-color: var(--brass); }
 .pay-info { background: #eef2ee; border: 1px solid #d5e0d8; border-left: 3px solid var(--emerald); }
 
@@ -1866,3 +1867,62 @@ html { scroll-behavior: smooth; }
 .pay-cod { display: flex; align-items: center; justify-content: center; background: var(--emerald); color: #fdfaf2; font-weight: 800; font-size: 13px; letter-spacing: 0.5px; }
 .pay-name { font-size: 15px; font-weight: 600; color: var(--ink); }
 .pay-opt input[type="radio"] { margin-left: auto; width: 20px; height: 20px; accent-color: var(--emerald); cursor: pointer; }
+
+/* ---- Checkout success confirmation (centered) ---- */
+#checkout-confirmation { display: flex; align-items: center; justify-content: center; min-height: 62vh; padding: 40px 20px; }
+#checkout-confirmation[hidden] { display: none; }
+.confirm-card { max-width: 460px; width: 100%; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--p-shadow); padding: 46px 32px; }
+.confirm-check { width: 74px; height: 74px; margin: 0 auto 22px; border-radius: 50%; background: rgba(31,77,58,0.10); color: var(--emerald); display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 700; }
+.confirm-card h2 { font-family: lora; font-size: 27px; color: var(--ink); margin-bottom: 12px; }
+.confirm-card #checkout-confirmation-msg { color: var(--muted); font-size: 15px; line-height: 1.65; margin-bottom: 26px; }
+.confirm-card .button { display: inline-block; }
+
+/* ============================================================
+   MOBILE RESPONSIVENESS — polish header, nav, hero, genres
+   ============================================================ */
+@media (max-width: 700px) {
+  header { grid-template-columns: 1fr; gap: 12px; padding: 12px 14px 0; }
+  #header-search-cart { order: 2; }
+  #website-title { order: 1; }
+  #login-register { order: 3; justify-content: center !important; flex-wrap: wrap; }
+  #header-search-input { width: 62vw; max-width: 260px; }
+  #navbar { margin-top: 14px; }
+  #tabs { width: 100%; flex-wrap: wrap; gap: 4px 0; margin: 12px 0; }
+  #tabs a { margin: 4px 12px; }
+  #img-under-navbar { min-height: 78vh; background-attachment: scroll; }
+  #img-under-navbar-div { padding: 22% 22px 0; max-width: 100%; }
+  #img-under-navbar #img-under-navbar-div h2 { font-size: 34px; }
+  #genre-parent { flex-wrap: wrap; width: 92%; gap: 42px 16px; }
+  .genre-cards { flex: 1 1 40%; }
+  .page-hero { padding: 44px 20px 6px; }
+  .page-hero h1 { font-size: 32px; }
+  #welcome-div, #writers-parent, #seller-parent { width: 92% !important; margin: 0 auto; }
+  #form-parent { grid-template-columns: 1fr; }
+  #testimonials, .orders-section, #books-page { padding-left: 16px; padding-right: 16px; }
+}
+
+@media (max-width: 420px) {
+  #header-search-input { width: 56vw; }
+  #img-under-navbar #img-under-navbar-div h2 { font-size: 28px; }
+  #tabs a { margin: 4px 8px; font-size: 14px; }
+}
+
+/* ============================================================
+   ABOUT PAGE — centered text + proper padding
+   ============================================================ */
+#welcome { padding: 44px 24px 20px; display: flex; justify-content: center; }
+#welcome-div { max-width: 780px; width: 100%; text-align: center; margin: 0 auto; }
+#orange-welcome-text { color: var(--brass) !important; letter-spacing: 2.5px; font-weight: 700; font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
+#welcome-div .welcome-heading { font-family: lora; font-size: clamp(26px, 4vw, 36px); color: var(--ink); margin: 6px 0 18px; }
+#welcome-div .welcome-text { color: var(--ink-soft, #4b463d); line-height: 1.85; font-size: 15.5px; margin: 14px 0; }
+#welcome-div blockquote { font-family: lora; font-style: italic; font-size: clamp(18px, 3vw, 22px); color: var(--emerald); border: none; margin: 26px auto; max-width: 600px; padding: 6px 20px; line-height: 1.5; }
+
+#writers { padding: 34px 24px 40px; }
+#writers-parent { max-width: 1200px; width: 92%; margin: 0 auto; }
+#writers-heading, #seller-heading { text-align: center; margin-bottom: 34px; }
+#writers-heading .welcome-heading, #seller-heading .welcome-heading { font-family: lora; font-size: clamp(26px, 4vw, 38px); color: var(--ink); }
+#writers-heading .orange-text, #seller-heading .orange-text { color: var(--brass) !important; letter-spacing: 2.5px; font-weight: 700; font-size: 12px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+
+#top-sellers { padding: 20px 24px 72px; }
+#seller-parent { max-width: 1200px; width: 92%; margin: 0 auto; }
+#seller-book-card { width: 100%; max-width: 1200px; margin: 0 auto; }
