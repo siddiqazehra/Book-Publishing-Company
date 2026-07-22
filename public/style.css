@@ -217,7 +217,7 @@ header{
 #img-under-navbar #img-under-navbar-div p{
     font-size: 16px;
     font-family: var(--roboto);
-    color: var(--light-black);
+    color: white;
 }
 .button{
     padding: 1%;
@@ -494,7 +494,7 @@ header{
     font-family: var(--roboto);
 }
 #testimonials-heading h2{
-    color: red;
+    color: white;
     margin-bottom: 10% ;
     font-family: lora;
     font-weight: 500;
@@ -1826,7 +1826,7 @@ html { scroll-behavior: smooth; }
 #testimonials { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
 #testimonials-heading { text-align: center; margin-bottom: 40px; }
 #testimonials-heading p { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--brass); margin-bottom: 10px; }
-#testimonials-heading h2 { font-family: lora; font-size: clamp(28px, 4vw, 40px); color: var(--ink); }
+#testimonials-heading h2 { font-family: lora; font-size: clamp(28px, 4vw, 40px); }
 .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
 .tcard { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 30px 28px 24px; box-shadow: var(--p-shadow); display: flex; flex-direction: column; gap: 16px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .tcard:hover { transform: translateY(-4px); box-shadow: 0 22px 48px -20px rgba(23,57,43,0.34); }
