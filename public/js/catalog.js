@@ -1,4 +1,3 @@
-/* BEGIN: Book Search & Cart Feature - catalog overlay (search/sort), index.html only */
 function renderCatalogGrid(searchTerm, sortBy) {
     const grid = document.getElementById("catalog-grid");
     if (!grid) return;
@@ -96,4 +95,3 @@ document.addEventListener("DOMContentLoaded", () => {
         headerSearchBtn.addEventListener("click", goToBooks);
     }
 });
-/* END: Book Search & Cart Feature - catalog overlay (search/sort), index.html only */

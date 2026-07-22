@@ -40,10 +40,12 @@
                                 <tr>
                                     <td><%= g.name %></td>
                                     <td class="table-actions">
-                                        <a class="btn-sm btn-edit" href="/admin/genres/<%= g._id %>/edit">Edit</a>
-                                        <form action="/admin/genres/<%= g._id %>/delete" method="POST" onsubmit="return confirm('Delete this genre? Books keep their genre text.');">
-                                            <button type="submit" class="btn-sm btn-delete">Delete</button>
-                                        </form>
+                                        <div class="table-actions-inner">
+                                            <a class="btn-sm btn-edit" href="/admin/genres/<%= g._id %>/edit">Edit</a>
+                                            <form action="/admin/genres/<%= g._id %>/delete" method="POST" onsubmit="return confirm('Delete this genre? Books keep their genre text.');">
+                                                <button type="submit" class="btn-sm btn-delete">Delete</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             <% }); %>

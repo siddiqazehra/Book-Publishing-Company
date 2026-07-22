@@ -1,9 +1,5 @@
-/* NEW: New Release grid — shows every book in the catalog (BOOKS, from
-   MongoDB via pageController.js), arranged into 3 rows via CSS grid
-   (grid-auto-flow: column) so extra books flow into new columns you can
-   scroll/swipe through sideways instead of being cut off. Sort control and
-   left/right arrow buttons re-render / scroll the same grid. */
-
+// Grid of every book in the catalog, arranged into 3 rows via CSS grid
+// (grid-auto-flow: column) with left/right arrows to scroll horizontally.
 function renderReleaseGrid(sortBy) {
     const grid = document.getElementById("release-grid");
     if (!grid) return;

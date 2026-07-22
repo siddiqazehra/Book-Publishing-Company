@@ -25,9 +25,11 @@
                   <td><%= m.subject %></td>
                   <td><%= m.message %></td>
                   <td class="table-actions">
-                    <form action="/admin/messages/<%= m._id %>/delete" method="POST" onsubmit="return confirm('Delete this message?');">
-                      <button type="submit" class="btn-sm btn-delete">Delete</button>
-                    </form>
+                    <div class="table-actions-inner">
+                      <form action="/admin/messages/<%= m._id %>/delete" method="POST" onsubmit="return confirm('Delete this message?');">
+                        <button type="submit" class="btn-sm btn-delete">Delete</button>
+                      </form>
+                    </div>
                   </td>
                 </tr>
               <% }); %>

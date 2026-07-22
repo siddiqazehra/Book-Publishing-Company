@@ -1,4 +1,3 @@
-/* BEGIN: Book Search & Cart Feature - cart state, drawer UI, header badge */
 const CART_STORAGE_KEY = "publishingCompanyCart";
 
 function getCart() {
@@ -156,4 +155,3 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartIcon = document.getElementById("cart-icon");
     if (cartIcon) cartIcon.addEventListener("click", openCartDrawer);
 });
-/* END: Book Search & Cart Feature - cart state, drawer UI, header badge */

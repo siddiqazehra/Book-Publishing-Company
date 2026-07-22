@@ -9,7 +9,6 @@
 </head>
 
 <body>
-    <!-- BEGIN: Book Search & Cart Feature - full catalog search/sort overlay -->
     <div id="catalog-overlay">
         <div id="catalog-panel">
             <div id="catalog-panel-header">
@@ -29,7 +28,6 @@
             <div id="catalog-grid"></div>
         </div>
     </div>
-    <!-- END: Book Search & Cart Feature - full catalog search/sort overlay -->
 
     <%- include('partials/header') %>
 
@@ -129,36 +127,43 @@
                 <p class="orange-text">BOOKS</p>
                 <h2>New Release</h2>
             </div>
-            <!-- BEGIN: Book Search & Cart Feature - clickable book cards, from MongoDB -->
-            <div class="release-row" id="release-row-1">
-                <% books.slice(0, 3).forEach(function(book) { %>
-                    <a class="book" href="/book-details?id=<%= book._id %>">
-                        <div class="book-card">
-                            <img src="/<%= book.image %>" alt="<%= book.title %>">
-                        </div>
-                        <div class="book-content">
-                            <p class="orange-text content-hover">Rs. <%= book.price.toFixed(2) %></p>
-                            <h3><%= book.title %></h3>
-                            <p>By <%= book.author %></p>
-                        </div>
-                    </a>
-                <% }); %>
+            <% if (books && books.length) { %>
+                <div class="release-row" id="release-row-1">
+                    <% books.slice(0, 3).forEach(function(book) { %>
+                        <a class="book" href="/book-details?id=<%= book._id %>">
+                            <div class="book-card">
+                                <img src="/<%= book.image %>" alt="<%= book.title %>">
+                            </div>
+                            <div class="book-content">
+                                <p class="orange-text content-hover">Rs. <%= book.price.toFixed(2) %></p>
+                                <h3><%= book.title %></h3>
+                                <p>By <%= book.author %></p>
+                            </div>
+                        </a>
+                    <% }); %>
+                </div>
+                <% if (books.length > 3) { %>
+                    <div class="release-row" id="release-row-2">
+                        <% books.slice(3, 6).forEach(function(book) { %>
+                            <a class="book" href="/book-details?id=<%= book._id %>">
+                                <div class="book-content">
+                                    <p class="orange-text">Rs. <%= book.price.toFixed(2) %></p>
+                                    <h3><%= book.title %></h3>
+                                    <p>By <%= book.author %></p>
+                                </div>
+                                <div class="book-card">
+                                    <img src="/<%= book.image %>" alt="<%= book.title %>">
+                                </div>
+                            </a>
+                        <% }); %>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <p style="text-align:center; color:#8c8474; padding:36px 0;">No books to show yet.</p>
+            <% } %>
+            <div class="view-all-wrap">
+                <a class="view-all-btn" href="/books">View All Books</a>
             </div>
-            <div class="release-row" id="release-row-2">
-                <% books.slice(0, 3).forEach(function(book) { %>
-                    <a class="book" href="/book-details?id=<%= book._id %>">
-                        <div class="book-content">
-                            <p class="orange-text">Rs. <%= book.price.toFixed(2) %></p>
-                            <h3><%= book.title %></h3>
-                            <p>By <%= book.author %></p>
-                        </div>
-                        <div class="book-card">
-                            <img src="/<%= book.image %>" alt="<%= book.title %>">
-                        </div>
-                    </a>
-                <% }); %>
-            </div>
-            <!-- END: Book Search & Cart Feature - clickable book cards -->
         </div>
     </section>
     <section id="testimonials">

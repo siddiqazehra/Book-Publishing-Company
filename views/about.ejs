@@ -49,9 +49,7 @@
                         <div class="writers-info">
                             <h2>Mary Shelley</h2>
                             <p>Mary Shelley, the British author, is best known for her novel "Frankenstein". She was a prolific writer and her works continue to be popular today.</p>
-                            <!-- BEGIN: View Books by Author feature -->
                             <button onclick="window.location.href='/author/' + encodeURIComponent('Mary Shelley')">View All Books</button>
-                            <!-- END: View Books by Author feature -->
                         </div>
                     </div>
                     <div class="writers-card">
@@ -138,6 +136,9 @@
             <% } else { %>
                 <p style="text-align:center; color:#8c8474; padding:36px 0;">No books to show yet.</p>
             <% } %>
+            <div class="view-all-wrap">
+                <a class="view-all-btn" href="/books">View All Books</a>
+            </div>
         </div>
     </section>
 

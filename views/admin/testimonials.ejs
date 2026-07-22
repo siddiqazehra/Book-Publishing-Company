@@ -24,10 +24,12 @@
                   <td><%= t.role || t.designation || 'Reader' %></td>
                   <td><%= _msg.length > 90 ? _msg.slice(0, 90) + '…' : _msg %></td>
                   <td class="table-actions">
-                    <a class="btn-sm btn-edit" href="/admin/testimonials/<%= t._id %>/edit">Edit</a>
-                    <form action="/admin/testimonials/<%= t._id %>/delete" method="POST" onsubmit="return confirm('Delete this testimonial?');">
-                      <button type="submit" class="btn-sm btn-delete">Delete</button>
-                    </form>
+                    <div class="table-actions-inner">
+                      <a class="btn-sm btn-edit" href="/admin/testimonials/<%= t._id %>/edit">Edit</a>
+                      <form action="/admin/testimonials/<%= t._id %>/delete" method="POST" onsubmit="return confirm('Delete this testimonial?');">
+                        <button type="submit" class="btn-sm btn-delete">Delete</button>
+                      </form>
+                    </div>
                   </td>
                 </tr>
               <% }); %>

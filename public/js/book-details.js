@@ -1,4 +1,3 @@
-/* BEGIN: Book Search & Cart Feature - book details page logic */
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("book-details-parent");
     if (!container) return;
@@ -50,4 +49,3 @@ document.addEventListener("DOMContentLoaded", () => {
         addToCart(book._id, quantity);
     });
 });
-/* END: Book Search & Cart Feature - book details page logic */

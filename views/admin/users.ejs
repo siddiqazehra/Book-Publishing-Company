@@ -48,12 +48,14 @@
                                     <td><span class="status-badge <%= u.accessLevel === 'master' ? 'status-shipped' : 'status-pending' %>"><%= u.accessLevel === 'master' ? 'Admin' : 'Customer' %></span></td>
                                     <td><%= new Date(u.createdAt).toLocaleDateString() %></td>
                                     <td class="table-actions">
-                                        <a class="btn-sm btn-edit" href="/admin/users/<%= u._id %>/edit">Edit</a>
-                                        <% if (String(u._id) !== String(user._id)) { %>
-                                            <form action="/admin/users/<%= u._id %>/delete" method="POST" onsubmit="return confirm('Delete this user? This cannot be undone.');">
-                                                <button type="submit" class="btn-sm btn-delete">Delete</button>
-                                            </form>
-                                        <% } %>
+                                        <div class="table-actions-inner">
+                                            <a class="btn-sm btn-edit" href="/admin/users/<%= u._id %>/edit">Edit</a>
+                                            <% if (String(u._id) !== String(user._id)) { %>
+                                                <form action="/admin/users/<%= u._id %>/delete" method="POST" onsubmit="return confirm('Delete this user? This cannot be undone.');">
+                                                    <button type="submit" class="btn-sm btn-delete">Delete</button>
+                                                </form>
+                                            <% } %>
+                                        </div>
                                     </td>
                                 </tr>
                             <% }); %>

@@ -11,13 +11,11 @@
 <body>
     <%- include('partials/header') %>
 
-    <!-- BEGIN: Book Search & Cart Feature - book details page -->
     <section id="book-details">
         <div id="book-details-parent">
             <!-- filled in by js/book-details.js based on ?id= in the URL -->
         </div>
     </section>
-    <!-- END: Book Search & Cart Feature - book details page -->
 
     <%- include('partials/footer', { books: books }) %>
     <script src="/js/book-details.js"></script>

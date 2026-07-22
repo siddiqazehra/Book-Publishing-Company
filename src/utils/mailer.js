@@ -71,6 +71,21 @@ function itemsTable(order) {
     </table>`;
 }
 
+// Sent right after registration, with the OTP the customer needs to
+// verify their email before they can log in.
+export async function sendVerificationEmail(user, otp) {
+  if (!user) return;
+  const html = shell(`
+    <h2 style="font-family:Georgia,serif;font-weight:normal;margin:0 0 6px;">Verify your email, ${user.name || "there"}</h2>
+    <p style="font-size:14px;color:#4b463d;margin:0 0 18px;">Use the code below to verify your account. It expires in 10 minutes.</p>
+    <div style="text-align:center;margin:0 0 18px;">
+      <span style="display:inline-block;font-family:Georgia,serif;font-size:32px;letter-spacing:8px;color:#17392b;background:#f3eee4;border-radius:10px;padding:14px 22px;">${otp}</span>
+    </div>
+    <p style="font-size:13px;color:#8c8474;">If you didn't create an account with us, you can safely ignore this email.</p>
+  `);
+  await send(user.email, "Verify your email — Publishing Company", html);
+}
+
 // Sent to the customer when they place an order.
 export async function sendOrderConfirmation(order, settings) {
   if (!order) return;
@@ -135,13 +150,22 @@ export async function sendOrderEmails(order) {
   await send(process.env.GMAIL_USER, `New order #${order.orderId} — Publishing Company`, html);
 }
 
-// Sent to the SHOP OWNER when a visitor submits the Contact Us form.
+// Sent when a visitor submits the Contact Us form: one notification to the
+// shop's own inbox, and one confirmation copy back to the visitor.
 export async function sendContactEmails({ name, email, subject, message }) {
-  const html = shell(`
+  const adminHtml = shell(`
     <h2 style="font-family:Georgia,serif;font-weight:normal;margin:0 0 6px;">New contact message</h2>
     <p style="font-size:14px;color:#4b463d;"><strong>From:</strong> ${name || ""} (${email || ""})</p>
     <p style="font-size:14px;color:#4b463d;"><strong>Subject:</strong> ${subject || ""}</p>
     <p style="font-size:14px;color:#4b463d;white-space:pre-line;">${message || ""}</p>
   `);
-  await send(process.env.GMAIL_USER, `Contact: ${subject || "New message"} — Publishing Company`, html);
+  await send(process.env.GMAIL_USER, `Contact: ${subject || "New message"} — Publishing Company`, adminHtml);
+
+  const customerHtml = shell(`
+    <h2 style="font-family:Georgia,serif;font-weight:normal;margin:0 0 6px;">Thanks for reaching out, ${name || "there"}!</h2>
+    <p style="font-size:14px;color:#4b463d;">We've received your message and will get back to you soon. Here's a copy for your records:</p>
+    <p style="font-size:14px;color:#4b463d;margin:12px 0 4px;"><strong>Subject:</strong> ${subject || ""}</p>
+    <p style="font-size:14px;color:#201e1a;white-space:pre-line;">${message || ""}</p>
+  `);
+  await send(email, `We've received your message — Publishing Company`, customerHtml);
 }

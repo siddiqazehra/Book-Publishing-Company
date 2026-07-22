@@ -397,6 +397,10 @@
 }
 
 .table-actions {
+    white-space: nowrap;
+}
+
+.table-actions-inner {
     display: flex;
     gap: 8px;
     align-items: center;

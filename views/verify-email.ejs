@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify your email - Publishing Company</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+    <section id="auth-section">
+        <div id="auth-parent">
+            <h2>Verify your email</h2>
+            <p class="auth-subtext">We've sent a 6-digit code to <strong><%= email %></strong>. Enter it below to activate your account.</p>
+
+            <div id="auth-message" class="<%= error ? 'error' : (notice ? 'success' : '') %>"><%= error || notice || '' %></div>
+
+            <form id="verify-email-form" method="POST" action="/verify-email" novalidate>
+                <input type="hidden" name="email" value="<%= email %>">
+
+                <label for="otp">Verification code</label>
+                <input type="text" id="otp" name="otp" placeholder="6-digit code" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" required>
+
+                <button type="submit" class="button" id="blue-button">Verify email</button>
+            </form>
+
+            <form id="resend-form" method="POST" action="/verify-email/resend">
+                <input type="hidden" name="email" value="<%= email %>">
+                <p id="auth-switch">Didn't get a code? <button type="submit" class="link-button">Resend code</button></p>
+            </form>
+        </div>
+    </section>
+
+    <%- include('partials/footer', { books: books || [] }) %>
+</body>
+
+</html>

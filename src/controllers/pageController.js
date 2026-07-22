@@ -117,10 +117,8 @@ export const submitContact = async (req, res) => {
     // Always store the message in the database first.
     await Contact.create({ name, email, subject, message });
 
-    // NEW: sends both the admin notification AND a confirmation email back
-    // to whoever filled out the form (previously only the admin was
-    // emailed). If email isn't configured, this just logs a warning and
-    // the form still succeeds — same graceful fallback as before.
+    // Emails the admin and sends a confirmation copy to the visitor.
+    // No-op if mail isn't configured — the form still succeeds either way.
     await sendContactEmails({ name, email, subject, message });
 
     res.status(200).json({ success: true, message: "Message sent successfully." });

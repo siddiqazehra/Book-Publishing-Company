@@ -16,7 +16,7 @@
             <h2>Welcome back</h2>
             <p class="auth-subtext">Log in to your Publishing Company account.</p>
 
-            <div id="auth-message" class="<%= error ? 'error' : '' %>"><%= error || '' %></div>
+            <div id="auth-message" class="<%= error ? 'error' : (notice ? 'success' : '') %>"><%= error || notice || '' %></div>
 
             <form id="login-form" method="POST" action="/login" novalidate>
                 <input type="hidden" name="next" value="<%= next || '/' %>">

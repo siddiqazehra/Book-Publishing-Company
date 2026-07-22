@@ -1,4 +1,3 @@
-/* BEGIN: Book Search & Cart Feature - header search (non-homepage pages) */
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("header-search-form");
     if (!form) return;
@@ -20,4 +19,3 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("header-search-button");
     if (btn) btn.addEventListener("click", goToCatalog);
 });
-/* END: Book Search & Cart Feature - header search (non-homepage pages) */

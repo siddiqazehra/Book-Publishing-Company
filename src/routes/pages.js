@@ -25,6 +25,9 @@ router.get("/login", auth.showLogin);
 router.post("/login", auth.login);
 router.get("/register", auth.showRegister);
 router.post("/register", auth.register);
+router.get("/verify-email", auth.showVerifyEmail);
+router.post("/verify-email", auth.verifyEmail);
+router.post("/verify-email/resend", auth.resendVerification);
 router.post("/logout", auth.logout);
 
 export const pageRoutes = router;

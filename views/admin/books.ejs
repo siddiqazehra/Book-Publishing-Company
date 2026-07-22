@@ -59,10 +59,12 @@
                                     <td>Rs. <%= book.price.toFixed(2) %></td>
                                     <td><%= book.stock %><% if (book.stock <= 5) { %> <span class="low-stock-tag">Low</span><% } %></td>
                                     <td class="table-actions">
-                                        <a class="btn-sm btn-edit" href="/admin/books/<%= book._id %>/edit">Edit</a>
-                                        <form action="/admin/books/<%= book._id %>/delete" method="POST" onsubmit="return confirm('Delete this book? This cannot be undone.');">
-                                            <button type="submit" class="btn-sm btn-delete">Delete</button>
-                                        </form>
+                                        <div class="table-actions-inner">
+                                            <a class="btn-sm btn-edit" href="/admin/books/<%= book._id %>/edit">Edit</a>
+                                            <form action="/admin/books/<%= book._id %>/delete" method="POST" onsubmit="return confirm('Delete this book? This cannot be undone.');">
+                                                <button type="submit" class="btn-sm btn-delete">Delete</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             <% }); %>

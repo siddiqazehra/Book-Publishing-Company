@@ -64,39 +64,41 @@
         </div>
 
         <p id="books-no-results" hidden>No books match your search. Try a different term or genre.</p>
+
+        <div id="books-pagination" class="books-pagination" hidden></div>
     </section>
 
     <%- include('partials/footer', { books: books }) %>
 
     <script>
         (function () {
+            var PAGE_SIZE = 12; // 3 rows x 4 books
             var searchEl = document.getElementById("books-search");
             var genreEl = document.getElementById("books-genre");
             var sortEl = document.getElementById("books-sort");
             var grid = document.getElementById("books-grid");
             var noResults = document.getElementById("books-no-results");
+            var pagination = document.getElementById("books-pagination");
             if (!grid) return;
             var cards = Array.prototype.slice.call(grid.querySelectorAll(".books-card"));
+            var currentPage = 1;
 
             // Pre-fill the search box when arriving via /books?search=term
             var urlSearch = new URLSearchParams(window.location.search).get("search");
             if (urlSearch) searchEl.value = urlSearch;
 
-            function apply() {
+            function getFilteredSorted() {
                 var term = (searchEl.value || "").trim().toLowerCase();
                 var genre = genreEl.value;
                 var sort = sortEl.value;
-                var visible = 0;
 
-                cards.forEach(function (c) {
+                var matched = cards.filter(function (c) {
                     var matchTerm = !term || c.dataset.title.indexOf(term) > -1 || c.dataset.author.indexOf(term) > -1;
                     var matchGenre = !genre || c.dataset.genre === genre;
-                    var show = matchTerm && matchGenre;
-                    c.style.display = show ? "" : "none";
-                    if (show) visible++;
+                    return matchTerm && matchGenre;
                 });
 
-                var sorted = cards.slice().sort(function (a, b) {
+                matched.sort(function (a, b) {
                     switch (sort) {
                         case "price-asc": return a.dataset.price - b.dataset.price;
                         case "price-desc": return b.dataset.price - a.dataset.price;
@@ -105,15 +107,63 @@
                         default: return a.dataset.title.localeCompare(b.dataset.title);
                     }
                 });
-                sorted.forEach(function (c) { grid.appendChild(c); });
 
-                noResults.hidden = visible !== 0;
+                return matched;
             }
 
-            searchEl.addEventListener("input", apply);
-            genreEl.addEventListener("change", apply);
-            sortEl.addEventListener("change", apply);
-            apply();
+            function renderPagination(totalPages) {
+                if (!pagination) return;
+                if (totalPages <= 1) {
+                    pagination.innerHTML = "";
+                    pagination.hidden = true;
+                    return;
+                }
+                pagination.hidden = false;
+
+                var html = "";
+                for (var p = 1; p <= totalPages; p++) {
+                    html += '<button type="button" class="books-page-btn' + (p === currentPage ? " active" : "") +
+                        '" data-page="' + p + '">' + p + "</button>";
+                }
+                html += '<button type="button" id="books-next-btn" class="books-page-btn books-next"' +
+                    (currentPage >= totalPages ? " disabled" : "") + ">Next</button>";
+                pagination.innerHTML = html;
+            }
+
+            function apply(resetPage) {
+                if (resetPage) currentPage = 1;
+
+                var matched = getFilteredSorted();
+                var totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+                if (currentPage > totalPages) currentPage = totalPages;
+
+                var start = (currentPage - 1) * PAGE_SIZE;
+                var pageItems = matched.slice(start, start + PAGE_SIZE);
+
+                cards.forEach(function (c) { c.style.display = "none"; });
+                pageItems.forEach(function (c) {
+                    c.style.display = "";
+                    grid.appendChild(c);
+                });
+
+                noResults.hidden = matched.length !== 0;
+                renderPagination(totalPages);
+            }
+
+            searchEl.addEventListener("input", function () { apply(true); });
+            genreEl.addEventListener("change", function () { apply(true); });
+            sortEl.addEventListener("change", function () { apply(true); });
+            apply(true);
+
+            if (pagination) {
+                pagination.addEventListener("click", function (e) {
+                    var btn = e.target.closest(".books-page-btn");
+                    if (!btn || btn.disabled) return;
+                    currentPage = btn.id === "books-next-btn" ? currentPage + 1 : Number(btn.dataset.page);
+                    apply(false);
+                    grid.scrollIntoView({ behavior: "smooth", block: "start" });
+                });
+            }
 
             grid.addEventListener("click", function (e) {
                 var btn = e.target.closest(".books-add-btn");
