@@ -70,9 +70,9 @@ export const newBookForm = async (req, res, next) => {
 
 export const createBook = async (req, res) => {
   try {
-    const { title, author, description, price, image, stock } = req.body;
+    const { title, author, description, price, stock } = req.body;
     const genre = (req.body.genreNew && req.body.genreNew.trim()) ? req.body.genreNew.trim() : (req.body.genre || "");
-    const coverPath = req.file ? `uploads/${req.file.filename}` : (image || undefined);
+    const coverPath = req.file ? `uploads/${req.file.filename}` : "images/book-default.jfif";
     await Book.create({
       title,
       author,
@@ -110,7 +110,7 @@ export const editBookForm = async (req, res, next) => {
 
 export const updateBook = async (req, res) => {
   try {
-    const { title, author, description, price, image, stock } = req.body;
+    const { title, author, description, price, stock } = req.body;
     const genre = (req.body.genreNew && req.body.genreNew.trim()) ? req.body.genreNew.trim() : (req.body.genre || "");
     const update = {
       title,
@@ -121,7 +121,6 @@ export const updateBook = async (req, res) => {
       stock: Number(stock) || 0,
     };
     if (req.file) update.image = `uploads/${req.file.filename}`;
-    else if (image) update.image = image;
     const book = await Book.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
     if (!book) return res.status(404).render("error", { title: "Not found", message: "Book not found." });
     res.redirect("/admin/books");

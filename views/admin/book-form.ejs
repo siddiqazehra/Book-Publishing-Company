@@ -54,10 +54,7 @@
                     <% if (book.image) { %>
                       <div class="admin-current-cover">Current: <img class="thumb" src="/<%= book.image %>" alt=""></div>
                     <% } %>
-                    <small class="admin-hint">Or paste an image path/URL below (used only if no file is uploaded).</small>
-
-                    <label for="image">Cover image path</label>
-                    <input type="text" id="image" name="image" value="<%= book.image || '' %>" placeholder="images/book-1.jfif">
+                    <small class="admin-hint">Leave this empty to keep the current cover (or the default cover for a new book).</small>
 
                     <label for="description">Description</label>
                     <textarea id="description" name="description" maxlength="2000"><%= book.description || '' %></textarea>

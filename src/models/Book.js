@@ -31,12 +31,12 @@ const bookSchema = new mongoose.Schema(
       required: [true, "Price is required"],
       min: 0,
     },
-    // Path or URL to the cover image, e.g. "images/book-1.jfif" (frontend
-    // templates prefix this with "/" when rendering <img src>).
+    // Path or URL to the cover image, e.g. "images/book-default.jfif"
+    // (frontend templates prefix this with "/" when rendering <img src>).
     image: {
       type: String,
       trim: true,
-      default: "images/book-1.jfif",
+      default: "images/book-default.jfif",
     },
     stock: {
       type: Number,

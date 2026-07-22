@@ -31,7 +31,7 @@ export const showLogin = async (req, res) => {
     title: "Log in",
     error: null,
     notice: req.query.verified ? "Email verified — you can now log in." : null,
-    next: req.query.next || "/",
+    next: req.query.next || "",
     books: await getAllBooksLean(),
   });
 };
@@ -39,14 +39,19 @@ export const showLogin = async (req, res) => {
 // GET /register
 export const showRegister = async (req, res) => {
   if (req.user) return res.redirect("/");
-  res.render("register", { title: "Register", error: null, books: await getAllBooksLean() });
+  res.render("register", {
+    title: "Register",
+    error: null,
+    formData: { name: "", email: "" },
+    books: await getAllBooksLean(),
+  });
 };
 
 // POST /login
 export const login = async (req, res) => {
   try {
     let { email, password, next } = req.body;
-    const safeNext = next && next.startsWith("/") ? next : "/";
+    const safeNext = next && next.startsWith("/") ? next : "";
 
     if (!email || !password) {
       return res.status(400).render("login", {
@@ -77,14 +82,18 @@ export const login = async (req, res) => {
 
     const token = signToken(user);
     setAuthCookie(res, token);
-    res.redirect(safeNext);
+
+    // If the person was sent here from a specific protected page (e.g.
+    // checkout), take them back there. Otherwise land by role.
+    const destination = safeNext || (user.accessLevel === "master" ? "/admin" : "/books");
+    res.redirect(destination);
   } catch (err) {
     console.error(err);
     res.status(500).render("login", {
       title: "Log in",
       error: "Something went wrong. Please try again.",
       notice: null,
-      next: "/",
+      next: "",
       books: await getAllBooksLean().catch(() => []),
     });
   }
@@ -92,13 +101,15 @@ export const login = async (req, res) => {
 
 // POST /register
 export const register = async (req, res) => {
-  try {
-    let { name, email, password, confirmPassword } = req.body;
+  let { name, email, password, confirmPassword } = req.body;
+  const formData = { name: name || "", email: email || "" };
 
+  try {
     if (!name || !email || !password) {
       return res.status(400).render("register", {
         title: "Register",
         error: "Name, email, and password are all required.",
+        formData,
         books: await getAllBooksLean(),
       });
     }
@@ -107,16 +118,19 @@ export const register = async (req, res) => {
       return res.status(400).render("register", {
         title: "Register",
         error: "Passwords do not match.",
+        formData,
         books: await getAllBooksLean(),
       });
     }
 
     email = String(email).trim().toLowerCase();
+    formData.email = email;
 
     if (password.length < 8) {
       return res.status(400).render("register", {
         title: "Register",
         error: "Password must be at least 8 characters.",
+        formData,
         books: await getAllBooksLean(),
       });
     }
@@ -126,6 +140,7 @@ export const register = async (req, res) => {
       return res.status(409).render("register", {
         title: "Register",
         error: "An account with that email already exists.",
+        formData,
         books: await getAllBooksLean(),
       });
     }
@@ -154,7 +169,12 @@ export const register = async (req, res) => {
         : err.name === "ValidationError"
         ? Object.values(err.errors)[0]?.message || "Invalid input."
         : "Something went wrong. Please try again.";
-    res.status(400).render("register", { title: "Register", error: message, books: await getAllBooksLean().catch(() => []) });
+    res.status(400).render("register", {
+      title: "Register",
+      error: message,
+      formData,
+      books: await getAllBooksLean().catch(() => []),
+    });
   }
 };
 

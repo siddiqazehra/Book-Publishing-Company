@@ -837,11 +837,6 @@ footer {
 #contact-content h1{
     font-size: 40px;
 }
-
-/* Logos Section + Contact form styling now lives entirely in the
-   "REFINEMENTS" block near the end of this file — having two separate rule
-   sets for #logo-section/#form-parent/etc. was fighting itself and causing
-   the background/whitespace bugs on the contact page. */
 input,
 textarea {
     border-bottom: 1px solid gainsboro;
@@ -1488,8 +1483,6 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85);
 }
-/* Secondary header button (Login / Admin Panel) sits on the LIGHT header,
-   so it must read as emerald outline — not white text. */
 #white-button {
     background: transparent !important;
     color: var(--emerald) !important;
@@ -1589,6 +1582,9 @@ input[type="search"], textarea, select {
     border: 1px solid var(--line) !important;
     border-radius: 10px !important;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+#login-form input, #register-form input {
+    padding: 4% 2%;
 }
 #checkout-form input:focus, textarea:focus, .form-div input:focus,
 input[type="email"]:focus, input[type="password"]:focus {
