@@ -217,7 +217,7 @@ header{
 #img-under-navbar #img-under-navbar-div p{
     font-size: 16px;
     font-family: var(--roboto);
-    color: white;
+    color: var(--light-black);
 }
 .button{
     padding: 1%;
@@ -494,7 +494,7 @@ header{
     font-family: var(--roboto);
 }
 #testimonials-heading h2{
-    color: white;
+    color: red;
     margin-bottom: 10% ;
     font-family: lora;
     font-weight: 500;
@@ -837,6 +837,11 @@ footer {
 #contact-content h1{
     font-size: 40px;
 }
+
+/* Logos Section + Contact form styling now lives entirely in the
+   "REFINEMENTS" block near the end of this file — having two separate rule
+   sets for #logo-section/#form-parent/etc. was fighting itself and causing
+   the background/whitespace bugs on the contact page. */
 input,
 textarea {
     border-bottom: 1px solid gainsboro;
@@ -1483,6 +1488,8 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 16px 32px -14px rgba(31, 77, 58, 0.85);
 }
+/* Secondary header button (Login / Admin Panel) sits on the LIGHT header,
+   so it must read as emerald outline — not white text. */
 #white-button {
     background: transparent !important;
     color: var(--emerald) !important;
@@ -1803,7 +1810,8 @@ html { scroll-behavior: smooth; }
 #logo-section { padding: 46px 24px; background: var(--beige); }
 #logo-parent { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; max-width: 1280px; margin: 0 auto; width: auto; }
 .logo-div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 18px; box-shadow: var(--p-shadow); }
-.logo-div a { width: 56px; height: 56px; border-radius: 50%; background: rgba(31,77,58,0.08); display: flex; align-items: center; justify-content: center; }
+.logo-div a { display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.logo-div .logo-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(31,77,58,0.08); display: flex; align-items: center; justify-content: center; }
 .logo-div img { width: 26px; height: 26px; object-fit: contain; }
 .logo-div p { font-size: 14px; color: var(--ink-soft, #4b463d); }
 .blue-text { color: var(--brass) !important; font-weight: 600; }
@@ -1826,7 +1834,7 @@ html { scroll-behavior: smooth; }
 #testimonials { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
 #testimonials-heading { text-align: center; margin-bottom: 40px; }
 #testimonials-heading p { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--brass); margin-bottom: 10px; }
-#testimonials-heading h2 { font-family: lora; font-size: clamp(28px, 4vw, 40px); }
+#testimonials-heading h2 { font-family: lora; font-size: clamp(28px, 4vw, 40px); color: var(--ink); }
 .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
 .tcard { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 30px 28px 24px; box-shadow: var(--p-shadow); display: flex; flex-direction: column; gap: 16px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .tcard:hover { transform: translateY(-4px); box-shadow: 0 22px 48px -20px rgba(23,57,43,0.34); }
